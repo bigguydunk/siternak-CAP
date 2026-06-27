@@ -1,0 +1,1162 @@
+﻿python : incorrect startxref pointer(1)
+At line:1 char:1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (incorrect startxref pointer(1):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+--- PAGE 51 ---
+39 
+Tabel 16  Use case description  laporkan hasil kelahiran atau keguguran  
+Use Case  Description  
+Aktor  Petugas . 
+Deskripsi  Setelah melakukan verifikasi kelahiran atau keguguran, petugas mengisi dan 
+mengirim laporan hasil akhir.  
+Pre-condition  Petugas telah mengonfirmasi tugas Cek Kelahiran atau Verifikasi 
+Keguguran.  
+Post-condition  Detail laporan tersimpan di Laporan  Kelahiran atau Laporan  Keguguran. 
+Status permintaan menjadi selesai berdasarkan laporan apa yang masuk . 
+Status  permintaan dan hasil  akhir di Permintaan diperbarui menjadi status 
+final. Siklus selesai.  
+Skenario  1. Petugas membuka detail tugas Cek Kelahiran/Verifikasi Keguguran.  
+2. Petugas menekan tombol "Isi Laporan Kelahiran" atau "Isi Laporan 
+Keguguran".  
+3. Petugas mengisi form di modal (status kelahiran, penyebab keguguran, 
+dll.).  
+4. Petugas menekan "Kirim Laporan".  
+5. Sistem menyimpan laporan dan menyelesaikan siklus permintaan.  
+Rangkaian use case description  ini memberikan gambaran komprehensif 
+mengenai setiap interaksi fungsional utama yang diimplementasikan atau 
+disempurnakan pada iterasi kedua , memastikan bahwa setiap langkah dalam alur 
+proses bisnis yang direvisi memiliki definisi fungsional yang jelas.  Setelah interaksi 
+fungsional antara aktor dan sistem didefinisikan melalui use case description , 
+pemodelan dilanjutkan dengan menggambarkan alur kerja dinamis menggunakan 
+activity diagram . Diagram ini memvisualisasikan urutan langkah -langkah, 
+keputusan, dan  aliran kontrol dalam sistem untuk setiap fase utama dari proses 
+bisnis yang telah direvisi. Pembuatan activity diagram  ini penting untuk 
+memastikan bahwa implementasi logika backend nantinya selaras dengan urutan 
+operasional yang diharapkan dan mencakup semua kemungkinan cabang alur, baik 
+skenario sukses maupun gagal. pengelolaan permintaan IB pada iterasi kedua  dibagi 
+menjadi beberapa fase yang merepresentasikan siklus dari permintaan hingga 
+penyelesaian.  
+Fase pertama, yang mencakup rentang waktu dari pengajuan permintaan 
+hingga hasil pelaksanaan IB awal (sekitar 0 -3 bulan), digambarkan pada Gambar  
+19. Alur dimulai pada swimlane  user ketika peternak mengajukan permintaan IB. 
+Aktivitas ini memicu swimlane  sistem untuk menerima kiriman permintaan IB. 
+Sistem kemudian menampilkan list permintaan IB pada  dashboard admin. 
+Selanjutnya, admin melihat permintaan masuk dan melakukan verifikasi 
+permintaan IB. Terdapat titik keputusan ( decision node ) "Data Valid?" . Jika tidak, 
+alur mengarah ke admin menolak permintaan, yang kemudian memicu sistem 
+mengupdate status penolakan (Permintaan Selesai), dan alur berakhir. Jika ya, 
+admin melakukan validasi permintaan dan menugaskan petugas. Sistem merespons 
+dengan mengubah status permintaan dan kirim informa si tugas ke petugas. Tugas 
+baru kemudian ditampilkan (oleh Sistem) pada  list tugas dashboard  petugas. 
+Petugas kemudian m elihat daftar tugas dan melakukan konfirmasi tugas untuk 
+proses IB. Sistem mencatat konfirmasi ini dengan mengubah status permintaan 
+(Petugas Konfirmasi Tugas). Petugas lalu memulai proses IB (di lapangan) dan 
+kemudian mengisi laporan IB. Terdapat titik keputusan "Proses IB Berhasil?". Jika 
+
+
+--- PAGE 52 ---
+40 
+ 
+tidak, Petugas mengisi laporan IB (Gagal), yang memicu sistem melakukan u pdate 
+status kegagalan IB (Permintaan Selesai), dan alur berakhir. Jika ya, Petugas 
+mengisi laporan IB (Berhasil). Sistem kemudian menyimpan isi laporan dan  
+melakukan u pdate status proses IB awal serta menandai permintaan untuk l anjut ke 
+fase berikutnya (Menunggu Kebuntingan), yang mengakhiri fase pertama ini dan 
+melanjutkan proses ke fase pemantauan selanjutnya.  
+ 
+Gambar 19  Activity diagram  fase pertama iterasi kedua  
+
+
+--- PAGE 53 ---
+41 
+Fase kedua dalam alur proses bisnis, yang merupakan tahapan pemantauan 
+jangka menengah, berfokus pada proses krusial untuk pemantauan dan verifikasi 
+kebuntingan ternak setelah proses IB awal berhasil (sekitar 3 -9 bulan), sebagaimana 
+diilustrasikan pada Gam bar 20. Pada swimlane  sistem, alur ini diinisiasi oleh 
+mekanisme pengecekan ganda yang berjalan secara berkala, yang dirancang untuk 
+menangkap dua skenario pemicu yang berbeda.  
+Pengecekan pertama adalah alur proaktif yang diinisiasi pengguna, di mana 
+Sistem melakukan pengecekan permintaan untuk mendeteksi adanya laporan 
+indikasi kebuntingan baru yang mungkin dikirim oleh peternak ("Ada Permintaan 
+Cek Kebuntingan?"). Jika ya, ini menandakan peternak memiliki observasi baru, 
+dan sistem segera mengirimkan notifikasi permintaan ke admin untuk 
+ditindaklanjuti. Pengecekan kedua adalah alur fail-safe yang diinisiasi sistem, yaitu 
+pemeriksaan tenggat waktu ("Ada Permintaan yang Melewati Tenggat Waktu?"). 
+Pengecekan ini memastikan bahwa permintaan yang sudah lama ada namun belum 
+ditindaklanjuti (misalnya, peternak lupa melapor) akan secara otomatis dies kalasi. 
+Jika ada yang terdeteksi, sistem mengirimkan notifikasi ke admin untuk melakukan 
+penugasan kepada petugas agar cek kebuntingan tetap dilaksanakan sesuai jadwal. 
+Jika kedua pengecekan tidak menemukan pemicu, sistem berjalan normal dan akan 
+mengulang  pengecekan di siklus berikutnya.  
+Kedua jenis notifikasi ini, baik yang dipicu oleh Peternak maupun oleh 
+tenggat waktu sistem, akan dikonsolidasikan dan diterima oleh admin ("Admin 
+Menerima Notifikasi Permintaan yang Perlu Ditangani"). Dashboard  admin 
+berfungsi sebagai pusat kendali di mana ia dapat melihat semua permintaan yang 
+memerlukan tindakan. Berdasarkan notifikasi yang masuk, admin dapat 
+menugaskan petugas yang paling sesuai. Aktivitas penugasan ini memicu sistem 
+untuk melakukan serangkai an tindakan otomatis: mengubah status permintaan 
+(misalnya dari 'Menunggu Verifikasi' menjadi 'Ditugaskan') dan melakukan 
+pengiriman informasi tugas ke petugas. Tugas baru ini kemudian ditampilkan oleh 
+sistem secara real-time di list tugas dashboard  petugas.  
+Selanjutnya, alur berpindah ke swimlane user  (Petugas). Petugas dapat 
+melihat daftar tugas dan, yang terpenting, melakukan konfirmasi tugas. Langkah 
+konfirmasi ini sangat penting karena memberikan sinyal kepada sistem bahwa tugas 
+telah diterima dan akan dieksekusi. Sistem mencatat ini dengan menguba h status 
+permintaan (Petugas Konfirmasi Tugas) dan mengatur ulang  tenggat waktu 
+pelaporan untuk tugas tersebut. Petugas kemudian memulai pengecekan 
+kebuntingan di lapangan. Setelah selesai, petugas dihadapkan pada titik keputusan 
+"Berhasil Bunting?".  
+Jika tidak, petugas mengisi laporan kebuntingan (Gagal). Ini memicu sistem 
+melakukan perubahan status menjadi kegagalan kebuntingan (Permintaan Selesai), 
+yang secara definitif menutup siklus permintaan ini dan mencatatnya sebagai hasil 
+negatif. Jika ya, pe tugas mengisi laporan kebuntingan (Berhasil). Sistem kemudian 
+menyimpan isi laporan tersebut, merubah status permintaan (misalnya menjadi 
+'Bunting Terkonfirmasi'), dan yang terpenting, menandai permintaan untuk lanjut 
+ke fase berikutnya (Menunggu Kelahiran ). Langkah ini memastikan bahwa 
+permintaan tidak ditutup, melainkan ditransisikan ke dalam antrean pemantauan 
+kelahiran, mengakhiri fase kedua ini.  
+
+
+--- PAGE 54 ---
+42 
+ 
+ 
+Gambar 20  Activity diagram  fase kedua  iterasi kedua  
+Fase ketiga, yang digambarkan pada Gambar 21, merupakan alur opsional 
+yang hanya terpicu jika ada laporan spesifik mengenai indikasi keguguran dari 
+peternak. Alur ini berjalan paralel dengan pemantauan normal menuju fase 
+kelahiran dan berfungsi sebagai jalur interupsi. Pada swimlane  sistem, proses 
+dimulai dengan sistem melakukan pengecekan permintaan (Khusus Permintaan 
+dengan status Berhasil Bunting) untuk mendeteksi laporan keguguran yang masuk 
+("Ada Permintaan Cek Keguguran?"). Jika tidak, sistem akan b erjalan normal dan 
+sistem masih berlanjut untuk menunggu laporan kelahiran. Jika ya, Sistem 
+mengirimkan notifikasi permintaan ke admin.  
+
+
+--- PAGE 55 ---
+43 
+Pada swimlane  (Admin), admin menerima notifikasi permintaan yang perlu 
+ditangani (khususnya notifikasi keguguran). Berdasarkan notifikasi ini, admin 
+menugaskan petugas untuk melakukan verifikasi di lapangan. Sistem merespon 
+dengan mengubah status permintaan (menjadi status verifikasi keguguran) dan  
+sistem mengirimkan i nformasi tugas ke petugas. Tugas verifikasi ini kemudian 
+ditampilkan (oleh Sistem) di list tugas dashboard  petugas.  Selanjutnya, alur 
+berpindah ke petugas. Petugas melihat daftar tugas (tugas verif ikasi keguguran) dan 
+melakukan konfirmasi tugas. Sistem mencatat konfirmasi ini dengan mengubah 
+status permintaan (Petugas Konfirmasi Tugas) dan mengatur ulang  tenggat waktu 
+pelaporan. Petugas lalu memulai pengecekan  keguguran di  lapangan. Setelah 
+selesai, petugas mengisi laporan keguguran. Berbeda dengan fase lainnya, tahapan  
+ini diasumsikan hanya memiliki satu hasil (konfirmasi keguguran), sehingga tidak 
+ada titik keputusan setelah pengisian laporan. Sistem langsung melakukan 
+pembaruan s tatus keguguran (Permintaan Selesai), menandai akhir dari siklus 
+permintaan ini dengan hasil "Keguguran". Jika tidak ada laporan keguguran yang 
+masuk dari peternak selama periode bunting, seluruh alur dalam diagram ini akan 
+dilewati, dan sistem aka n terus memantau hingga batas waktu kelahiran normal.  
+ 
+Gambar 21  Activity diagram  fase ketiga iterasi kedua  
+
+
+--- PAGE 56 ---
+44 
+ 
+Fase keempat, seperti diilustrasikan pada Gambar 22, merupakan tahap 
+penyelesaian siklus permintaan IB, yang berpusat pada verifikasi kelahiran (sekitar 
+9-10 bulan setelah IB awal). Tahap ini adalah puncak dari seluruh alur kerja, di 
+mana keberhasilan prog ram IB secara definitif dikonfirmasi. Mirip dengan fase 
+kedua, pada swimlane  sistem, alur dimulai dengan mekanisme pengecekan ganda 
+yang berjalan secara rutin. Fungsi ini dirancang untuk memastikan tidak ada 
+kelahiran yang terlewatkan, baik yang dilaporkan secara proaktif maupun yang 
+terdeteksi oleh sistem.  
+Pengecekan pertama bersifat user-driven , yaitu mendeteksi laporan 
+kelahiran baru dari Peternak ("Ada Permintaan Cek Kelahiran?"). Pengecekan 
+kedua adalah system -driven fail -safe, yaitu pemeriksaan tenggat waktu ("Ada 
+Permintaan yang Melewati Tenggat Waktu?"), yang secara otomatis mengeskalasi 
+ternak yang sudah melewati perkiraan Hari Perkiraan Lahir (HPL) namun belum 
+dilaporkan. Jika salah satu kondisi terpenuhi (Ya), Sistem akan  mengirimkan 
+notifikasi permintaan ke admin untuk ditindaklanjuti. Jika tidak, sistem berjalan 
+normal, menunggu siklus pengecekan berikutnya.  
+Pada swimlane  user (Admin), admin menerima notifikasi permintaan yang 
+perlu ditangani. Peran admin di sini adalah sebagai validator  dan dispatcher , 
+memastikan bahwa notifikasi tersebut valid dan memilih petugas lapangan yang 
+tepat. Admin kemudian melakukan penugasan petugas berdasarkan notifikasi yang 
+masuk. Sistem merespon secara instan dengan mengubah status permintaan 
+(misalnya, dari 'Menunggu Ke lahiran' menjadi 'Pengecekan Kelahiran') dan 
+mengirimkan informasi tugas lengkap ke petugas. Tugas ini kemudian ditampilkan 
+oleh sistem di list tugas dashboard  petugas, memindahkan tanggung jawab eksekusi 
+dari admin ke petugas lapangan.  
+Selanjutnya, alur berpindah ke petugas. Petugas melihat daftar tugas dan 
+melakukan konfirmasi tugas. Langkah konfirmasi ini krusial sebagai tanda terima 
+tanggung jawab dan memicu sistem untuk mencatatnya dengan mengubah status 
+permintaan (Petugas Konfirmas i Tugas). Pada titik ini pula, sistem mengatur ulang 
+tenggat waktu pelaporan menjadi 24 jam, sebuah aturan bisnis yang diterapkan 
+untuk menjamin kecepatan dan akurasi data pasca -kelahiran. Petugas lalu memulai 
+pengecekan kelahiran di lapangan.  
+Setelah selesai, petugas mengisi laporan kelahiran, yang mengarah pada 
+titik keputusan final: "Lahir Normal?". Jika ya, petugas mengisi laporan kelahiran 
+(Berhasil). Sistem kemudian menyimpan isi laporan, memperbarui status 
+permintaan, dan menandai permint aan selesai dengan kelahiran normal, yang 
+merupakan hasil akhir ideal. Jika tidak (misalnya, anak sapi mati saat dilahirkan), 
+petugas mengisi laporan kelahiran (Anak Sapi Mati). Hal ini memicu sistem untuk 
+memperbarui status menjadi kegagalan kelahiran (Pe rmintaan Selesai). Penting 
+dicatat, dalam kedua kasus  ini baik lahir normal atau anak sapi mengalami ke matian, 
+alur berakhir di titik ini ( End Node ). Ini menandakan bahwa seluruh siklus 
+permintaan IB dari awal hingga akhir telah tuntas, dan status akhirnya telah tercatat 
+secara permanen dalam sistem untuk keperluan pelaporan, analisis, dan statistik.  
+
+
+--- PAGE 57 ---
+45 
+ 
+Gambar 22  Activity diagram  fase ketiga iterasi kedua  
+Setelah alur kerja dinamis sistem dimodelkan melalui activity diagram , 
+langkah selanjutnya dalam tahap perancangan adalah mendefinisikan struktur statis 
+sistem menggunakan class diagram . Diagram ini berfungsi untuk memetakan 
+entitas -entitas utama dalam sistem ke dalam kelas -kelas perangkat lunak, lengkap 
+dengan atribut (data) dan operasi (fungsi/metode) yang dimilikinya. Perancangan 
+class diagram  pada iterasi kedua  secara langsung merefleksikan arsitektur database 
+yang telah disempurnakan, di mana setiap ta bel dalam database  direpresentasikan 
+sebagai sebuah kelas.  
+
+
+--- PAGE 58 ---
+46 
+ 
+ 
+Gambar 23  Class diagram  iterasi kedua  
+Gambar 23, menyajikan class diagram  hasil revisi untuk iterasi kedua . 
+Terdapat sepuluh kelas utama yang diidentifikasi  yaitu  Admin, Peternak, 
+Permintaan, Laporan (sebagai supertype ), Laporan_IB, Laporan_Kebuntingan, 
+Laporan_Keguguran, Laporan_Kelahiran (sebagai subtype ), Petugas, dan Semen. 
+Kelas Laporan menjadi pusat dari desain baru ini, berfungsi sebagai state machine  
+terpusat yang mengontrol seluruh alur proses permintaan IB. Hal ini  dicapai melalui 
+serangkaian atribut flag boolean  (flag_menunggu_laporan, flag_laporan_ib, 
+flag_laporan_kebuntingan, flag_laporan_keguguran , flag_laporan_kelahiran) yang 
+menandakan tahapan mana yang sedang aktif, serta atribut tenggat_waktu yang 
+dinamis dan tugas_ib_awal sebagai acuan waktu.  
+Hubungan antar kelas juga didefinisikan secara jelas untuk mencerminkan 
+struktur  data dan interaksi fungsional. Kelas Laporan memiliki relasi generalisasi 
+(digambarkan dengan panah segitiga kosong) dari kelas -kelas turunannya 
+(Laporan_IB, Laporan_Kebuntingan, Laporan_Keguguran, Laporan_Kelahiran)  ke 
+
+
+--- PAGE 59 ---
+47 
+kelas Laporan  (supertype ). Ini menunjukkan bahwa setiap laporan spesifik adalah 
+"jenis dari" Laporan umum, dan mewarisi properti laporan_id sebagai kunci utama 
+sekaligus kunci asing. Kelas Permintaan memiliki relasi asosiasi one-to-one dengan 
+kelas Laporan, menandakan bahwa setiap permintaan dikontrol oleh tepat satu state 
+machine . Kelas Admin dan Peternak memiliki relasi asosiasi one-to-many  dengan 
+Permintaan, yang berarti satu Admin dapat memvalidasi banyak permintaan, dan 
+satu Peternak dapat membuat bany ak permintaan. Kelas Petugas memiliki relasi 
+asosiasi one-to-many  dengan setiap subtype  Laporan (Laporan_IB, 
+Laporan_Kebuntingan, dll.), menunjukkan bahwa satu petugas dapat menangani 
+banyak tugas laporan yang berbeda. Terakhir, kelas Laporan_IB memiliki relasi 
+asosiasi many -to-one dengan kelas Semen, yang berarti banyak laporan IB dapat 
+menggunakan satu jenis semen yang sama. Struktur relasi ini memastikan integritas 
+data dan merepresentasikan alur kerja sistem secara akurat.  
+Setelah pemodelan struktur sistem disempurnakan pada iterasi kedua  
+melalui class diagram , langkah selanjutnya adalah penyesuaian rancangan 
+antarmuka pengguna ( high-fidelity prototype ) untuk memastikan tampilan frontend  
+selaras dengan logika baru dan alur kerja yang telah direvisi. Penyesuaian ini 
+mencakup empat halaman utama  yaitu  dashboard  admin, dashboard  petugas, detail 
+permintaan sisi admin, dan detail tugas sisi petugas.  
+Dimulai dengan dashboard  admin, rancangan antarmuka pada iterasi kedua 
+ditunjukkan pada Gambar 2 4. Halaman ini berfungsi sebagai pusat kendali utama 
+bagi admin untuk memantau seluruh aktivitas dan status permintaan dalam sistem. 
+Pada bagian atas halaman terdapat tiga card notifikasi utama, masing -masing 
+merepresentasikan kondisi berbeda dari siklus permintaan. Card  pertama adalah 
+Permintaan Baru, yang menampilkan daftar permintaan dari peternak yang masih 
+menunggu proses validasi oleh admin. Card  kedua adalah Butuh Penugasan, yang 
+menampilkan daftar permintaan yang memerlukan tindak lanjut berupa penug asan 
+petugas, seperti pemeriksaan kebuntingan, kelahiran, atau kondisi khusus seperti 
+laporan keguguran. Selanjutnya, card ketiga yaitu Lewat Tenggat Waktu, 
+menampilkan daftar permintaan yang telah melewati batas waktu yang ditentukan. 
+Kondisi ini dapat terjadi karena peternak terlambat melaporkan hasil kebuntingan 
+atau karena petugas belum melakukan konfirmasi terhadap tugas  yang telah 
+diberikan. Pada card ini juga disediakan tombol ôTugaskan Ulangö, yang 
+memungkinkan admin menugaskan kembali petugas secar a langsung melalui 
+halaman detail permintaan terkait.  
+Di bawah card notifikasi terdapat tabel utama daftar permintaan yang 
+menampilkan seluruh riwayat permintaan dalam sistem. Tabel ini dilengkapi fitur 
+pengaturan tampilan data, pengurutan waktu, filter status, dan kolom pencarian. 
+Pembaruan visual diterapkan berupa penandaan warna merah untuk permintaan 
+yang me lewati tenggat waktu serta fitur hitung mundur pada permintaan aktif. 
+Setiap baris menampilkan informasi penting seperti ID, nama customer , tugas, 
+tenggat, status, dan tombol ôDetailö untuk membuka hala man permintaan terkait. 
+Desain ini memudahkan admin dalam memantau dan menindaklanjuti setiap 
+permintaan secara cepat dan efisien.  
+ 
+
+
+--- PAGE 60 ---
+48 
+ 
+ 
+Gambar 24  Tampilan dashboard  admin iterasi kedua  
+Kemudian  halaman detail permintaan sisi admin Gambar 2 5 disesuaikan  
+menjadi pusat kendali komprehensif untuk satu siklus permintaan IB. Di bagian atas 
+halaman, setelah breadcrumb  dan judul yang menampilkan ID serta tanggal 
+pengajuan, terdapat badge  status dinamis yang merefleksikan kondisi terkini 
+permintaan  yang sebelumnya pada iterasi kesatu hanya berupa tulisan activitylog  
+dan list aktivitas proses . Fitur utama halaman ini adalah timeline  horizontal yang 
+memvisualisasikan lima tahapan kunci  yaitu  "Permintaan Masuk", "Proses IB", 
+"Cek Bunting", "Kelahiran", dan "Selesai" . Status setiap tahapan direpresentasikan 
+oleh warna lingkaran  yaitu  hijau untuk tahap yang berhasil diselesaikan, merah 
+untuk tahap di mana proses berhenti karena kegagalan (misal kan IB Gagal, Tidak 
+Bunting, Keguguran), dan abu -abu untuk tahap yang sedang aktif atau belum 
+tercapai.  
+ 
+Gambar 25  Tampilan detail permintaan iterasi kedua  
+
+
+--- PAGE 61 ---
+49 
+Di bawah timeline , terdapat bagian tombol aksi yang muncul secara 
+kondisional. Misalnya, jika permintaan masih berstatus 'Menunggu', tombol 
+"Setujui & Tugaskan Petugas" dan "Tolak Permintaan" akan tampil. Menekan 
+tombol -tombol ini akan memicu modal interaktif, seperti yang  terlihat pada Gambar  
+26. Modal "Tugaskan Petugas", misalnya, menampilkan dropdown  berisi daftar 
+petugas yang tersedia, memungkinkan admin memilih dan mengonfirmasi 
+penugasan sebelum status permintaan diperbarui. Demikian pula, tombol "Tol ak 
+Permintaan" akan memunculkan modal untuk memasukkan alasan penolakan.  
+ 
+Gambar 26  Tampilan modal detail permintaan iterasi kedua  
+Informasi detail disajikan dalam tata letak dua kolom  (Gambar 2 5). Kolom 
+kiri berisi card "Data Peternak" dan "Detail Permintaan" yang menampilkan 
+informasi statis seperti nama, kontak, alamat peternak, serta lokasi ternak. Kolom 
+kanan didedikasikan untuk "Riwayat Laporan & Status Proses", yang secara 
+dinamis akan menampilkan serangkaian card berisi detail setiap laporan yang 
+dikirim oleh Petugas seiring berjalannya siklus (Laporan IB, Laporan Kebuntingan, 
+dll.). Halaman ini dirancang untuk memberikan admin  gambaran lengkap, mulai 
+dari progres visual hingga riwayat tindakan, serta menyediakan kontrol yang 
+relevan sesuai dengan tahapan proses permintaan.  
+Selanjutnya, penyesuaian antarmuka dilakukan untuk dashboard petugas, 
+seperti yang terlihat pada Gambar  27. Halaman ini dirancang dengan tata letak yang 
+konsisten dengan dashboard  admin, namun difokuskan pada tugas spesifik yang 
+relevan bagi petugas. Bagian atas halaman menampilkan alert  notifikasi yang 
+memberitahukan jumlah tugas aktif yang perlu segera ditindaklanjuti, dilengkapi 
+dengan tombol refresh  untuk memperbarui data. Konten utama dibagi menjadi dua 
+bagian  yaitu "Tugas Aktif" dan "Riwayat Tugas Sel esai". Tabel "Tugas Aktif" 
+menampilkan daftar pekerjaan yang sedang menunggu tindakan dari Petugas, 
+mencakup kolom ID Permintaan, Customer, Lokasi, Jenis Tugas (ditampilkan 
+sebagai badge  berwarna, misal kan "Laporan IB", "Cek Bunting"), Tenggat Waktu 
+(yang menampilkan countdown  jika relevan), dan tombol aksi "Detail & Lapor" 
+untuk menuju halaman detail. Tabel "Riwayat Tugas Selesai", yang terletak di 
+bagian bawah, menampilkan daftar tugas yang telah selesai, mencakup ID 
+Permintaan, Customer, Lokasi, Hasil Ak hir (ditampilkan sebagai badge  status, 
+
+
+--- PAGE 62 ---
+50 
+ 
+misal kan "Tidak Bunting", "Kelahiran Berhasil"), dan tombol "Lihat Riwayat" 
+untuk mengakses detail. Tabel riwayat ini juga dilengkapi dengan kontrol untuk 
+mengatur jumlah entri yang ditampilkan, kolom pencarian, serta paginasi (tidak 
+terlihat di gambar, tapi mengi kuti pola dashboard  admin) untuk memudahkan 
+navigasi. Desain ini bertujuan memberikan Petugas pandangan yang jelas antara 
+pekerjaan yang sedang berjalan dan rekam jejak tugas yang telah diselesaikan.  
+ 
+Gambar 27  Tampilan dashboard  petugas iterasi kedua  
+Terakhir, penyesuaian dilakukan pada halaman Detail Tugas Sisi Petugas 
+Gambar 2 8, yang berfungsi sebagai ruang kerja utama bagi petugas. Halaman ini 
+mengadopsi tata letak yang mirip dengan detail permintaan sisi admin untuk 
+konsistensi, namun fokus utamanya adalah pada eksekusi tugas dan pelaporan. Di 
+bagian atas, terdapat breadcrumb , judul yang menampilkan ID permintaan, tanggal 
+pengajuan, serta badge  status dinamis yang mencerminkan kondisi tugas saat ini 
+(misalnya, "Petugas Menuju Lokasi Cek Kelahiran").  
+ 
+Gambar 28  Tampilan detail tugas petugas iterasi kedua  
+
+
+--- PAGE 63 ---
+51 
+Bagian utama halaman menampilkan tombol aksi yang relevan secara 
+kondisional. Tombol "Konfirmasi Tugas" akan muncul jika tugas baru saja 
+ditugaskan. Setelah dikonfirmasi, tombol tersebut akan hilang dan digantikan 
+oleh tombol untuk mengisi laporan yang ses uai dengan fase saat ini, misalnya "Isi 
+Laporan Kelahiran" (berwarna hijau). Menekan tombol laporan akan memicu 
+modal interaktif, seperti yang terlihat pada Gambar  29. Modal ini menampilkan 
+formulir yang kontennya disesuaikan dengan jenis laporan yang dibu tuhkan (IB, 
+Kebuntingan, Kelahiran, atau Keguguran), memungkinkan petugas memasukkan 
+data yang relevan seperti hasil pemeriksaan, status kelahiran, kondisi anak sapi, 
+dan catatan lainnya sebelum mengirimkannya ke sistem.  
+ 
+Gambar 29  Tampilan detail tugas petugas iterasi kedua  
+Informasi pendukung disajikan dalam tata letak dua kolom  pada Gambar 
+28, kolom kiri menampilkan card "Data Peternak" dan "Detail Permintaan" 
+(lokasi, tanggal IB awal), sementara kolom kanan menampilkan "Riwayat 
+Laporan" yang berisi daftar card untuk setiap laporan yang telah dikirim 
+sebelumnya oleh petugas pada siklus permintaa n tersebut. Desain ini 
+memastikan Petugas memiliki semua informasi yang diperlukan untuk 
+melaksanakan tugas dan melaporkan hasilnya secara efisien melalui antarmuka 
+yang terstruktur.  
+4.2.3 Pengembangan Prototipe  
+Pada Iterasi kedua , pengembangan prototipe  difokuskan pada 
+penyempurnaan sistem berdasarkan desain baru yang dihasilkan dari tahap 
+perencanaan dan pemodelan cepat sebelumnya, terutama terkait implementasi 
+state machine  terpusat dan alur kerja penugasan lanjutan. Arsitektur sistem yang 
+digunakan tetap mempertahankan model client  server  sebagaimana telah 
+diilustrasikan pada Gambar 1 2. Sisi frontend  (antarmuka pengguna) 
+dikembangkan menggunakan library React dengan build tool Vite, sementara 
+sisi backend  (server aplikasi dan logika bisnis) dibangun di atas runtime 
+environment  Node.js menggunakan framework  Express. Komunikasi antara 
+kedua lapisan ini tetap mengandalkan REST API untuk pertukaran data, dan 
+sistem manajemen basis data yang digunakan adalah PostgreSQL.  
+
+
+--- PAGE 64 ---
+52 
+ 
+Untuk pengembangan frontend , digunakan sejumlah library  pendukung 
+seperti Axios untuk melakukan panggilan API, React Router DOM untuk navigasi 
+antar halaman, Bootstrap dan React Bootstrap Icons untuk membangun antarmuka 
+pengguna yang responsif, serta SweetAlert2 untuk menampilkan notifikasi 
+interaktif. Di sisi  backend , framework Express menjadi fondasi utama, didukung 
+oleh library  seperti ôpgö untuk konektivitas ke database  PostgreSQL, 
+jsonwebtoken untuk menangani autentikasi berbasis token , bcryptjs untuk hashing 
+password , dan cors untuk mengelola kebijakan Cross  Origin Resource Sharing . 
+Berdasarkan perancangan ulang pada tahap sebelumnya, langkah 
+selanjutnya adalah mengimplementasikan desain database  fisik yang baru. 
+Implementasi ini menerjemahkan class diagram  yang telah dirancang ke dalam 
+struktur tabel konkret menggunakan PostgreSQL. Tujuannya adalah untuk 
+menciptakan fondasi data yang solid yang mampu mendukung alur kerja yang 
+direvisi dan logika state machine  terpusat. Desain database  fisik hasil revisi iterasi 
+kedua , yang menjadi basis implementasi ini, disajikan secara detail pada G ambar  
+30. Struktur ini merupakan wujud nyata dari arsitektur data yang dirancang untuk 
+iterasi kedua . 
+ 
+Gambar 30  Desain database  fisik iterasi kedua  
+
+
+--- PAGE 65 ---
+53 
+Perubahan paling fundamental dalam desain database  fisik ini adalah 
+implementasi mekanisme state machine  terpusat pada tabel Laporan. Tabel ini kini 
+tidak hanya berfungsi sebagai catatan, tetapi sebagai supertype  pengendali utama 
+untuk seluruh siklus proses permintaan IB. Fungsi kontrol ini diwujudkan melalui 
+serangkaian atribut flags  (flag_menunggu_laporan, flag_laporan_ib, 
+flag_laporan_kebuntingan, flag_laporan_keguguran, flag_laporan_kelahiran) 
+bertipe BOOLEAN. Kombinasi nilai true/false  pada kolom -kolom  ini secara unik 
+mengidentifikasi tahapan spesifik yang sedang aktif atau ditunggu oleh sistem. 
+Selain flags, tabel Laporan juga dilengkapi atribut waktu krusial  yaitu 
+tenggat_waktu (bertipe DATETIME) yang menyimpan dateline dinamis untuk 
+setiap tahapan, digunakan sistem untuk memicu notifikasi keterlambatan, dan 
+datetime_tugas_ib_awal (bertipe DATETIME) yang berfungsi sebagai titik acuan 
+waktu awal untuk perhitungan durasi fase -fase berikutnya. Sementara tabel 
+Laporan fokus m engelola status dan waktu, tabe l-tabel turunan ( subtype ) seperti 
+Laporan_IB, Laporan_Kebuntingan, Laporan_Keguguran, dan Laporan_Kelahiran 
+menyimpan data detail spesifik yang relevan untuk setiap tahapan, seperti 
+isi_laporan_ib, penyebab_keguguran, atau status_kelahiran, sesuai dengan relasi 
+generalisasi yang telah dimodelkan.  
+Rancangan database  fisik ini telah divalidasi dan memenuhi kaidah 
+normalisasi hingga bentuk normal ketiga (3NF) untuk memastikan efisiensi 
+penyimpanan dan mengurangi redundansi data. Bentuk Normal Pertama (1NF) 
+terpenuhi karena setiap atribut (kolom) dalam setiap tabel berisi nilai -nilai atomik, 
+tanpa ada repeating groups  atau nilai multi -valued  dalam satu sel. Bentuk normal 
+kedua (2NF) juga terpenuhi , sebagian besar tabel menggunakan primary key  
+tunggal (misalnya, permintaan_id di tabel Permintaan), semua atribut non -kunci 
+secara otomatis memiliki ketergantungan fungsional penuh pada seluruh primary 
+key, sehingga tidak ada ketergantungan parsial. Bentuk normal ketiga (3NF) 
+diverifikasi dengan memastikan tidak ada ketergantungan transitif antar atribut non -
+kunci. Sebagai contoh konkret pada tabel Permintaan, atribut lokasi_ternak 
+bergantung langsung pada permintaan_id ( primary key ), dan tidak bergantung pada 
+atribut non -kunci lainnya seperti peternak_id (meskipun peternak_id menentukan 
+peternak, lokasi ternak  adalah informasi spesifik per permintaan, bukan per 
+peternak). Kepatuhan terhadap 3NF memastikan bahwa struktur data logis dan 
+minim anomali saat pembaruan data.  
+Untuk menjaga integritas relasional dan konsistensi data antar tabel, 
+implementasi secara ketat menggunakan Primary Key  (PK) dan Foreign Key  (FK). 
+Setiap tabel didefinisikan dengan PK unik, umumnya menggunakan tipe data 
+SERIAL ( auto increment integer ) untuk ID seperti permintaan_id, laporan_id, 
+petugas_id, atau tipe data VARCHAR untuk kode unik seperti kode_straw pada 
+tabel Semen. Hubungan antar entitas yang telah dimodelkan dalam class diagram  
+kemudian diimplementasikan melalui constraints  FK. Sebagai cont oh krusial, 
+kolom permintaan_id pada tabel Laporan didefinisikan sebagai FK yang merujuk 
+ke permintaan_id pada tabel Permintaan dan juga diberi constraint  UNIQUE , 
+kombinasi ini secara efektif menegakkan hubungan one-to-one yang memastikan 
+setiap permintaan hanya memiliki satu state machine  Laporan yang mengontrolnya. 
+Contoh lain adalah kolom petugas_id pada tabel -tabel laporan turunan (Laporan_IB, 
+Laporan_Kebuntingan,  dan lain -lain.) yang berfungsi sebagai FK ke tabel Petugas, 
+
+
+--- PAGE 66 ---
+54 
+ 
+mengimplementasikan hubungan one-to-many  dimana satu petugas dapat 
+menangani banyak tugas laporan berbeda.  
+Pengembangan prototipe dilanjutkan pada sisi backend . Fokus utama pada 
+iterasi kedua  adalah menyesuaikan logika bisnis dan query database  agar selaras 
+dengan mekanisme state machine  terpusat yang baru. Pengembangan backend  tetap 
+menggunakan runtime environment  Node.js dengan framework  Express.js, 
+memanfaatkan bahasa pemrograman JavaScript. Struktur kode backend  dirancang 
+secara modular untuk memisahkan concerns  (tanggung jawab) dan meningkatkan 
+keterbacaan serta kemudahan pemeliharaan, seperti yang terlihat  pada Gambar 31. 
+ 
+Gambar 31  Struktur folder  backend  iterasi kedua  
+Logika utama aplikasi ditempatkan di dalam direktori ôsrcö, yang 
+diorganisir ke dalam beberapa sub  direktori kunci. Tabel 17 berikut merinci fungsi 
+utama dari setiap direktori dan file penting di dalamnya.  
+Tabel 17  Struktur dan fungsi direktori backend  Iterasi kedua  
+Folder /file Keterangan  
+config/  Berisi file konfigurasi aplikasi, termasuk pengaturan koneksi ke 
+database  PostgreSQL . 
+db.js  Menginisialisasi connection pool PostgreSQL ( pg library ) dan 
+menyediakan fungsi query untuk berinteraksi dengan database . 
+controllers/  Berisi logika untuk menangani request HTTP yang masuk dari routes. 
+Setiap controller bertanggung jawab untuk memproses input, 
+memanggil model atau service yang sesuai, dan mengirimkan response 
+kembali ke klien.  
+authController.js  Menangani logika untuk registrasi dan login pengguna (Admin, 
+Petugas).  
+permintaanController.js  Menangani logika terkait entitas Permintaan, termasuk pembuatan, 
+validasi, penugasan, dan pengambilan detail.  
+laporanController.js  Menangani logika pengiriman semua jenis laporan (Laporan_IB, 
+Laporan_Kebuntingan, dll.) dan pembaruan state machine di tabel 
+Laporan.  
+tugasController.js  Menangani logika terkait tugas Petugas, seperti melihat daftar tugas 
+dan konfirmasi tugas.  
+
+
+--- PAGE 67 ---
+55 
+Tabel 17  Struktur dan fungsi direktori backend  Iterasi ked ua (lanjutan ) 
+Folder/file  Keterangan  
+middleware/  Berisi fungsi perantara yang dieksekusi sebelum request mencapai 
+controller utama. Digunakan untuk tugas seperti otentikasi dan otorisasi.  
+authMiddleware.js  Memverifikasi JWT token yang dikirim dalam header Authorization 
+untuk melindungi endpoint  API yang bersifat privat.  
+models/  Berisi fungsi -fungsi yang secara langsung berinteraksi dengan 
+database  untuk melakukan operasi CRUD (Create, Read, Update, 
+Delete) pada tabel spesifik.  
+adminModel.js  Fungsi untuk operasi CRUD pada tabel Admin . 
+peternakModel.js  Fungsi untuk operasi CRUD pada tabel Peternak.  
+petugasModel.js  Fungsi untuk operasi CRUD pada tabel Petugas.  
+permintaanModel.js  Fungsi untuk operasi CRUD pada tabel Permintaan.  
+routes/  Mendefinisikan endpoint  API. Setiap file rute memetakan URL dan 
+method  HTTP ke fungsi controller  yang sesuai.  
+apiRoutes.js  Menggabungkan semua rute aplikasi dan menerapkannya ke instance 
+Express utama dengan prefix  /api. 
+.env File konfigurasi environment untuk menyimpan variabel sensitif 
+seperti kredensial database  dan secret key  JWT.  
+index.js  File utama (titik masuk) aplikasi. Menginisialisasi server  Express, 
+menerapkan middleware global  (seperti cors dan express.json), dan 
+menghubungkan routes . 
+Implementasi  endpoint  REST API dilakukan kemudian sesuai dengan 
+rancangan class diagram  dan use case description . Setiap endpoint  berfungsi 
+sebagai "pintu masuk" bagi frontend  atau aplikasi lain (seperti Postman untuk 
+simulasi Peternak) untuk berinteraksi dengan logika bisnis dan data di backend . 
+pada iterasi kedua , implementasi difokuskan pada endpoint  yang mendukung alur 
+kerja state machine  terpusat, termasuk validasi, penugasan, konfirmasi, dan 
+pelaporan di setiap fase. Tabel 18 berikut merangkum endpoint  API utama yang 
+dikembangkan atau disempurnakan pada iterasi ini.  
+Tabel 18  Daftar endpoint  API utama iterasi kedua  
+Aktor  Method  URL  Keterangan  
+Peternak 
+(Postman)  POST  /api/permintaan  Membuat permintaan IB baru.  
+Peternak 
+(Postman)  POST  /api/permintaan/:id/lapor  Mengirim laporan observasi (indikasi 
+bunting, keguguran, dan kelahiran ). 
+Admin  GET  /api/permintaan  Mengambil daftar semua permintaan 
+(digunakan di dashboard  Admin).  
+Admin  GET  /api/permintaan/:id  Mengambil detail komprehensif satu 
+permintaan (digunakan di Detail 
+Permintaan Admin).  
+ 
+
+
+--- PAGE 68 ---
+56 
+ 
+Tabel 18  Daftar endpoint  API utama iterasi kedua ( lanjutan ) 
+Aktor  Method  URL  Keterangan  
+Admin  PUT  /api/permintaan/:id/validasi  Memvalidasi (Setuju/Tolak) 
+permintaan & menginisiasi state 
+machine  jika disetujui.  
+Admin  GET  /api/petugas  Mengambil daftar semua petugas 
+(untuk dropdown  penugasan).  
+Admin  PUT  /api/tugas/:laporan_id/tugaskan  Menugaskan petugas untuk tugas 
+lanjutan ( proses IB, cek bunting, 
+lahir, dan keguguran .). 
+Admin  GET  /api/notifications/counts  Mengambil jumlah notifikasi 
+(permintaan baru, laporan terlambat, 
+dan laporan yang membutuhkan 
+penugasan .) 
+Petugas  GET  /api/tugas  Mengambil daftar tugas yang 
+ditugaskan kepada petugas yang 
+login.  
+Petugas  PUT  /api/tugas/:laporan_id/konfirmasi  Mengonfirmasi penerimaan tugas 
+dan reset  deadline  laporan menjadi 
+24 jam.  
+Petugas  POST  /api/laporan/ib/:laporan_id  Mengirim laporan hasil pelaksanaan 
+IB awal dan memperbarui state 
+machine . 
+Petugas  POST  /api/laporan/kebuntingan/:laporan_id  Mengirim laporan hasil cek 
+kebuntingan dan memperbarui state 
+machine . 
+Petugas  POST  /api/laporan/keguguran/:laporan_id  Mengirim laporan verifikasi 
+keguguran dan menghentikan state 
+machine . 
+Petugas  POST  /api/laporan/kelahiran/:laporan_id  Mengirim laporan hasil kelahiran dan 
+menghentikan state machine . 
+Petugas  GET  /api/semen  Mengambil daftar kode_straw semen 
+(untuk form Laporan IB).  
+Logika bisnis utama yang menggerakkan alur proses dan state machine  
+terpusat diimplementasikan di dalam controller  dan model  pada backend . Fungsi -
+fungsi ini bertanggung jawab untuk menerjemahkan aksi pengguna atau pemicu 
+sistem menjadi perubahan data yang sesuai pada  database , khususnya pada tabel 
+Laporan yang kini mengontrol status.  Salah satu logika paling fundamental adalah 
+inisiasi state machine  saat admin menyetujui permintaan awal. Ini 
+diimplementasikan dalam fungsi validasiPermintaan yang terletak di file 
+src/controllers/permintaanController.js.  Ketika  fungsi  request  PUT 
+/api/permintaan/:id/validasi diterima dengan body  { "status": "Disetujui", 
+"petugas_id": ... }, fungsi ini mengeksekusi serangkaian query database . Pertama, 
+query  UPDATE dijalankan pada tabel Permintaan untuk mengubah status_validitas 
+menjadi 'Disetujui' dan mencatat admin_id. Secara krusial, query  INSERT 
+kemudian dijalankan ke tabel Laporan untuk membuat record  baru yang memulai 
+state machine , dengan flag_menunggu_laporan dan flag_laporan_ib diatur ke true 
+serta tenggat_waktu awal (misalnya, 24 jam) ditetapkan. Terakhir, query INSERT 
+
+
+--- PAGE 69 ---
+57 
+juga dilakukan ke tabel Laporan_IB untuk membuat placeholder  tugas yang 
+menautkan laporan_id baru dengan petugas_id yang dipilih.  
+Gambar 32  Potongan k ode inisiasi state machine  pada fungsi validasi  Permintaan  
+Gambar 32 potongan kode tersebut menunjukkan bagaimana persetujuan 
+admin memicu pembuatan record pengendali status di tabel Laporan. Perlu dicatat, 
+blok if  (status = == 'Ditolak') dalam fungsi yang sama menangani alur unhappy path  
+dengan hanya melakukan UPDATE pada tabel Permintaan untuk mencatat 
+penolakan dan alasannya, tanpa menginisiasi state machine . 
+Logika transisi status saat laporan masuk diimplementasikan dalam fungsi -
+fungsi submitLaporan di src/controllers/laporanController.js. Sebagai contoh, 
+fungsi submitLaporanIB menangani request  POST /api/laporan/ib/:laporan_id. 
+Fungsi ini pertama -tama menjalankan query  UPDATE pada tabel Laporan_IB 
+untuk menyimpan detail laporan seperti isi_laporan_ib dan kode_straw. Kemudian, 
+berdasarkan nilai hasil_ib yang diterima dari request body , fungsi ini menjalankan 
+query  UPDATE kedua pada record  Laporan yang sesuai. Jika hasil_ib adalah 
+'Berhasil', query  ini akan mengubah flag_laporan_ib menjadi false , 
+flag_laporan_kebuntingan menjadi true, mengatur datetime_tugas_ib_awal, dan 
+mengkalkulasi serta menetapkan tenggat_waktu baru untuk fase cek kebuntingan.  // Di dalam fungsi validasiPermintaan  
+try { 
+    if (status === 'Ditolak') {  
+        // Hanya update status & alasan penolakan di Permintaan  
+        await db.query(  
+            "UPDATE Permintaan SET status_validitas = 'Ditolak', 
+alasan_penolakan = $1, admin_id = $2 WHERE permintaan_id = $3",  
+            [alasan_penolakan, admin_id, id]  
+        ); 
+    } else if (status === 'Disetujui') {  
+        // 1. Update status di Permintaan  
+        await db.query(  
+            "UPDATE Permintaan SET status_validitas = 'Disetujui', 
+admin_id = $1 WHERE permintaan_id = $2",  
+            [admin_id, id]  
+        ); 
+        // 2. Inisiasi State Machine di Laporan  
+        const tenggatWaktu = /* ... logika hitung 24 jam ... */;  
+        const { rows } = await db.query(  
+             `INSERT INTO Laporan (permintaan_id, 
+flag_menunggu_laporan, flag_laporan_ib, tenggat_waktu)  
+              VALUES ($1, true, true, $2) RETURNING laporan_id;`,  
+             [id, tenggatWaktu]  
+        ); 
+        // 3. Buat placeholder tugas di Laporan_IB  
+        await db.query(  
+            'INSERT INTO Laporan_IB (laporan_id, petugas_id) VALUES 
+($1, $2)',  
+            [rows[0].laporan_id, petugas_id]  
+        ); 
+    } 
+    // ... (response handling)  
+} catch (error) { /* ... error handling ... */ }  
+
+
+--- PAGE 70 ---
+58 
+ 
+ 
+Gambar 33  Potongan kode transisi status pada fungsi submitLaporanIB  
+Seperti terlihat pada Gambar 33, logika backend  kini secara terpusat 
+memperbarui state machine  di tabel Laporan. Blok if  (hasil_ib = 'Gagal') dalam 
+fungsi ini menangani unhappy path  dengan menjalankan query  UPDATE yang 
+berbeda pada tabel Laporan untuk menghentikan siklus (flag_menunggu_laporan = 
+false ) dan memperbarui hasil_akhir di tabel Permintaan. Pola logika serupa 
+diterapkan pada fungsi submit untuk laporan kebuntingan, kelahiran, dan 
+keguguran.  
+Fungsionalitas penting lainnya adalah pengaturan ulang  dateline laporan 
+setelah Petugas mengonfirmasi tugas. Logika ini diimplementasikan dalam fungsi 
+konfirmasiTugas di file src/controllers/tugasController.js, yang menangani request  
+PUT /api/tugas/:laporan_id/konfirmasi. Fungsi ini menjalankan query UPDATE 
+pada tabel Permintaan untuk mengubah status_permintaan menjadi indikasi bahwa 
+petugas sedang menuju lokasi (misalnya, 'Petugas Menuju Lokasi IB'). Secara 
+krusial, fungsi ini juga m enjalankan query UPDATE  kedua pada tabel Laporan // Di dalam fungsi submitLaporanIB  
+try { 
+    // Update detail laporan di Laporan_IB  
+    await db.query(  
+        'UPDATE Laporan_IB SET isi_laporan_ib = $1, kode_straw = $2, 
+waktu_proses_ib = NOW() WHERE laporan_id = $3 AND petugas_id = $4',  
+        [isi_laporan_ib, kode_straw, laporan_id, petugas_id]  
+    ); 
+ 
+    const { rows: laporanRows } = await db.query('SELECT permintaan_id 
+FROM Laporan WHERE laporan_id = $1', [laporan_id]);  
+    const permintaan_id = laporanRows[0].permintaan_id;  
+ 
+    // Update State Machine & Permintaan berdasarkan hasil_ib  
+    if (hasil_ib === 'Gagal') {  
+        // Hentikan proses  
+        await db.query("UPDATE Laporan SET flag_menunggu_laporan = 
+false, tenggat_waktu = NULL WHERE laporan_id = $1", [laporan_id]);  
+        await db.query("UPDATE Permintaan SET hasil_akhir = 'IB Gagal', 
+status_permintaan = 'Selesai - Gagal IB' WHERE permintaan_id = $1", 
+[permintaan_id]);  
+    } else if (hasil_ib === 'Berhasil') {  
+        // Lanjutkan ke fase berikutnya  
+        const ibTime = new Date();  
+        const tenggatWaktuKebuntingan = /* logika hitung 3 bulan  */;  
+        await db.query(  
+            `UPDATE Laporan SET flag_laporan_ib = false, 
+flag_laporan_kebuntingan = true, datetime_tugas_ib_awal = $1, 
+tenggat_waktu = $2 WHERE laporan_id = $3`,  
+            [ibTime, tenggatWaktuKebuntingan, laporan_id]  
+        ); 
+        await db.query("UPDATE Permintaan SET status_permintaan = 
+'Proses IB Berhasil, Menunggu Cek Kebuntingan' WHERE permintaan_id = 
+$1", [permintaan_id]);  
+    } 
+    // ... (response handling)  
+} catch (error) { /* ... error handling ... */ }  
+
+
+--- PAGE 71 ---
+59 
+untuk mengatur ulang tenggat_waktu menjadi 24 jam dari waktu konfirmasi, 
+memberikan batas waktu yang jelas bagi petugas untuk mengirimkan laporannya.  
+ 
+Gambar 34  Potongan kode reset  deadline pada fungsi konfirmasiTugas  
+Pembaruan tenggat_waktu pada tabel Laporan (Gambar 34) sangat penting 
+untuk mendukung fitur pemantauan laporan terlambat oleh admin dan memastikan 
+petugas memiliki target waktu yang jelas setelah menerima tugas. Penyajian 
+potongan kode kunci ini, beserta penjelasan singkat mengenai logikanya (termasuk 
+penanganan kondisi gagal secara ringkas), memberikan gambaran konkret 
+mengenai b agaimana state machine  terpusat dan alur kerja yang direvisi pada iterasi 
+kedua diimplementasikan dalam kode backend . 
+Selaras dengan perubahan signifikan pada backend  dan desain database , 
+antarmuka pengguna ( frontend ) juga mengalami penyesuaian pada iterasi kedua. 
+Penyesuaian ini bertujuan untuk mengintegrasikan frontend  dengan mekanisme 
+state machine  terpusat yang baru dan memastikan alur kerja pengguna (Admin dan 
+Petugas) berjalan sesuai dengan logika bisnis yang telah direvisi. Pengembangan 
+frontend  tetap menggunakan library  React dengan build tool  Vite. Struktur kode 
+frontend  diorganisir secara modular untuk memisahkan  concerns  dan 
+meningkatkan kemudahan pemeliharaan. Gambar 35 menunjukkan struktur 
+direktori utama di dalam folder ôsrcö. // Di dalam fungsi konfirmasiTugas  
+try { 
+    const laporanResult = await db.query('SELECT permintaan_id FROM 
+Laporan WHERE laporan_id = $1', [laporan_id]);  
+    // ... (validasi laporanResult) ...  
+    const permintaan_id = laporanResult.rows[0].permintaan_id;  
+    const statusPermintaanBaru = /* ... logika menentukan status baru 
+berdasarkan flag Laporan ... */;  
+ 
+    // Reset tenggat waktu laporan menjadi 24 jam  
+    const tenggatWaktu24Jam = new Date();  
+    tenggatWaktu24Jam.setHours(tenggatWaktu24Jam.getHours() + 24);  
+    await db.query('UPDATE Laporan SET tenggat_waktu = $1 WHERE 
+laporan_id = $2', [tenggatWaktu24Jam, laporan_id]);  
+         
+    // Update status permintaan  
+    await db.query("UPDATE Permintaan SET status_permintaan = $1 WHERE 
+permintaan_id = $2", [statusPermintaanBaru, permintaan_id]);  
+ 
+    // ... (response handling)  
+} catch (error) { /* ... error handling ... */ }  
+
+
+--- PAGE 72 ---
+60 
+ 
+ 
+Gambar 35  Struktur folder frontend  iterasi kedua  
+Struktur direktori pada sisi frontend  dirancang untuk memisahkan tanggung 
+jawab setiap komponen agar pengelolaan kode menjadi lebih terorganisasi, mudah 
+dipelihara, dan efisien dalam proses pengembangan. Setiap folder memiliki fungsi 
+spesifik yang mendukung modularitas dan keteraturan proyek React. Folder seperti 
+components/ dan pages/ digunakan untuk menampung komponen antarmuka 
+pengguna serta halaman utama aplikasi, sedangkan services/ dan utils/ berfungsi 
+menangani logika non -visual seperti pemanggilan A PI dan fungsi bantu. Selain itu, 
+direktori assets/ dan styles/ digunakan untuk penyimpanan aset statis serta 
+pengaturan tampilan visual agar konsisten di seluruh aplikasi. Secara keseluruhan, 
+struktur ini memastikan pemisahan yang jelas antara lapisan tamp ilan ( presentation 
+layer ) dan logika aplikasi ( application logic layer ), sehingga proses pengembangan 
+dan pemeliharaan sistem dapat dilakukan dengan lebih sistematis dan terukur.  
+Penjelasan lebih rinci mengenai fungsi utama dari setiap direktori dapat dili hat pada 
+Tabel 19. 
+Tabel 19  Struktur dan fungsi direktori  frontend  iterasi kedua  
+Folder/file  Keterangan  
+assets / Menyimpan file aset statis seperti gambar atau ikon.  
+components/  Berisi komponen UI yang dapat digunakan kembali ( reusable ) di 
+berbagai halaman, seperti Navbar.jsx, CountdownTimer.jsx, dan 
+komponen dalam folder modals/ untuk form laporan.  
+pages/  Berisi komponen utama untuk setiap halaman atau rute aplikasi, seperti 
+LoginPage.jsx, DashboardAdmin.jsx, DetailPermintaanAdmin.jsx, dan 
+sebagainya.  
+services/  Mengelola konfigurasi dan fungsi untuk melakukan pemanggilan API 
+ke backend . 
+api.js Menginisialisasi instance  Axios dengan baseURL backend  dan 
+interceptor  untuk menambahkan JWT token secara otomatis ke 
+header . 
+ 
+
+
+--- PAGE 73 ---
+61 
+ 
+Tabel 19  Struktur dan fungsi direktori  frontend iterasi kedua (lanjutan)  
+Folder/file  Keterangan  
+styles/  Berisi file CSS terpisah untuk styling  komponen atau halaman tertentu, 
+misalnya LoginPage.css, Dashboard.css, dan DetailPage.css  
+utils/  Berisi fungsi helper  utilitas yang dapat digunakan di seluruh aplikasi, 
+seperti statusHelper.js untuk memformat tampilan status.  
+App.jsx  Komponen akar aplikasi yang mengatur routing  (navigasi antar 
+halaman) menggunakan react -router -dom. 
+main.jsx  Titik masuk utama aplikasi React, tempat aplikasi di -render ke dalam 
+DOM HTML.  
+Penyesuaian utama pada frontend  iterasi kedua  terletak pada cara komponen 
+berinteraksi dengan backend  untuk mengambil, menampilkan, dan memperbarui 
+status proses sesuai dengan logika state machine  terpusat. Komponen dashboard , 
+yaitu DashboardAdmin.jsx dan DashboardPetugas.jsx, kini dimodifikasi untuk 
+memanggil endpoint  GET /api/permintaan atau GET /api/tugas yang telah 
+diperbarui. Data yang diterima dari backend , yang kini mencakup atribut flags  dari 
+tabel Laporan dan status_permintaan dari tabel Permintaan, diolah menggunakan 
+fungsi helper  getStatusDisplay untuk memastikan status yang ditampilkan di dalam  
+tabel selalu konsisten dan informatif. Logika filter dan pencarian pada dashboard  
+admin juga disesuaikan agar dapat memproses teks status yang baru ini, 
+memungkinkan pengguna menyaring data berdasarkan kondisi proses yang spesifik. 
+Interaksi ini terlihat jelas pada tampilan kartu notifikasi (Gambar 36), di mana data 
+agregat dari backend  (misalnya, jumlah permintaan baru atau laporan terlambat) 
+disajikan, serta pada tabel utama yang menampilkan status setiap permintaan.  
+ 
+Gambar 36  Card notifikasi pada  frontend  dashboardAdmin iterasi kedua  
+Selanjutnya, komponen halaman detail, yaitu DetailPermintaanAdmin.jsx, 
+kini memanggil endpoint  detail komprehensif (GET /api/permintaan/:id) untuk 
+mendapatkan seluruh data terkait satu siklus permintaan. Data atribut flags  dari 
+record  Laporan yang diterima menjadi sumber utama untuk logika rendering 
+kondisional di halaman ini. Timeline  visual (Gambar 37) secara dinamis 
+memperbarui status setiap tahapannya (aktif, selesai, gagal) berdasarkan kombinasi 
+flags  dan hasil_akhir. Tombol aksi, seperti "Setujui & Tu gaskan Petugas", 
+"Konfirmasi Tugas", atau "Isi Laporan" , juga ditampilkan atau disembunyikan 
+secara dinamis. Kemunculan tombol -tombol ini diatur berdasarkan flags  yang 
+
+
+--- PAGE 74 ---
+62 
+ 
+sedang aktif ( true) dan status_permintaan saat ini, memastikan pengguna hanya 
+dapat melakukan aksi yang relevan dengan tahapan proses yang sedang berjalan.  
+ 
+Gambar 37  Timeline  dinamis dan button action  admin pada  frontend  detail  
+permintaanAdmin iterasi kedua  
+Terakhir, komponen modal  laporan yang terpisah (seperti 
+ModalLaporanIB.jsx, ModalLaporanKebuntingan.jsx, dll.) dirancang untuk 
+menangani input pengguna saat melaporkan hasil. Setiap modal ini dikonfigurasi 
+untuk memanggil endpoint  POST backend  yang spesifik untuk jenis laporannya 
+masing -masing (misalnya, POST /api/laporan/ib/:laporan_id). Data yang dikirim 
+dari modal , seperti hasil_ib ('Berhasil' ) atau hasil_pemeriksaan ('Bunting' ), 
+berfungsi sebagai pemicu bagi backend  untuk menjalankan logika transisi sta tus, 
+yaitu memperbarui flags  dan tenggat_waktu pada record  Laporan yang sesuai. 
+Tampilan modal interaktif untuk pengisian laporan seperti pada Gambar  38 
+merupakan contoh implementasi komponen ini, yang muncul ketika tombol laporan 
+yang relevan ditekan oleh petugas.  
+ 
+Gambar 38  Modal pada  frontend  detail  tugas  Petugas iterasi kedu a 
+
+
+--- PAGE 75 ---
+63 
+4.2.4 Pengujian dan Umpan Balik  
+Tahap selanjutnya dalam siklus iterasi kedua adalah pengujian dan umpan 
+balik. Pada fase ini, backend  yang telah disesuaikan dengan mekanisme state 
+machine  terpusat dan frontend  yang telah diintegrasikan untuk merefleksikan 
+logika baru dijalankan bersama dalam lingkungan pengembangan lokal. Tujuan 
+utama tahap ini adalah untuk memvalidasi secara fungsional bahwa perubahan 
+desain dan implementasi pada iterasi kedua telah berhasil m engatasi kekurangan 
+prototipe awal serta memenuhi alur kerja yang telah direvis i. Selain itu, tahap ini 
+juga menjadi momen penting untuk menilai stabilitas sistem, mengidentifikasi 
+potensi bug, dan memastikan bahwa seluruh komponen sistem  baik dari sisi 
+logika, antarmuka, maupun alur data  yang berjalan secara konsisten . 
+Untuk memvalidasi fungsionalitas sistem secara menyeluruh dari 
+perspektif pengguna akhir, dilakukan pengujian End-to-End (E2E). Pengujian 
+ini menerapkan metode black box testing , di mana fokus evaluasi adalah pada 
+kesesuaian input dan output sistem berdasarkan spesifikasi fungsional, tanpa 
+perlu memeriksa detail kode internal. Pengujian dilakukan dengan 
+mensimulasikan interaksi nyata pengguna (Admin dan Petugas) melalui 
+antarmuka  frontend  yang berjalan di browser , serta menggunakan Postman 
+untuk mensimulasi kan aksi dari aktor Peternak. Setiap aksi yang dilakukan di 
+frontend  atau Postman diverifikasi dampaknya pada backend  dan database , 
+memastikan bahwa seluruh komponen sistem  frontend , REST API backend , dan  
+database PostgreSQL  berinteraksi dengan benar.  
+Skenario pengujian disusun untuk mencakup keseluruhan alur proses 
+bisnis yang telah didefinisikan pada iterasi kedua . Pengujian meliputi skenario 
+alur positif  (happy path ), yang memvalidasi alur kerja ideal dari pengajuan 
+permintaan hingga penyelesaian berhasil (misalnya, kelahiran normal). Selain 
+itu, pengujian juga mencakup berbagai skenario alur negatif  (unhappy path ) 
+untuk memastikan sistem dapat menangani kondisi alternatif atau kegagalan 
+dengan benar, seperti penolakan permintaan oleh admin, pelaporan  kegagalan 
+proses IB oleh petugas, hasil cek kebuntingan negatif, dan interupsi karena 
+laporan keguguran.  Setiap skenario diuji dengan mengikuti langkah -langkah 
+spesifik, memverifikasi respons visual dan perubahan status pada antarmuka 
+frontend , serta mencatat bukti konkret perubahan data pada tabel -tabel relevan 
+di database  (seperti tabel Permintaan dan Laporan) menggunakan DBeaver. 
+Rincian langkah pengujian, penjelasan logika backend yang relevan untuk setiap 
+endpoint  API yang dipanggil, serta bukti visua l berupa tangkapan layar 
+perubahan data  pada  database  untuk setiap skenario yang didokumentasikan 
+secara lengkap pada Tabel 20 untuk pengujian positif dan Tabel 21 untuk 
+pengujian negatif . Hasil dokumentasi pengujian secara visual juga dapat dilihat 
+pada Lampiran 9 (Pengujian Positif) dan Lampiran 10 (Pengujian Negatif).  
+ 
+ 
+ 
+ 
+
+
+--- PAGE 76 ---
+64 
+ 
+Tabel 20  Skenario pengujian positif alur kerja normal iterasi kedua  
+Skenario  Aksi Pemicu  API Endpoint  Verifikasi Perubahan Data  
+Peternak 
+Mengajukan 
+Permintaan  Pengujian via 
+Postman.  POST  /api/permintaan  Baris baru ditambahkan di tabel 
+Permintaan (contoh: 
+permintaan_id 14) dengan 
+status_validitas = 'Menunggu'  
+Admin Menyetujui 
+dan Menugaskan 
+Proses IB Admin menekan  
+tombol "Setujui 
+& Tugaskan 
+Petugas" pada 
+halaman Detail 
+Permintaan . PUT 
+/api/permintaan/:id/valida
+si status_validitas menjadi 
+'Disetujui'. Baris baru (contoh: 
+laporan_id 11) dibuat, 
+flag_menunggu_laporan = 
+true(1), flag_laporan_ib = 
+true(1). Baris placeholder 
+(contoh: laporan_id 11) dibuat 
+dengan  petugas _id. 
+Petugas 
+Melaporkan IB 
+Berhasil  Petugas 
+menekan  tombol  
+"Konfirmasi 
+Tugas", lalu 
+mengisi dan 
+mengirim form 
+Laporan IB pada  
+halaman detail 
+tugas.  PUT 
+/api/tugas/:laporan_id/kon
+firmasi  
+ 
+POST 
+/api/laporan/ib/:laporan_i
+d status_permintaan = 'Proses IB 
+Berhasil, Menunggu Cek 
+Kebuntingan'. Untuk laporan_id 
+11, flag_laporan_ib = false, 
+flag_laporan_kebuntingan = 
+true, tenggat_waktu diperbarui 
+(+3 bulan).  Detail 
+(isi_laporan_ib, kode_straw, 
+waktu_proses_ib) terisi.  
+Petugas 
+Melaporkan Hasil 
+Buntin g Setelah 
+ditugaskan 
+Admin, Petugas 
+mengirim 
+laporan 
+"Bunting" di 
+Detail Tugas . POST 
+/api/laporan/kebuntingan/:
+laporan_i  Laporan_Kebuntingan 
+(isi_laporan_kebuntingan, 
+waktu_kebuntingan) terisi 
+(contoh: laporan_id 11). Untuk 
+laporan_id 11, 
+flag_menunggu_laporan = 
+true(1), 
+flag_laporan_kebuntingan = 
+false, flag_laporan_kelahiran = 
+true(1), tenggat_waktu 
+diperbarui (+7 Bulan da ri IB 
+awal)  
+Petugas 
+Melaporkan 
+Kelahiran Sukses  Setelah 
+ditugaskan 
+Admin, Petugas 
+mengirim 
+laporan "Lahir 
+Hidup Normal" 
+di Detail Tugas 
+FE. POST 
+/api/laporan/kelahiran/:lap
+oran_id  Laporan_Kelahiran 
+(isi_laporan_kelahiran, 
+kondisi_anak_sapi, dll.) terisi 
+(contoh: laporan_id 11). 
+Laporan: Untuk laporan_id 11, 
+semua flag menjadi false(0), 
+tenggat_waktu = NULL . 
+Permintaan: hasil_akhir terisi, 
+status_permintaan -> 'Selesai'.  
+ 
+
+
+--- PAGE 77 ---
+65 
+Tabel 21  Skenario pengujian negatif alur kerja alternatif iterasi kedua  
+Skenario  Aksi Pemicu  API Endpoint  Verifikasi Perubahan Data  
+Admin Menolak 
+Permintaan  Admin menekan 
+"Tolak 
+Permintaan" di 
+Detail 
+Permintaan FE.  PUT 
+/api/permintaan/:id/valida
+si Permintaan: status_validitas 
+menjadi 'Ditolak' (contoh: 
+permintaan_id 10) . 
+Pelaksanaan IB 
+Gagal  Petugas 
+mengirim 
+Laporan IB 
+dengan hasil 
+"Gagal".  POST 
+/api/laporan/ib/:laporan_i
+d Laporan: 
+flag_menunggu_laporan 
+menjadi false(0) (contoh: 
+laporan_id 3). Permintaan: 
+hasil_akhir menjadi 'IB Gagal'.  
+Hasil Cek Tidak 
+Bunting  Petugas 
+mengirim 
+Laporan 
+Kebuntingan 
+dengan hasil 
+"Tidak Bunting".  POST 
+/api/laporan/kebuntingan/:
+laporan_id  Laporan: 
+flag_menunggu_laporan 
+menjadi false(0) (contoh: 
+laporan_id 9). Permintaan: 
+hasil_akhir menjadi 'Tidak 
+Bunting'.  
+Interupsi 
+Keguguran  Setelah 
+ditugaskan 
+Admin, Petugas 
+mengirim 
+Laporan 
+Keguguran.  POST 
+/api/laporan/keguguran/:la
+poran_id  Laporan: 
+flag_menunggu_laporan 
+menjadi false(0) (contoh: 
+laporan_id 10). Permintaan: 
+hasil_akhir menjadi 
+'Keguguran'.  
+Penanganan 
+keterlambatan 
+permintaan  Terdapat 
+permintan yang 
+melewati tenggat 
+waktu contoh 
+seperti peternak 
+yang terlambat 
+mengimkan 
+pemberitahuan 
+kebuntingan atau 
+kelahiran  GET 
+/api/notifications/counts  
+Login/Refresh Dashboard 
+Admin.  
+ 
+ Backend  mendeteksi 
+tenggat_waktu < NOW(), 
+membuat placeholder di 
+Laporan_Kebuntingan  (setelah 
+admin menugaskan kembali) , 
+memperbarui  
+status_permintaan, dan reset 
+tenggat_waktu menjadi +24 
+jam. 
+Hasil pengujian end-to-end menunjukkan bahwa seluruh skenario yang diuji, 
+baik skenario positif  maupun negatif , berjalan sesuai dengan rancangan alur proses 
+bisnis iterasi kedua . Perubahan status pada state machine  terpusat (tabel Laporan) 
+dan pencatatan hasil akhir di tabel Permintaan terbukti konsisten dengan aksi yang 
+dilakukan pengguna melalui API. Keberhasilan pengujian fungsional ini 
+memvalidasi efektivitas desain state machine  terpusat yang diimplementasikan 
+pada iterasi kedua dan mengonfirmasi bahwa prototipe  hasil iterasi i ni telah 
+memenuhi tujuan penyempurnaan yang ditetapkan pada awal iterasi, yaitu 
+menciptakan sistem yang lebih solid, efisien, dan akurat dalam melacak status 
+permintaan IB.  
+ 
+ 
+ 
+
+
+--- PAGE 78 ---
+ 
+V SIMPULAN  DAN SARAN  
+5.1 Simpulan  
+Pengembangan sistem informasi permintaan Inseminasi Buatan (IB) berbasis 
+web ini telah berhasil merancang dan mengimplementasikan modul administrasi 
+yang secara fungsional menjawab permasalahan sistemik pada sistem manual. 
+Sistem yang dibangun secara spesi fik mengatasi keterlambatan layanan melalui 
+fitur notifikasi dan pengingat otomatis berbasis dateline dinamis. Risiko kesalahan 
+data dan inkonsistensi status selama siklus reproduksi ternak berhasil dimitigasi 
+melalui implementasi mekanisme state machine  terpusat yang memvalidasi setiap 
+transisi tahapan (IB, kebuntingan, kelahiran). Selain itu, koordinasi stakeholder  
+diperkuat dengan penyediaan dashboard  transparan yang menyajikan status terkini 
+secara langsung . Dengan demikian, sistem ini tidak hanya mengotomatisasi alur 
+kerja, tetapi juga menjamin integritas data operasional harian yang belum 
+terakomodasi.  Validasi melalui pengujian black  box mengonfirmasi bahwa setiap 
+fitur telah berjalan sesuai skenario yang dirancang untuk mengatasi tantangan -
+tantangan yang ada . 
+5.2 Saran  
+Berdasarkan hasil pengembangan dan keterbatasan yang teridentifikasi 
+selama penelitian, beberapa saran strategis untuk pengembangan sistem di masa 
+depan adalah sebagai berikut : 
+a Validasi alur kerja peternak melalui User Acceptance Test  (UAT). Mengingat 
+penelitian ini menggunakan simulasi untuk interaksi peternak dan pengujian 
+lingkungan terkontrol, diperlukan pelaksanaan UAT yang melibatkan peternak 
+dan petugas inseminator secara langsung di lokasi peternakan. Hal ini penting 
+untuk memvalidasi kehandalan sistem dalam kondisi jaringan yang bervariasi 
+dan memastikan antarmuka pengguna benar -benar memudahkan operasional di 
+lapangan . 
+b Integrasi strategis dengan ekosistem data nasional. Sebagai tujuan jangka 
+panjang, penjajakan integrasi teknis melalui Application Programming 
+Interface  (API) dengan iSIKHNAS sangat direkomendasikan. Integrasi ini akan 
+memungkinkan sinkronisasi data operasional harian yang dikumpulkan oleh 
+sistem ini dengan basis data kesehatan hewan nasional, menciptakan ekosistem 
+data peternakan yang lebih komprehensif dan mengurangi redundansi pelaporan 
+bagi dinas terkait.  
+c Pengembangan modul analitik dan pelaporan. Setelah alur kerja inti tervalidasi 
+oleh seluruh pengguna, sistem dapat diperkaya dengan modul analitik. Modul 
+ini dapat menyajikan data agregat kepada Admin dalam bentuk visualisasi, 
+seperti tingkat keberhasilan IB per wilayah, rata -rata waktu r espons petugas, 
+dan tren permintaan musiman. Fitur ini akan mentransformasi sistem dari alat 
+operasional menjadi alat pendukung keputusan strategis . 
+ 
+
+

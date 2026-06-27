@@ -1,57 +1,65 @@
 package com.example.ternakapp.data.retrofit
 
-import com.example.ternakapp.data.response.*
-import retrofit2.Call
-import retrofit2.http.*
+import com.example.ternakapp.data.response.ApiResponse
+
+import com.example.ternakapp.data.response.LoginRequest
+import com.example.ternakapp.data.response.RegisterPeternakRequest
+import com.example.ternakapp.data.response.UserData
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface ApiService {
     @POST("api/v1/auth/login")
-    fun loginUser(
-        @Body loginResponse: LoginDataClass
-    ): Call<LoginResponse>
+    suspend fun login(
+        @Body request: LoginRequest
+    ): ApiResponse<UserData>
 
-    @POST("api/v1/auth/register")
-    fun registerUser(
-        @Body registerResponse: RegisterDataClass
-    ): Call<RegisterResponse>
+    @POST("api/v1/auth/register/peternak")
+    suspend fun registerPeternak(
+        @Body request: RegisterPeternakRequest
+    ): ApiResponse<UserData>
 
-    @POST("api/v1/post")
-    fun addPost(
-        @Header("Authorization") token: String,
-        @Body postResponse: PostDataClass
-    ): Call<PostResponse>
+    @GET("api/v1/auth/me")
+    suspend fun getMe(): ApiResponse<UserData>
 
-    @GET("api/v1/post/myposts")
-    fun getAllPostsByUserId(
-        @Header("Authorization") token: String
-    ): Call<ListPostItem>
+    @GET("api/v1/sapi/mine")
+    suspend fun getMySapi(): com.example.ternakapp.data.response.ListSapiResponse
 
-    @GET("api/v1/post/")
-    fun getAllPosts(
-        @Header("Authorization") token: String
-    ): Call<ListPostLoc>
+    @GET("api/v1/sapi/{id}")
+    suspend fun getSapiById(@retrofit2.http.Path("id") id: Int): com.example.ternakapp.data.response.SapiResponse
 
-    @GET("api/v1/post/{id}")
-    fun getPostById(
-        @Header("Authorization") token: String,
-        @Path("id") id: String
-    ): Call<PostResponse>
+    @POST("api/v1/sapi")
+    suspend fun registerSapi(
+        @Body request: com.example.ternakapp.data.response.RegistrasiSapiRequest
+    ): com.example.ternakapp.data.response.SapiResponse
 
-    @PUT("api/v1/post/{id}")
-    fun updatePost(
-        @Header("Authorization") token: String,
-        @Path("id") id: String,
-        @Body postResponse: UpdatePostDataClass,
-    ): Call<PostResponse>
+    // Permintaan & Laporan Endpoints
+    @GET("api/v1/permintaan/mine")
+    suspend fun getMyPermintaan(): com.example.ternakapp.data.response.ListPermintaanResponse
 
-    @DELETE("api/v1/post/{id}")
-    fun deletePost(
-        @Header("Authorization") token: String,
-        @Path("id") id: String
-    ): Call<DeleteResponse>
+    @POST("api/v1/permintaan")
+    suspend fun createPermintaan(
+        @Body request: com.example.ternakapp.data.response.PermintaanRequest
+    ): com.example.ternakapp.data.response.PermintaanResponse
 
-    @GET("api/v1/users/profile")
-    fun getUserProfile(
-        @Header("Authorization") token: String
-    ): Call<UserResponse>
+    @GET("api/v1/laporan/permintaan/{id_permintaan}")
+    suspend fun getLaporanTimeline(
+        @retrofit2.http.Path("id_permintaan") id: Int
+    ): com.example.ternakapp.data.response.ListLaporanResponse
+
+    @POST("api/v1/laporan/ib")
+    suspend fun createLaporanIB(
+        @Body request: com.example.ternakapp.data.response.LaporanIBRequest
+    ): com.example.ternakapp.data.response.LaporanResponse
+
+    @POST("api/v1/laporan/kebuntingan")
+    suspend fun createLaporanKebuntingan(
+        @Body request: com.example.ternakapp.data.response.LaporanKebuntinganRequest
+    ): com.example.ternakapp.data.response.LaporanResponse
+
+    @POST("api/v1/laporan/kelahiran")
+    suspend fun createLaporanKelahiran(
+        @Body request: com.example.ternakapp.data.response.LaporanKelahiranRequest
+    ): com.example.ternakapp.data.response.LaporanResponse
 }

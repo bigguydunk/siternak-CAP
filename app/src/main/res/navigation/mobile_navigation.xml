@@ -12,9 +12,9 @@
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/navigation_post"
-        tools:layout="@layout/fragment_post"
-        android:name="com.example.ternakapp.ui.post.PostFragment"
-        android:label="PostFragment" />
+        tools:layout="@layout/fragment_laporan"
+        android:name="com.example.ternakapp.ui.laporan.LaporanFragment"
+        android:label="LaporanFragment" />
     <fragment
         android:id="@+id/navigation_profile"
         tools:layout="@layout/fragment_profile"

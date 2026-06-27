@@ -1,17 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TernakApp.Light" parent="Theme.MaterialComponents.Light">
+    <style name="Theme.TernakApp.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#CF0000</item>
-        <item name="colorPrimaryVariant">#FFB4B4</item>
+        <item name="colorPrimary">@color/primary_red</item>
+        <item name="colorPrimaryVariant">@color/dark_red</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#CF0000</item>
-        <item name="colorSecondaryVariant">#F7F6F1</item>
+        <item name="colorSecondary">@color/primary_red</item>
+        <item name="colorSecondaryVariant">@color/dark_red</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#FFFFFF</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/nunito</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
     </style>
 </resources>

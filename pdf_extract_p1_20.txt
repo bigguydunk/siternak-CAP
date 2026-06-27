@@ -1,0 +1,670 @@
+﻿python : incorrect startxref pointer(1)
+At line:1 char:1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (incorrect startxref pointer(1):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Total pages: 80
+--- PAGE 1 ---
+  
+PENGEMBANGAN SISTEM INFORMASI PERMINTAAN 
+INSEMINASI BUATAN  (IB) BERBASIS WEB GUNA 
+MENDUKUNG KOORDINASI STAKEHOLDER  
+MUHAMMAD KHALIL ADHA  
+PROGRAM SARJANA  ILMU KOMPUTER  
+SEKOLAH SAINS DATA, MATEMATIKA, DAN INFORMATIKA  
+INSTITUT PERTANIAN BOGOR  
+BOGOR  
+2025 
+
+
+--- PAGE 2 ---
+PERNYATAAN MENGENAI SKRIPSI  DAN  
+SUMBER INFORMASI SERTA PELIMPAHAN HAK CIPTA  
+ 
+Dengan ini saya menyatakan bahwa skripsi  dengan judul ô Pengembangan 
+Sistem Informasi Permintaan Inseminasi Buatan (I B) Berbasis Web Guna 
+Mendukung Koordinasi Stakeholder ö adalah karya saya dengan arahan dari dosen 
+pembimbing dan belum diajukan dalam bentuk apa pun kepada perguruan tinggi 
+mana pun. Sumber informasi yang berasal atau dikutip dari karya yang diterbitkan 
+maupun tidak diterbitkan dari penulis lain telah disebu tkan dalam teks dan 
+dicantumkan dalam Daftar Pustaka di bagian akhir skripsi  ini. 
+Dengan ini saya melimpahkan hak cipta dari karya tulis saya kepada Institut 
+Pertanian Bogor.  
+ 
+Bogor, November  2025  
+ 
+Muhammad Khalil Adha  
+G6401211060  
+  
+
+
+--- PAGE 3 ---
+ 
+ABSTRAK  
+MUHAMMAD KHALIL ADHA. Pengembangan Sistem Informasi 
+Permintaan Inseminasi Buatan (I B) Berbasis Web Guna Mendukung Koordinasi 
+Stakeholder . Dibimbing oleh LAILAN SAHRINA HASIBUAN.  
+ 
+Inseminasi Buatan (IB) merupakan salah satu teknologi reproduksi yang 
+berperan dalam upaya meningkatkan produktivitas peternakan di Indonesia. 
+Namun, efektivitasnya sering terhambat oleh administrasi permintaan yang masih 
+manual, sehingga menimbulkan keterlambatan, kesalahan data, dan lemahnya 
+koordinasi antara stakeholder  layanan utama, yaitu admin dinas sebagai pengelola 
+dan petugas inseminator di lapangan . Penelitian ini bertujuan mengembangkan 
+sistem informasi berbasis web untuk mengotomatisasi seluruh proses administrasi 
+permintaan IB, mulai dari pengajuan, pendataan hasil, hingga pencatatan status 
+keberhasilan. Sistem dikembangkan secara fullstack  dengan metode prototyping  
+yang memungkinkan penyempurnaan berulang berdasarkan masukan pengguna. 
+Fungsionalitas sistem diuji menggunakan metode black  box testing  untuk 
+memastikan kesesuaian dengan kebutuhan. Hasil pengembangan  ini diharapkan 
+dapat mengurangi keterlambatan layanan, meningkatkan akurasi data, serta 
+mendukung pengambilan keputusan yang lebih cepa t dan terintegrasi.  
+ 
+Kata kunci:  Administrasi terintegrasi, Inseminasi Buatan (IB), koordinasi 
+peternakan, sistem informasi berbasis web . 
+ 
+ABSTRACT  
+MUHAMMAD KHALIL ADHA. Development of a Web -Based Information 
+System for Artificial Insemination (AI) Requests to Support Stakeholder  
+Coordination . Supervised by LAILAN SAHRINA HASIBUAN.  
+ 
+Artificial Insemination (AI) is a reproductive technology that plays a role in 
+efforts to increase livestock productivity in Indonesia. However, its effectiveness is 
+often hampered by manual request administration, which causes delays, data errors, 
+and wea k coordination between key service stakeholders: the agency admin as the 
+manager and the inseminator officer in the field. This research aims to develop a 
+web-based information system to automate the entire AI request administration 
+process, from submissio n and result recording to success status tracking. The 
+system was developed full  stack using the prototyping method, which allows for 
+iterative refinement based on user feedback. The system's functionality was tested 
+using the black  box testing method to ensure it meets the requirements. The results 
+of this development are expected to reduce service delays, improve data accuracy, 
+and support faster, more integrated decision making . 
+ 
+Keywords : Integrated administration,  Artificial Insemination (AI), livestock 
+coordination , web-based information system .  
+
+
+--- PAGE 4 ---
+ 
+  
+⌐ Hak Cipta milik IPB, tahun 2025  
+Hak Cipta dilindungi Undang -Undang  
+ 
+Dilarang mengutip sebagian atau seluruh karya tulis ini tanpa 
+mencantumkan atau menyebutkan sumbernya. Pengutipan hanya untuk 
+kepentingan pendidikan, penelitian, penulisan karya ilmiah, penyusunan laporan, 
+penulisan kritik, atau tinjauan suatu masalah, dan  pengutipan tersebut tidak 
+merugikan kepentingan IPB.  
+  
+Dilarang mengumumkan dan memperbanyak sebagian atau seluruh karya 
+tulis ini dalam bentuk apa pun tanpa izin IPB.  
+
+
+--- PAGE 5 ---
+ 
+ 
+  
+Skripsi  
+sebagai salah satu syarat untuk memperoleh gelar  
+Sarjana  pada  
+Program Studi Ilmu Komputer  PENGEMBANGAN SISTEM INFORMASI PERMINTAAN 
+INSEMINASI BUATAN (IB) BERBASIS WEB GUNA 
+MENDUKUNG KOORDINASI STAKEHOLDER  
+MUHAMMA D KHALIL ADHA  
+PROGRAM SARJANA  ILMU KOMPUTER  
+SEKOLAH SAINS DATA, MATEMATIKA, DAN INFORMATIKA  
+INSTITUT PERTANIAN BOGOR  
+BOGOR  
+2025 
+
+
+--- PAGE 6 ---
+ 
+  
+Tim Penguji pada Ujian Skripsi:  
+1  Firman Ardiansyah, S.Kom., M.Si.  
+2  Hafidlotul Fatimah Ahmad S.Kom., M.Kom.  
+
+
+--- PAGE 7 ---
+ 
+Judul  Skripsi  : Pengembangan Sistem Informasi Permintaan Inseminasi Buatan 
+(IB) Berbasis Web Guna Mendukung Koordinasi Stakeholder  
+Nama  : Muhammad Khalil Adha  
+NIM  : G6401211060  
+ 
+ 
+ 
+ 
+ 
+ 
+Disetujui oleh  
+Pembimbing:  
+Lailan Sahrina Hasibuan, S.Kom., M.Kom  __________________  
+ 
+ 
+ 
+ 
+ 
+ 
+Diketahui oleh  
+ 
+Ketua Program Sarjana Ilmu Komputer:  
+Dr. Sony Hartono Wijaya, S.Kom., M.Kom.  
+NIP 19810809 200812 1002  __________________  
+ 
+  
+Tanggal Ujian:  
+11 Agustus 2025       Tanggal Lulus:  
+ 
+ 
+
+
+--- PAGE 8 ---
+ 
+PRAKATA  
+ 
+Puji dan syukur penulis panjatkan kepada Allah subhanaahu wa taÆala  atas 
+segala karunia -Nya sehingga karya ilmiah ini berhasil diselesaikan. Tema yang 
+dipilih dalam penelitian yang dilaksanakan sejak bulan Januari  2025 sampai bulan 
+Agustus  2025 ini ialah transformasi digital di sektor peternakan , dengan judul 
+ôPengembangan Sistem Informasi Permintaan Inseminasi Buatan (I B) Berbasis 
+Web Guna Mendukung Koordinasi Stakeholder ö. 
+Penelitian ini dapat diselesaikan dengan baik tentunya dengan bantuan dari 
+banyak pihak. Maka dari itu penulis mengucapkan terima kasih yang sebesar -
+besarnya kepada:  
+a Ayah, Ibu, dan kedua kakak penulis yang telah memberikan dukungan, cinta, 
+doa dan kasih sayang kepada penulis selama perkuliahan hingga proses 
+penelitian dan penyusunan,   
+b Ibu Lailan Sahrina Hasibuan, S.Kom., M.Kom. selaku dosen pembimbing 
+skripsi yang senantiasa memberikan bimbingan, arahan, dan mendorong penulis 
+agar dapat segera menyelesaikan penelitian,  
+c Bapak Firman Ardiansyah, S.Kom., M.Si. dan Ibu  Hafidlotul Fatimah Ahmad 
+S.Kom., M.Kom.  selaku dosen penguji yang telah memberikan saran dan 
+masukan sehingga penelitian menjadi lebih baik,  
+d Bapak Drh. Lilik Prayitno, M.Si. dan segenap pihak di FADAGI FARM atas 
+kesediaannya menjadi narasumber dan memberikan wawasan praktis yang 
+sangat berharga bagi penelitian ini , 
+e Rekan -rekan mahasiswa dari Himpunan Mahasiswa Ilmu Komputer, UKM 
+AgriUX, BPH AgriUX, dan Perdesi Academy yang telah menjadi teman diskusi 
+dan memberikan semangat selama masa perkuliahan.  
+Semoga karya ilmiah ini bermanfaat bagi pihak yang membutuhkan dan bagi 
+kemajuan ilmu pengetahuan.  
+ 
+ 
+Bogor, November  2025  
+ 
+Muhammad Khalil Adha  
+ 
+  
+
+
+--- PAGE 9 ---
+ 
+DAFTAR ISI  
+DAFTAR TABEL  8 
+DAFTAR GAMBAR  8 
+DAFTAR LAMPIRAN  9 
+I PENDAHULUAN  1 
+1.1 Latar Belakang  1 
+1.2 Rumusan Masalah  2 
+1.3 Tujuan  3 
+1.4 Manfaat  3 
+1.5 Ruang Lingkup  3 
+II TINJAUAN PUSTAKA  4 
+2.1 Inseminasi Buatan (IB)  4 
+2.2 Sistem Informasi Manajemen untuk Koordinasi Operasional  4 
+2.3 Metode Pengembangan Prototyping  5 
+2.4 Pengembangan Full Stack  5 
+2.5 REST API  5 
+III METODE  6 
+3.1 Tahapan Penelitian  6 
+3.2 Lingkungan Pengembangan  8 
+IV HASIL DAN PEMBAHASAN  9 
+4.1 Iterasi 1  9 
+4.2 Iterasi 2  31 
+V SIMPULAN DAN SARAN  66 
+5.1 Simpulan  66 
+5.2 Saran  66 
+DAFTAR PUSTAKA  67 
+LAMPIRAN  69 
+RIWAYAT HIDUP  84 
+  
+
+
+--- PAGE 10 ---
+ 
+DAFTAR TABEL  
+1 Daftar user story  iterasi pertama  10 
+2 Use case description verifikasi dan penugasan Petugas iterasi pertama  12 
+3 Use case description  mulai dan laporan proses IB awal iterasi pertama  12 
+4 Acuan penggunaan metode dalam perancangan API  23 
+5 Daftar endpoint  utama untuk Admin dan Petugas iterasi pertama  24 
+6 Daftar endpoint  aktor Peternak (Simulasi Postman) iterasi pertama  25 
+7 Skenario pengujian positif alur kerja normal iterasi pertama  28 
+8 Skenario pengujian negatif alur kerja alternatif iterasi pertama  29 
+9 Daftar fitur dan user story  iterasi kedua  34 
+10 Use case description  validasi permintaan dan inisiasi state machine  36 
+11 Use case description  pantau laporan terlambat  36 
+12 Use case description  tugaskan petugas untuk tugas lanjutan  37 
+13 Use case description  konfirmasi tugas  37 
+14 Use case description  laporkan hasil IB  38 
+15 Use case description  laporkan hasil cek kebuntingan  38 
+16 Use case description  laporkan hasil kelahiran atau keguguran  39 
+17 Struktur dan fungsi direktori backend  Iterasi kedua  54 
+18 Daftar endpoint  API utama iterasi kedua  55 
+19 Struktur dan fungsi direktori  frontend  Iterasi kedua  60 
+20 Skenario pengujian positif alur kerja normal iterasi kedua  64 
+21 Skenario pengujian negatif alur kerja alternatif iterasi kedua  65 
+ 
+ 
+ 
+DAFTAR GAMBAR  
+1 Tahapan prototyping  berdasarkan adaptasi Pressman & Maxim (2020)  6 
+2 Dokumentasi wawancara dengan narasumber di Fadagi Farm  9 
+3 Alur proses bisnis berdasarkan wawancara dengan dosen pembimbing 
+dan narasumber iterasi pertama  9 
+4 Use case  diagram  permintaan IB iterasi pertama  11 
+5 Activity diagram  periode 1 (0 -3 Bulan) iterasi pertama  13 
+6 Activity diagram  periode 2 (3 -9 Bulan) iterasi pertama  15 
+7 Activity diagram  periode 3 (9 -10 Bulan) iterasi pertama  17 
+8 Class diagram iterasi pertama  20 
+9 Tampilan hi-fi dashboard admin  iterasi pertama  21 
+10 Tampilan hi-fi detail permintaan iterasi pertama  21 
+11 Tampilan hi-fi dashboard  petugas iterasi pertama  22 
+12 Desain arsitektur aplikasi  23 
+13 Tampilan antarmuka dashboard  admin iterasi pertama  26 
+14 Tampilan antarmuka detail permintaan sisi admin iterasi pertama  26 
+15 Tampilan antarmuka dashboard  petugas iterasi pertama  27 
+16 Tampilan antarmuka detail permintaan sisi petugas iterasi pertama  27 
+17 Alur proses bisnis iterasi kedua  32 
+
+
+--- PAGE 11 ---
+ 
+18 Use case  diagram  iterasi kedua  35 
+19 Activity diagram  fase pertama iterasi kedua  40 
+20 Activity diagram  fase kedua iterasi kedua  42 
+21 Activity diagram  fase ketiga iterasi kedua  43 
+22 Activity  diagram  fase ketiga iterasi kedua  45 
+23 Class diagram  iterasi kedua  46 
+24 Tampilan dashboard  admin iterasi kedua  48 
+25 Tampilan detail permintaan iterasi kedua  48 
+26 Tampilan modal detail permintaan iterasi kedua  49 
+27 Tampilan dashboard  petugas iterasi kedua  50 
+28 Tampilan detail tugas petugas iterasi kedua  50 
+29 Tampilan detail tugas petugas iterasi kedua  51 
+30 Desain database  fisik iterasi kedua  52 
+31 Struktur folder backend  iterasi kedua  54 
+32 Potongan kode inisiasi state machine  pada fungsi validasi permintaan  57 
+33 Potongan kode transisi status pada fungsi submitLaporanIB  58 
+34 Potongan kode reset  deadline pada fungsi konfirmasiTugas  59 
+35 Struktur folder frontend  iterasi kedua  60 
+36 Card notifikasi pada frontend  dashboardAdmin iterasi kedua  61 
+37 Timeline  dinamis dan button action  Admin pada frontend  detail 
+permintaanAdmin iterasi kedua  62 
+38 Modal  pada frontend  detail  tugas  Petugas iterasi kedua  62 
+ 
+ 
+ 
+DAFTAR LAMPIRAN  
+1 Use case description  iterasi pertama  70 
+2 Struktur file atau folder  backend iterasi pertama  71 
+3 Struktur file atau folder  frontend iterasi pertama  71 
+4 Logika login  pada authController  72 
+5 Logika untuk verifikasi permintaan IB pada requestController  73 
+6 Logika peternak mengirimkan laporan IB setelah proses awal IB  74 
+7 Dokumentasi dari proses pengujian positif iterasi pertama  75 
+8 Dokumentasi dari proses pengujian negatif iterasi pertama  77 
+9 Dokumentasi dari proses pengujian positif iterasi kedua  79 
+10 Dokumentasi dari proses pengujian negatif iterasi kedua  81 
+
+
+--- PAGE 12 ---
+
+
+--- PAGE 13 ---
+ 
+I PENDAHULUAN  
+1.1 Latar Belakang  
+Indonesia merupakan salah satu negara dengan jumlah penduduk yang tinggi. 
+Kondisi tersebut sangat berdampak pada  kebutuhan protein hewani yang semakin 
+tinggi. Salah satu sumber protein hewani adalah daging sapi dan olahannya. 
+Menurut Badan Pusat Statistik (2024), pemenuhan kebutuhan daging sapi dan 
+kerbau di Indonesia masih mengalami defisit sebesar 263,42 ribu ton. Defisit ini 
+terjadi karena produksi daging sapi dan kerbau hanya mencapai 496,25 ribu ton, 
+sedangkan kebutuhan nasional mencapai 759,67 ribu to n. Data yang disajikan oleh 
+BPS menunjukkan bahwa kebutuhan daging sapi dan kerbau umumnya lebih tinggi 
+dibandingkan dengan ketersediaan dari produksi lokal.  
+Salah satu upaya strategis dalam meningkatkan produksi sapi lokal adalah 
+melalui penerapan teknologi Inseminasi Buatan (IB), yaitu teknik memasukkan 
+semen pejantan ke dalam alat reproduksi ternak betina sehat menggunakan alat 
+inseminasi tanpa melalui perka winan alami (Permen 2016). Teknologi ini telah 
+banyak diterapkan di Indonesia, khususnya pada ternak sapi, dan terbukti 
+memberikan kontribusi nyata terhadap peningkatan populasi serta mutu genetik 
+nasional (Kuswati et al.  2022). IB memungkinkan distribusi semen pejantan unggul 
+secara lebih luas dan efisien, mengurangi risiko penularan penyakit reproduksi, 
+serta meningkatkan peluang keberhasilan pembuahan melalui proses yang lebih 
+terstandar dan terkontrol (Kusumawati dan L eondro 2014). Selain itu, IB 
+memberikan fleksibilitas bagi peternak dalam mengatur waktu reproduksi dan 
+memperbaiki produktivitas ternak secara keseluruhan (Susilawati 2011; Diskin 
+2018 ). 
+Program Upsus Siwab yang digagaskan oleh pemerintah, kini dikenal dengan 
+SIKOMANDAN, telah berhasil mendorong percepatan populasi sapi dan kerbau. 
+Dalam tiga tahun (2017 -2020) pelaksanaan kegiatan ini, realisasi pelayanan IB dari 
+1 Januari 2017 hingga 31 D esember 2019 mencapai 12.718.847 perkawinan, yang 
+terdiri dari 11.550.505 akseptor dari 34 provinsi. Dari PKB (Pemeriksaan 
+Kebuntingan) yang dilakukan pada periode April 2017 hingga Maret 2020, telah 
+dilakukan pemeriksaan terhadap 7.671.758 ekor akseptor, dengan hasil 6.538.450 
+ekor bunting atau memiliki tingkat keberhasilan kebuntingan sebesar 85,23%, 
+sementara kegagalan kebuntingan sebesar 14,77% (Ditjen PKH 2021) rata -rata 
+kenaikan tingkat keberhasilan kelahiran per tahun adalah sekitar 31,0% pada 2018 
+dan 25,3% pada 2019.  
+Keberhasilan IB tidak hanya bergantung pada teknologi yang digunakan, 
+tetapi juga dipengaruhi oleh berbagai faktor eksternal dan internal. Menurut 
+Toelihere (1997), beberapa faktor yang berperan dalam keberhasilan IB meliputi 
+pengetahuan peternak dalam men deteksi gejala berahi, pelaksanaan IB terutama 
+aspek pendataan, pencatatan, dan pengelolaan permintaan, pengalaman 
+inseminator, serta kualitas spermatozoa yang digunakan. Dalam konteks ini, sistem 
+administrasi dan pencatatan data IB memainkan peran yang sa ngat krusial. 
+Pendataan dan pencatatan yang akurat serta pengelolaan permintaan inseminasi 
+yang tepat waktu merupakan fondasi untuk memastikan bahwa setiap proses IB 
+dapat dipantau dan dievaluasi secara efektif.  
+
+
+--- PAGE 14 ---
+2 
+ 
+Selain itu, meskipun tenaga inseminator yang berpengalaman memiliki 
+keahlian dalam mendeteksi birahi dan menentukan waktu inseminasi yang optimal, 
+keberhasilan IB juga sangat bergantung pada kemampuan sistem dalam 
+mendokumentasikan dan memantau proses ters ebut. Menurut Diskin (2018), 
+penggunaan sistem informasi terintegrasi dalam pendataan dan pencatatan IB dapat 
+meningkatkan kemampuan pemantauan kondisi ternak secara real-time. Dengan 
+sistem digital yang terintegrasi, peternak, admin, dan petugas inseminat or dapat 
+mengakses data IB secara lebih efisien, yang mendukung pengelolaan permintaan 
+IB dan evaluasi hasil secara akurat. Sapi yang dipelihara secara intensif dengan 
+sistem pengandangan akan lebih mudah dipantau, sehingga pendataan dan 
+pencatatan yang te rintegrasi memungkinkan identifikasi kondisi ternak secara real-
+time. Hal ini mendukung koordinasi yang lebih baik antara admin dan petugas 
+inseminator serta memastikan bahwa setiap permintaan IB dapat diproses dengan  
+tepat waktu.  
+Implementasi inseminasi buatan (IB) di Indonesia masih menghadapi 
+tantangan sistemik. Sistem administrasi manual yang masih banyak digunakan 
+menyebabkan keterlambatan dalam pelayanan IB, sebagaimana diungkapkan oleh 
+Ahmad dan Elidar (2017) yang mencatat ad anya hambatan dalam proses pencatatan 
+dan monitoring yang mengakibatkan lambatnya respons terhadap masa berahi 
+optimal. Selain itu, penelitian oleh Alisi et al. (2023) menunjukkan bahwa di daerah 
+tertentu di Indonesia, akibat keterlambatan pendeteksian tin gkat keberhasilan 
+kebuntingan sapi melalui IB sering kali berada di bawah 30%. Oleh karena itu, 
+integrasi teknologi informasi dalam administrasi IB sangat penting untuk 
+mengurangi keterlambatan pelayanan, mempercepat pengambilan keputusan, serta 
+meningkatk an keberhasilan program IB.  
+Saat ini di Indonesia sudah terdapat sistem informasi resmi yang 
+dikembangkan oleh pemerintah, yaitu iSIKHNAS (Sistem Informasi Kesehatan 
+Hewan Nasional) yang dikelola oleh Direktorat Jenderal Peternakan dan Kesehatan 
+Hewan (Bili et al. 2022). Sistem tersebut memiliki cakupan nasional yang sangat 
+luas dan berfungsi sebagai pusat data kesehatan hewan di Indonesia. Mengingat 
+akses terhadap sistem tersebut memerlukan izin khusus untuk tujuan 
+pengembangan, penelitian ini mengambil fokus yan g berbeda dengan 
+meng embangkan sebuah sistem yang berpusat pada pengguna. Sistem ini secara 
+spesifik dirancang untuk menyederhanakan alur kerja operasional harian pada 
+layanan IB, khususnya untuk meningkatkan koordinasi antara stakeholder  admin 
+dinas dan petugas inseminator di tingkat lokal.  
+1.2 Rumusan  Masalah  
+Rumusan masalah dari penelitian ini adalah:  
+a Bagaimana merancang dan mengembangkan sebuah sistem informasi berbasis 
+web yang dapat mengelola modul administrasi, pendataan, dan pencatatan 
+untuk permintaan Inseminasi Buatan (IB)?  
+b Bagaimana fitur -fitur yang diimplementasikan dalam sistem informasi berbasis 
+web (seperti notifikasi otomatis, pembaruan status real-time, pelaporan 
+terstruktur, dan penugasan tugas) secara fungsional memfasilitasi alur 
+koordinasi antara admin pengelola dan petugas inseminator di lapangan ?  
+
+
+--- PAGE 15 ---
+3 
+1.3 Tujuan  
+Tujuan penelitian ini adalah:  
+a Merancang dan mengembangkan sistem informasi berbasis web  untuk 
+mengelola administrasi, pendataan, dan pencatatan permintaan Inseminasi 
+Buatan (IB) .  
+b Mengimplementasikan fitur -fitur kunci untuk mendukung alur kerja yang 
+efisien dan ketelurusan informasi real-time antara admin dan petugas 
+inseminator, meliputi manajemen status permintaan terpusat, mekanisme 
+notifikasi tugas, dan sistem pelaporan terstruktur di setiap fase siklus IB . 
+1.4 Manfaat  
+Penelitian ini diharapkan dapat memberikan manfaat bagi berbagai pihak 
+yang terlibat  (stakeholder ) dalam pengelolaan IB dan kesehatan hewan ternak. Bagi 
+pemerintah dan pihak berwenang, sistem yang dikembangkan dapat membantu 
+dalam pendataan dan pencatatan IB secara terstruktur, sehingga mendukung 
+pengambilan keputusan yang lebih tepat sasaran dalam keb ijakan peternakan. Data 
+yang terdokumentasi dengan baik juga memungkinkan evaluasi dan perencanaan 
+program IB yang lebih optimal untuk meningkatkan produktivi tas peternakan 
+secara nasional . 
+1.5 Ruang Lingkup  
+Ruang lingkup dari penelitian yang dilakukan meliputi:   
+a Pengembangan aplikasi fullstack  berbasis web untuk administrasi permintaan 
+IB, pendataan hasil inseminasi, dan pencatatan status keberhasilan IB.  
+b Sistem dirancang untuk digunakan oleh Admin ( operator ), petugas inseminator, 
+dan stakeholder  layanan IB .  
+c Pengembangan dan pengujian awal sistem (prototipe) untuk memastikan 
+fungsionalitas dan efektivitas integrasi antara front  end dan back  end.   
+
+
+--- PAGE 16 ---
+ 
+II TINJAUAN PUSTAKA  
+2.1 Inseminasi Buatan (IB)  
+Inseminasi Buatan (IB) adalah bioteknologi reproduksi yang memanfaatkan 
+semen dari pejantan unggul untuk diintroduksikan ke dalam saluran reproduksi 
+betina pada saat yang tepat (Kusumawati dan Leondro 2014). Tujuan utama dari IB 
+adalah untuk meningkatkan m utu genetik ternak secara efisien, mempercepat 
+peningkatan populasi, dan mencegah penyebaran penyakit kelamin pada ternak 
+(Susilawati 2011). Keberhasilan program IB diukur dari angka kebuntingan 
+(conception rate ) dan angka kelahiran ( calving rate ), yang di pengaruhi oleh 
+berbagai faktor . 
+Menurut Toelihere (1997), faktor -faktor yang menentukan keberhasilan IB 
+meliputi tiga komponen utama: (1) ternak betina yang subur dan sehat, (2) kualitas 
+semen beku yang unggul, dan (3) ketepatan waktu dan keterampilan inseminator 
+dalam melakukan prosedur . Namun, Diskin (2018) menekankan bahwa faktor 
+manajemen dan administrasi memegang peranan yang tidak kalah penting. Proses 
+administrasi yang mencakup pencatatan akurat, penjadwalan yang tepat waktu, dan 
+koordinasi yang efektif antara peternak, petugas (in seminator), dan pihak pengelola 
+(pemerintah) menjadi fondasi keberhasilan program IB dalam skala besar. 
+Tantangan yang sering muncul dalam sistem manual adalah keterlambatan respons 
+terhadap laporan birahi, kesalahan pencatatan data ternak, dan kesulitan d alam 
+memantau kinerja inseminator serta hasil IB secara keseluruhan (Ahmad dan Elidar 
+2017).  
+2.2 Sistem Informasi Manajemen  untuk Koordinasi Operasional  
+Penerapan sistem informasi dalam manajemen permintaan layanan, seperti 
+pada program IB, memberikan sejumlah keunggulan, mulai dari peningkatan 
+akurasi dan konsistensi data hingga percepatan alur kerja melalui otomatisasi proses 
+seperti verifikasi, penugasa n, dan notifikasi. Sistem informasi sendiri merupakan 
+entitas yang terdiri atas dua atau lebih komponen yang bekerja untuk mengolah data 
+melalui proses menangkap, menyimpan, mengambil, memanipulasi, hingga 
+menampilkan informasi (Fuady et al.  2023). Secara umum, sistem informasi 
+mencakup manusia, perangkat keras, perangkat lunak, jaringan komunikasi, dan 
+sumber data yang bekerja bersama dalam mengumpulkan, mentransformasikan, 
+dan mengalirkan informasi di dalam organisasi (Yusuf 2021 ). 
+Menurut Laudon dan Laudon (2016), sistem informasi merupakan 
+sekumpulan komponen yang saling berkaitan untuk mengolah dan 
+mendistribusikan informasi guna mendukung pengambilan keputusan dan 
+pengawasan. Dengan demikian, sistem informasi tidak hanya berfungs i sebagai alat 
+teknis, tetapi juga sebagai sarana strategis yang meningkatkan efisiensi operasional. 
+Dalam konteks administrasi pelayanan publik seperti program IB, informasi yang 
+sebelumnya dicatat secara manual dan rawan kesalahan kini dapat dikelola sec ara 
+otomatis, akurat, dan real -time, sehingga memperkuat efektivitas koordinasi dan 
+kualitas layanan di lapangan.  
+
+
+--- PAGE 17 ---
+5 
+2.3 Metode Pengembangan Prototyping  
+Metode prototyping  adalah salah satu model dalam rekayasa perangkat lunak 
+yang berfokus pada pembuatan versi awal dari sistem (prototipe) untuk dievaluasi 
+oleh pengguna akhir (Pressman dan Maxim 2020). Metode ini sangat cocok untuk 
+proyek di mana kebutuhan pengguna belum se penuhnya terdefinisi dengan jelas di 
+awal. Alur kerja utamanya bersifat iteratif, yang terdiri dari tahapan: (1) 
+Komunikasi untuk mengumpulkan kebutuhan awal; (2) Perencanaan dan 
+pemodelan cepat untuk membuat desain; (3) Pengembangan prot otipe; dan (4) 
+Penyerahan prototipe untuk evaluasi dan umpan balik. Umpan balik tersebut 
+kemudian digunakan untuk menyempurnakan prototipe pada iterasi berikutnya 
+hingga sistem memenuhi seluruh kebutuhan pengguna.  
+2.4 Pengembangan Full Stack 
+Pengembangan sistem secara menyeluruh yang mencakup sisi tampilan 
+pengguna dan sisi server dikenal dengan istilah full -stack development. Konsep ini 
+melibatkan dua komponen utama, yaitu front end dan back end (Singh et al.  2022). 
+Front end berfokus pada perancangan antarmuka yang dapat digunakan langsung 
+oleh pengguna, dimana proses pengembangannya biasanya dipecah menjadi modul -
+modul terstruktur agar mudah dikelola dan dikembangkan (Koentjoro et al.  2022). 
+Sementara itu, back end merupakan komponen yang bekerja di balik layar untuk 
+menangani logika bisnis, pengelolaan database , serta integrasi server yang tidak 
+terlihat secara langsung oleh pengguna (Mßrißs dan Molnßr 2020). Pengembang 
+yang menguasai kedua sisi tersebut secara bersamaan dikenal sebagai full -stack 
+developer . 
+2.5 REST API  
+REST (Representational State Transfer) adalah salah satu arsitektur yang 
+umum digunakan dalam pengembangan aplikasi, baik perangkat lunak maupun web, 
+sebagai metode untuk membangun komunikasi antar sistem. Dalam arsitektur ini, 
+setiap komunikasi selalu dim ulai oleh klien melalui permintaan yang berisi 
+identifier sumber daya dan HTTP methods seperti GET, POST, PUT, atau DELETE, 
+serta bersifat stateless, sehingga setiap permintaan tidak bergantung pada 
+permintaan sebelumnya (Haupt et al.  2015). Di sisi lain, API (Application 
+Programming Interface) berfungsi sebagai jembatan yang memungkinkan satu 
+aplikasi berinteraksi dengan aplikasi lain melalui pertukaran data. Secara konsep, 
+API merupakan sekumpulan instruksi atau protokol yang diranca ng untuk 
+memfasilitasi pertukaran informasi antaraplikasi (Hanafi et al.  2017). API 
+membantu mempercepat proses pengembangan karena menyediakan fungsi yang 
+dapat digunakan kembali oleh pengembang saat dibutuhkan. Dalam konteks 
+pengembangan web, API biasanya diakses melalui protokol HTTP dan 
+mengembalikan data dalam format JSON  (JavaScript Object Notation). 
+Implementasi API menggunakan arsitektur REST memudahkan pertukaran data 
+karena antarmukanya bersifat standar dan mudah dipahami (Kurniawan et al.  2020).  
+ 
+ 
+ 
+ 
+
+
+--- PAGE 18 ---
+ 
+III METODE  
+3.1 Tahapan Penelitian  
+Pengembangan website pengelolaan permintaan IB pada penelitian ini 
+dilakukan menggunakan metode prototyping . Metode ini memungkinkan 
+pengembangan sistem secara bertahap,  setiap iterasi menghasilkan prototipe 
+fungsional yang dapat dievaluasi oleh pemangku kepentingan sebelum melanjutkan 
+ke tahap berikutnya. Ilustrasi tahapan umum metode prototyping  dapat dilihat pada 
+Gambar 1. Dalam penelitian ini, pengembangan sistem dilaksanakan melalui dua 
+iterasi utama. Iterasi pertama berfokus pada pembangunan prototipe  awal yang 
+mencakup fungsionalitas dasar alur kerja permintaan IB, mulai dari pengajuan 
+hingga pelaporan awal. Iterasi kedua kemudian difokuskan pada penyempurnaan 
+sistem berdasarkan umpan balik dari iterasi pertama, terutama dalam hal 
+perancangan ulang database  untuk implementasi state machine  terpusat dan 
+penyesuaian logika backend  serta antarmuka frontend agar selaras dengan desain 
+baru.  
+ 
+Gambar 1  Tahapan prototyping  berdasarkan adaptasi Pressman & Maxim (2020)  
+3.1.1 Komunikasi   
+Penelitian dimulai dengan komunikasi bersama dosen pembimbing 
+sekaligus sebagai narasumber, Ibu Lailan Sahrina Hasibuan S.Kom., M.Kom., 
+dan praktisi sekaligus ahli di bidang peternakan, Bapak Drh. Lilik Prayitno, 
+M.Si., yang berkerja sama  sebagai dokter hewan di FADAGI FARM, Curug, 
+Gunung Sindur, Bogor . Untuk mendiskusikan alur serta kekurangan sistem 
+permintaan IB keseluruhan . Diskusi ini bertujuan untuk melakukan analisis 
+mendalam terhadap alur bisnis  yang sedang berjalan  pada sistem permintaan IB 
+yang ad a saat ini secara keseluruhan. Berdasarkan temuan dari diskusi tersebut, 
+disusunlah user story  untuk mendefinisikan kebutuhan pengguna, serta daftar  
+fitur yang akan dikelompokkan sebagai cakupan  untuk luaran awal sistem . 
+
+
+--- PAGE 19 ---
+7 
+3.1.2 Perencanaan  dan Pemodelan  Cepat  
+Pada tahap perencanaan  dan pemodelan cepat , peneliti akan menganalisis 
+dan menerjemahkan kebutuhan fungsional pada website  berdasarkan user story  
+dari tahap sebelumnya. Fokus utama pada tahap ini adalah menentukan 
+fungsionalitas utama yang akan diterapkan, yang sekaligus berfungsi sebagai 
+penentuan cakupan pengembangan web tahap awal. Luaran dari proses analisis 
+sistem ini berupa serangkaian artefa k perancangan seperti use case diagram  
+untuk memetakan interaksi aktor, use case description  untuk merinci sken ario 
+penggunaan, class diagram  untuk mendefinisikan struktur data, dan activity 
+diagram  untuk menggambarkan alur kerja proses. Selanjutnya, dilakukan 
+pemodelan perancangan cepat dengan membuat desain antarmuka pengguna 
+web secara detail menggunakan Figma, yang pada akhirnya menghasilkan high 
+fidelity prototype  sebagai cetak biru visual sebelum implementasi . 
+3.1.3 Pengembangan Prototype   
+Pengembangan prototype  dilakukan dengan pendekatan fullstack , yang 
+memisahkan antara pengembangan antarmuka pengguna ( front -end) dan 
+pengembangan sisi server ( back -end). Pada sisi frontend , dibangun antarmuka 
+visual yang akan digunakan oleh admin dan petugas untuk berinteraksi dengan 
+sistem.  Sementara itu, pada sisi back  end, dikembangkan sebuah REST API yang 
+berfungsi untuk menangani seluruh logika bisnis, memproses data, dan 
+berkomunikasi dengan sistem manajemen basis data. Pengujian fungsionalitas 
+awal dilakukan secara berkala menggunakan alat pengujian API untuk  
+memastikan setiap endpoint  berjalan sesuai spesifikasi. Jika ditemukan 
+kesalahan atau ada umpan balik untuk perbaikan, prototype  akan disempurnakan 
+secara iteratif sesuai dengan alur metode prototyping . 
+3.1.4 Pengujian dan Umpan Balik  
+Pada tahap pengujian dan umpan balik, sisi frontend  dan backend  yang 
+telah dikembangkan secara terpisah kemudian diintegrasikan menjadi satu 
+prototipe fungsional yang utuh. Proses integrasi ini melibatkan penyambungan 
+komponen antarmuka pengguna di frontend  dengan endpoint  REST API di 
+backend  sehingga alur data dapat berjalan secara end-to-end sesuai dengan 
+arsitektur yang dirancang. Selanjutnya, peneliti melakukan pengujian fungsional 
+secara menyeluruh terhadap prototipe yang telah terintegrasi ini. Pengujian 
+fungsional ini menerapkan metode black box testing  untuk memvalidasi 
+kesesuaian sistem terhadap kebutuhan fungsional yang telah dirumuskan pada 
+tahap komunikasi. Pengujian ini berfokus pada evaluasi respons dan keluaran 
+sistem berdasarkan berbagai input yang diberikan,  tanpa memperhatikan struktur 
+atau logika internal kode. Skenario pengujian mencakup skenario alur positif  
+(happy path ) dan berbagai skenario alur negatif  (unhappy path  atau alternatif), 
+seperti penolakan permintaan atau pelaporan kegagalan proses. Setiap kesalahan 
+fungsional yang teridentifikasi atau umpan balik signifikan yang diterima dari 
+evaluasi ini akan dicatat dan menjadi dasar untuk perbaikan dan penyempurnaan. 
+Sesuai dengan sifat iteratif dari metode prototyping , prototipe kemudian akan 
+direvisi p ada siklus pengembangan berikutnya. Siklus umpan balik ini berlanjut  
+hingga tidak ada lagi perubahan besar, dan prototipe dinyatakan final . 
+
+
+--- PAGE 20 ---
+8 
+ 
+3.2 Lingkungan Pengembangan  
+Lingkungan pengembangan yang digunakan dalam penelitian ini terdiri dari 
+spesifikasi perangkat keras dan perangkat lunak sebagai berikut:  
+a Perangkat Keras  
+1) Prosesor: Intel Core i5 1,2 GHz Quad -Core  
+2) Memori: 8 GB 3200 MHz DDR4  
+3) Penyimpanan: SSD 512 GB  
+b Perangkat Lunak  
+1) Pengembangan Front -end 
+a) Bahasa: HTML, CSS, JavaScript  
+b) Library  dan Build Tool : React.js dan Vite  
+2) Pengembangan Back -end 
+a) Runtime Environment : Node.js  
+b) IDE ( Integrated Development Environment ): Visual Studio Code  
+3) Manajemen Database  
+a) Sistem Database : PostgreSQL  
+b) Alat Bantu Database : Dbeaver  
+4) Perancangan dan Pengujian  
+a) Desain Antarmuka (UI/UX): Figma  
+b) Desain Diagram (UML): Draw.io  
+c) Pengujian API: Postma n 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+

@@ -2,7 +2,7 @@ package com.example.ternakapp.utils
 
 import android.content.Context
 import android.content.Intent
-import com.example.ternakapp.ui.login.LoginActivity
+import com.example.ternakapp.ui.auth.LoginActivity
 
 object NavigationUtils {
     fun navigateToLogin(context: Context) {

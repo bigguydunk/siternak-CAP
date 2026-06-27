@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="title_black">#36454F</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="cream">#F7F6F1</color>
-    <color name="red">#CF0000</color>
-    <color name="light_red">#FFB4B4</color>
-    <color name="greyish">#DEDEDE</color>
-    <color name="yellow_processed">#FFE600</color>
-    <color name="green_done">#8FFF00</color>
+    <!-- Figma Brand Colors for TernakKu -->
+    <color name="primary_red">#D62626</color>
+    <color name="dark_red">#B10011</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#141D23</color>
+    <color name="text_secondary">#5C5F60</color>
+    <color name="text_hint">#916F6B</color>
+    
+    <!-- UI Elements -->
+    <color name="divider_color">#E5BDB9</color>
+    <color name="background_accent">#E6EFF8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Legacy Colors to prevent build errors -->
+    <color name="red">#D62626</color>
+    <color name="green_done">#4CAF50</color>
+    <color name="yellow_processed">#FF9800</color>
+    <color name="title_black">#141D23</color>
+    <color name="cream">#FFFDD0</color>
+    <color name="greyish">#9E9E9E</color>
 </resources>

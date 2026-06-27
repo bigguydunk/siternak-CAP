@@ -1,0 +1,1283 @@
+﻿python : incorrect startxref pointer(1)
+At line:1 char:1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (incorrect startxref pointer(1):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+--- PAGE 21 ---
+ 
+IV HASIL DAN PEMBAHASAN  
+4.1 Iterasi 1  
+4.1.1 Komunikasi  
+Pada tahap ini dilakukan komunikasi awal dengan dosen pembimbing dan 
+narasumber. Pertemuan dilaksanakan pada tanggal 23 Februari 2025 di lokasi 
+FADAGI FARM. Dalam diskusi tersebut bersama dosen pembimbing dan 
+narasumber, dibahas secara langsung mengenai al ur proses bisnis keseluruhan 
+untuk sistem informasi pendataan permintaan inseminasi buatan (IB) pada 
+hewan ternak. Berdasarkan hasil komunikasi tersebut, disusun alur proses bisnis 
+sebagaimana ditampilkan pada Gambar 2 . 
+ 
+Gambar 2  Dokumentasi wawancara dengan narasumber di Fadagi Farm  
+Pada Gambar 3 dijelaskan terdapat tiga aktor, tetapi fokus utama dalam 
+penelitian ini hanya pada dua aktor yaitu admin dan petugas. Sedangkan aktor 
+peternak hanya disimulasikan melalui pengujian menggunakan Postman. Pada 
+Gambar 3 juga diperlihatkan bagaimana alur permintaan dimulai dari peternak 
+yang mengajukan permintaan IB, kemudian Admin memverifikasi permintaan 
+tersebut dan  menugaskan Petugas. Setelah itu, Petugas melaksanakan proses IB 
+di lapangan dan mengisi laporan hasil IB.  
+ 
+Gambar  3  Alur proses bisnis berdasarkan wawancara dengan dosen 
+pembimbing dan narasumber  iterasi pertama  
+Berdasarkan hasil komunikasi yang divisualisasikan pada Gambar 3, 
+proses yang ditampilkan baru mencakup tahap permintaan dan pelaksanaan 
+
+
+--- PAGE 22 ---
+10 
+ 
+inseminasi buatan (IB). Padahal, sistem ini idealnya perlu mencakup data 
+lanjutan hingga ternak melahirkan atau jika terjadi keguguran, sehingga 
+pendataan dapat dilakukan secara lebih lengkap. Menurut BBIB Singosari, 
+proses kebuntingan sapi hingga kelahira n memakan waktu sekitar 9 sampai 10 
+bulan (BBIB Singosari 2024). Untuk mengakomodasi kebutuhan tersebut, 
+dilakukan identifikasi mendalam terhadap kebutuhan fungsional dari setiap aktor 
+yang terlibat.  
+Hasil identifikasi kebutuhan tersebut kemudian ditransformasikan ke 
+dalam format user story  untuk memfasilitasi perancangan dan pengembangan 
+sistem. Transformasi ini merupakan langkah penting yang memastikan setiap 
+upaya rekayasa perangkat lunak selaras dengan tujuan pengguna akhir. User 
+story  menggambarkan setiap fitur dari sudut pandang pengguna (Admin dan 
+Petugas), sehingga peneliti dapat memahami konteks serta motivasi di balik 
+setiap kebutuhan fungsional. Dengan demikian, fungsionalitas yang dibangun 
+dapat dipastikan benar -benar menjawab permasalahan yang telah diidentifikasi. 
+Rincian kebutuhan fungsional, user story , dan daftar fitur yang menjadi luaran 
+awal dari tahap ini disajikan pada Tabel 1 berikut.  
+Tabel 1  Daftar user story  iterasi pertama  
+Aktor  Fitur  User Story  Task  
+Admin  Verifikasi & 
+Penugasan 
+Petugas  Sebagai Admin, saya ingin 
+memverifikasi permintaan dan 
+menugaskan petugas agar proses 
+IB dapat dimulai.  Mengakses Laman Dashboard  
+Admin dan Memilih Permintaan 
+dan Tugaskan Petugas  
+Admin  Reminder 
+Laporan Status IB 
+Berhasil/Gagal  Sebagai Admin, saya ingin 
+melihat permintaan yang sudah 
+melewati 3 bulan tanpa laporan 
+IB hasil peternak, agar bisa 
+mengingatkan mereka.  Mengakses Laman Dashboard  
+Admin dan melihat notifikasi 
+Laporan Hasil IB dari Peternak 
+yang belum mengirimkan laporan 
+dan menekan tombol ingatkan 
+peternak  
+Admin  Penugasan & 
+Laporan Checkup 
+Kebuntingan/Kela
+hiran  Sebagai Admin, saya ingin 
+menugaskan checkup 
+kebuntingan/Kelahiran jika IB 
+berhasil, agar petugas dapat 
+memeriksa kehamilan ternak.  Jika laporan IB statusnya Berhasil 
+admin dapat menugaskan petugas 
+untuk melakukan checkup 
+kebuntingan/kelahiran di detail 
+permintaan IB  
+Admin  Reminder 
+Laporan 
+Kelahiran/Kegugu
+ran Sebagai Admin, saya ingin 
+melihat permintaan yang sudah 
+melewati 9 bulan tanpa laporan 
+Kehamilan/Keguguran dari 
+peternak, agar bisa 
+mengingatkan mereka.  Mengakses laman Dashboard  
+Admin dan melihat notifikasi 
+Laporan Kelahiran/Keguguran 
+dari Peternak yang belum 
+mengirimkan laporan dan 
+menekan tombol ingatkan 
+peternak  
+Petugas  Mulai dan 
+Laporan Proses 
+IB Awal  Sebagai Petugas, saya ingin 
+menandai ôMulai Proses IBö dan 
+mengisi laporan IB awal agar 
+progress tercatat.  Mengakses Laman Dashboard  
+Petugas dan menerima notifikasi 
+tugas kemudian konfirmasi tugas 
+dan mengisi laporan Proses IB 
+awal  
+Petugas  Konfirmasi & 
+Submit Laporan 
+Checkup 
+Kebuntingan/Kela
+hiran  Sebagai Petugas, saya ingin 
+mengonfirmasi penugasan 
+checkup dan mengisi laporan, 
+agar status checkup 
+Kebuntingan/Kelahiran tercatat 
+ôSelesaiö . Mengakses Laman Dashboard  
+Petugas dan menerima notifikasi 
+tugas kemudian konfirmasi tugas 
+dan mengisi laporan Checkup  
+
+
+--- PAGE 23 ---
+11 
+4.1.2 Perencanaan dan Pemodelan Cepat  
+Setelah kebutuhan fungsional teridentifikasi pada tahap komunikasi, 
+tahap selanjutnya adalah menerjemahkan kebutuhan tersebut ke dalam sebuah 
+rancangan sistem yang terstruktur. Pada tahap ini, dilakukan analisis dan 
+pemodelan cepat untuk memvisualisasikan arsitektur, fungsionalitas, dan alur 
+kerja sistem. Luaran dari proses ini berupa use case diagram , class diagram , 
+activity diagram , dan high fidelity prototype  yang menjadi cetak biru untuk tahap 
+pengembangan . 
+Diagram use case  digunakan untuk menggambarkan interaksi fungsional 
+antara aktor (pengguna) dengan sistem. Diagram ini mengilustrasikan fitur -fitur 
+utama yang dapat diakses oleh admin dan petugas. Aktor admin memiliki use 
+case seperti memverifikasi permintaan, menugaskan petugas, dan memantau 
+laporan, sedangkan aktor petugas memiliki use case  seperti mengkonfirmasi  
+tugas dan mengisi laporan.  Use case  diagram  sistem secara keseluruhan 
+disajikan pada Gambar  4. 
+ 
+Gambar 4  Use case diagram permintaan IB  iterasi pertama  
+Diagram pada Gambar 4 mengidentifikasi dua aktor utama yang 
+berinteraksi dengan sistem, yaitu admin dan petugas. Aktor admin memiliki hak 
+akses manajerial yang bertanggung jawab dalam memverifikasi setiap 
+permintaan, menugaskan petugas lapangan, serta memantau keseluruhan siklus 
+permintaan inseminasi buatan (IB). Sementara itu, aktor petugas berperan 
+sebagai eksekutor di lapangan yang bertanggung jawab untuk melaksanakan 
+tugas IB maupun check -up, serta menyampaikan laporan hasil pelaksanaan 
+melalui sistem. Seluruh fungsionalitas tersebut berada di dalam batas sistem 
+(system boundary ), yang secara visual memisahkan area kerja internal sistem 
+dengan para aktor eksternal.  
+Fungsionalitas inti yang dapat diakses oleh admin mencakup proses 
+verifikasi dan penugasan petugas untuk memvalidasi permintaan IB awal, serta 
+penugasan dan laporan checkup  untuk menangani permintaan tindak lanjut. Di 
+sisi lain, Petugas memiliki akses terhadap use case mulai dan laporan proses IB 
+awal untuk melaksanakan serta melaporkan hasil inseminasi, dan use case  
+konfirmasi serta S submit laporan checkup  untuk menyelesaikan tugas 
+
+
+--- PAGE 24 ---
+12 
+ 
+pemeriksaan kesehatan ternak. Pembagian ini menunjukkan bahwa setiap aktor 
+memiliki peran dan tanggung jawab yang saling melengkapi guna menjaga 
+kelancaran alur proses dalam sistem.  
+Untuk memperjelas interaksi dan alur kerja yang terjadi pada masing -
+masing use case , disusunlah use case description  yang memberikan rincian 
+mendalam mengenai setiap fungsionalitas. Dokumen ini mencakup penjelasan 
+mengenai alur normal ( basic flow ), alur alternatif ( alternative flow ), serta kondisi 
+awal ( pre-condition ) dan kondisi akhir ( post-condition ) dari tiap interaksi. 
+Dengan adanya deskripsi tersebut, pengembang dan analis dapat memiliki 
+pemahaman yang selaras mengenai cara kerja sistem. Use case descr iption  
+utama, yaitu verifikasi dan penugasan petugas serta Proses IB Awal, dapat dilihat 
+pada Tabel 2 dan Tabel 3, sedangkan deskripsi terkait aktivitas lainnya disajikan 
+secara lengkap pada Lampiran 1.  
+Tabel 2  Use case description verifikasi dan penugasan Petugas iterasi pertama  
+Use Case  Description  
+Aktor  Admin.  
+Deskripsi  Admin memverifikasi permintaan IB yang masuk dan menugaskan 
+petugas untuk menangani proses IB.  
+Pre-condition  Permintaan IB sudah dikirim oleh peternak . 
+Post-condition  Permintaan berstatus terverifikasi dan petugas ditugaskan . 
+Skenario  1. Admin melihat daftar permintaan.  
+2. Memverifikasi permintaan.  
+3. Menentukan petugas.  
+4. Sistem menyimpan tugas.  
+Tabel 3  Use case description  mulai dan laporan proses IB awal iterasi pertama  
+Use Case  Description  
+Aktor  Petugas  
+Deskripsi  Petugas menandai proses IB sudah dimulai dan mengisi laporan hasil IB 
+di lapangan.  
+Pre-condition  Permintaan sudah diverifikasi dan petugas ditugaskan.  
+Post-condition  Status proses IB tercatat di sistem.  
+Skenario  1. Penugasan oleh admin masuk  
+2. Memverifikasi mulai proses IB  
+3. Mengisi laporan proses IB  
+4. Sistem menyimpan laporan  
+Use case description  tersebut menjadi dasar dalam pemodelan proses 
+bisnis yang lebih dinamis melalui pembuatan diagram aktivitas ( activity 
+diagram ). Diagram ini digunakan untuk memvisualisasikan alur kerja sistem dari 
+awal hingga akhir, sehingga setiap tahapan yang telah didefinisikan dalam use 
+case dapat terlihat keterkaitannya secara menyeluruh. Berdasarkan hasil analisis 
+kebutuhan, proses bisnis pengelolaan permintaan inseminasi buatan (IB) dibagi 
+menjadi tiga periode utama yang merepresentasikan siklus reproduksi ternak. 
+Pemodelan ini menggambarkan secara rinci urutan aktivitas, keputusan, dan 
+
+
+--- PAGE 25 ---
+13 
+percabangan logika pada setiap tahap, sehingga memudahkan pengembang 
+dalam memahami aliran proses yang terjadi di dalam sistem . 
+ 
+Gambar 5  Activity diagram  periode 1 (0 -3 Bulan)  iterasi pertama  
+
+
+--- PAGE 26 ---
+14 
+ 
+Periode pertama, seperti yang diilustrasikan pada Gambar 5, 
+menggambarkan alur kerja fundamental sistem mulai dari pengajuan permintaan 
+hingga pelaksanaan proses inseminasi buatan (IB) awal. Alur ini menguraikan 
+interaksi dan serah terima tanggung jawab an tara tiga aktor utama  yaitu  peternak, 
+admin, dan petugas, dengan Sistem yang bertindak sebagai fasilitator dan 
+pencatat data terpusat.  
+Proses diawali oleh peternak yang mengajukan permintaan IB melalui 
+antarmuka sistem. Ini adalah titik masuk data pertama, di mana inisiatif berasal 
+dari pengguna lapangan. Segera setelah permintaan diajukan, Sistem secara 
+otomatis menerima kiriman permintaan tersebut dan menca tatnya ke dalam 
+database . Informasi ini tidak hanya disimpan, tetapi juga langsung 
+ditindaklanjuti dengan menampilkan permintaan baru tersebut sebagai notifikasi 
+atau entri tugas pada dashboard  utama admin.  
+Setelah menerima notifikasi, admin melihat permintaan yang masuk dan 
+memikul tanggung jawab krusial pertama: melakukan verifikasi permintaan. 
+Tahap verifikasi ini esensial untuk menyaring data yang masuk, memastikan 
+kelengkapan informasi, validitas data peternak, dan kelayakan ternak u ntuk 
+program IB. Pada titik ini, alur proses memiliki dua cabang keputusan.  
+Cabang pertama adalah alur penolakan. Apabila setelah verifikasi 
+ditemukan bahwa data permintaan tidak valid, tidak lengkap, atau tidak 
+memenuhi syarat, admin akan secara manual memilih untuk menolak 
+permintaan tersebut. Sistem kemudian akan segera mengeksekusi perintah ini 
+dengan mengupdate status permintaan menjadi ôDitolakö. Alur kerja untuk 
+permintaan spesifik tersebut berhenti di sini, dan peternak akan menerima 
+informasi mengenai penolakan ini.  
+Cabang kedua, atau alur penerimaan, terjadi apabila data dinyatakan valid. 
+admin akan melanjutkan ke tahap validasi persetujuan dan, yang terpenting, 
+menugaskan seorang petugas lapangan yang dinilai paling sesuai berdasarkan 
+lokasi atau ketersediaan. Sistem kemudian memainkan peran penting dalam 
+transisi ini. Pertama, Sistem mengubah status permintaan (misalnya, dari 
+'Menunggu Verifikasi' menjadi 'Ditugaskan'). Kedua, Sist em secara aktif 
+mengirimkan detail tugas tersebut ke Petugas yang bersangkutan, yang akan 
+muncul di dashboard pribadi petugas.  
+Di sisi petugas, alur dilanjutkan ketika mereka melihat daftar tugas yang 
+masuk di dashboard  mereka. Petugas kemudian melakukan konfirmasi atas 
+tugas proses IB, yang memberikan sinyal kembali ke sistem bahwa tugas telah 
+dilihat dan akan segera dieksekusi. Setelah konfirmasi, petugas melaksanakan 
+proses IB di lapangan sesuai dengan data permintaan. Langkah terakhir dalam 
+periode pertama ini adalah pelaporan. Setelah IB selesai dilakukan, petugas 
+wajib mengisi laporan hasil proses IB melalui sistem. Sistem kemudian 
+menyimpan isi laporan tersebut secara permanen dan memperbarui status proses 
+IB awal (misalnya, menjadi 'IB Awal Selesai').  
+Dengan demikian, diagram aktivitas ini memperlihatkan secara rinci 
+bagaimana sistem tidak hanya mencatat data, tetapi juga mengatur aliran 
+komunikasi dan status secara otomatis, memastikan bahwa setiap langkah  mulai 
+dari pengajuan, verifikasi, penugasan, hingga pelaporan awal  terlaksana secara 
+terstruktur dan terdokumentasi dengan baik.  
+
+
+--- PAGE 27 ---
+15 
+ 
+Gambar 6  Activity diagram  periode 2 (3 -9 Bulan)  iterasi pertama  
+
+
+--- PAGE 28 ---
+16 
+ 
+Periode kedua (Gambar 6) berfokus pada proses krusial selanjutnya, yaitu 
+konfirmasi hasil IB dan manajemen pemeriksaan kebuntingan. Tahapan ini tidak 
+diawali oleh input pengguna, melainkan oleh sistem itu sendiri yang secara 
+otomatis dan proaktif melakukan  pengecekan terhadap batas waktu ( deadline ) 
+pelaporan hasil IB yang telah ditetapkan. Fungsi ini bertindak sebagai penjaga 
+alur waktu. Jika sistem mendeteksi adanya keterlambatan laporan dari peternak, 
+ia akan secara otomatis memicu pengiriman notifikasi pengingat. Notifikasi ini 
+bertujuan untuk m emastikan peternak segera mengirimkan laporan hasil IB demi 
+menjaga kesinambungan data dan kelancaran proses. Namun, apabila laporan 
+diterima tepat waktu atau sebelum tenggat, sistem akan melanjutkan proses 
+secara normal tanpa intervensi.  
+Alur berlanjut ketika peternak mengirimkan laporan hasil IB. Begitu 
+laporan masuk, sistem akan menerima dan segera melakukan verifikasi atau 
+pengecekan terhadap isi laporan tersebut. Ini merupakan titik persimpangan 
+kritis ( decision point ) dalam alur kerja. Apabila hasil yang dilaporkan 
+menunjukkan bahwa IB tidak berhasil (negatif), sistem akan secara otomatis 
+memperbarui status permintaan menjadi ôIB Gagalö. Sistem kemudian 
+menandai bahwa siklus permintaan spesifik ini telah selesai dan d itutup, serta 
+mencatat kegagalan ini untuk keperluan data historis. Sebaliknya, jika hasil IB 
+dinyatakan positif (berhasil), alur kerja akan berlanjut. Sistem akan mencatat 
+keberhasilan ini dan segera mengirimkan notifikasi keberhasilan tersebut secara 
+spesifik kepada admin. Notifikasi ini berfungsi sebagai sinyal bagi admin untuk 
+mempersiapkan dan mendelegasikan tahap berikutnya.  
+Menerima notifikasi keberhasilan IB, admin kemudian melihat tugas baru 
+tersebut pada dashboard dan menugaskan seorang petugas untuk melakukan 
+pemeriksaan kebuntingan terhadap ternak yang telah dinyatakan bunting. 
+Setelah admin melakukan penugasan di sistem, sistem kembali mengambil alih 
+peran logistik dengan mengirimkan notifikasi tugas pemeriksaan kebuntingan 
+langsung kepada petugas yang dituju. Petugas dapat melihat daftar tugas ini di 
+dashboard -nya, melakukan konfirmasi penerimaan tugas, dan kemudian 
+melaksanakan pemeriksaan di lapangan. Sebagai langkah akhir dari keseluruhan 
+proses, petugas wajib  mengisi laporan hasil pemeriksaan kebuntingan melalui 
+sistem. Laporan tersebut akan disimpan oleh sistem, dan status permintaan akan 
+diperbarui secara otomatis (misalnya, menjadi 'Ternak Bunting Terkonfirmasi'), 
+menandai bahwa proses pemeriksaan telah sel esai dan seluruh siklus permintaan 
+dapat ditutup dengan sukses.  
+Dengan demikian, diagram aktivitas pada Gambar 6 ini menunjukkan 
+bagaimana sistem mengatur alur komunikasi otomatis yang kompleks antar 
+pengguna (peternak, admin, dan petugas). Sistem tidak hanya bertindak sebagai 
+pencatat pasif, tetapi juga sebagai manaje r alur kerja aktif, memastikan bahwa 
+setiap proses pelaporan dan verifikasi hasil IB berjalan tepat waktu, 
+ditindaklanjuti berdasarkan hasilnya, dan terpantau secara digital dari awal 
+hingga akhir.  
+
+
+--- PAGE 29 ---
+17 
+ 
+Gambar 7  Activity diagram  periode 3 (9 -10 Bulan)  iterasi pertama  
+
+
+--- PAGE 30 ---
+18 
+ 
+Periode ketiga (Gambar 7) merupakan tahap akhir dari siklus reproduksi, 
+yaitu validasi hasil kebuntingan dan pelaporan kelahiran. Pada fase ini, sistem 
+secara otomatis memeriksa batas waktu pelaporan kelahiran yang telah 
+ditentukan, biasanya sekitar sembil an bulan setelah hasil kebuntingan 
+dinyatakan positif. Jika sistem mendeteksi bahwa laporan kelahiran belum 
+diterima, maka notifikasi pengingat akan dikirimkan kepada peternak agar 
+segera mengirimkan laporan kelahiran. Apabila laporan telah diterima tepat 
+waktu, proses akan berjalan normal tanpa intervensi tambahan . 
+Setelah peternak mengirimkan laporan kelahiran, sistem akan menerima 
+laporan tersebut dan melakukan validasi awal terhadap isi laporan. Jika hasil 
+laporan menunjukkan bahwa tidak terjadi kelahiran (misalnya terjadi 
+keguguran), maka sistem secara otomatis a kan memperbarui status permintaan 
+menjadi ôKeguguranö dan menandai bahwa siklus permintaan telah selesai. 
+Sebaliknya, apabila laporan menunjukkan bahwa kelahiran berhasil terjadi, 
+sistem akan mengirimkan notifikasi kepada admin untuk melakukan tindak 
+lanju t berupa penugasan pemeriksaan kelahiran.  
+Selanjutnya, admin menugaskan petugas untuk melakukan pemeriksaan 
+kelahiran di lapangan. Setelah menerima notifikasi tugas, petugas dapat melihat 
+daftar tugas, mengonfirmasi pelaksanaan, dan mengisi laporan hasil 
+pemeriksaan. Laporan yang dikirim oleh petu gas akan disimpan oleh sistem dan 
+status permintaan diperbarui menjadi ôSelesaiö, menandai bahwa seluruh siklus 
+mulai dari permintaan IB, konfirmasi kebuntingan, hingga kelahiran telah tuntas.  
+Dengan demikian, periode ketiga ini menutup keseluruhan alur digitalisasi 
+proses reproduksi ternak, di mana sistem berperan aktif dalam memantau waktu 
+pelaporan, mengirimkan pengingat otomatis, serta mengelola validasi hasil dan 
+pelaporan akhir secara ters truktur.  
+Setelah alur aktivitas sistem pada setiap periode digambarkan melalui 
+diagram aktivitas, langkah selanjutnya adalah melakukan pemodelan struktur 
+sistem secara statis melalui diagram kelas ( class diagram ). Diagram kelas 
+memegang peranan vital karena digunakan untuk memperlihatkan komponen 
+utama sistem beserta atribut dan relasi antar kelas. Perancangan ini adalah cetak 
+biru yang membentuk dasar dalam perancangan skema basis data serta 
+implementasi logika pada sisi backend yang akan dieksekusi.  
+Pada sistem informasi inseminasi buatan ini, diidentifikasi tujuh kelas 
+utama yang memiliki peran penting, yaitu Admin, Peternak, Petugas, Request, 
+Laporan, Checkup, dan ActivityLog. Kelas -kelas ini dapat dibagi menjadi dua 
+kategori: kelas aktor (Admin, Pe ternak, Petugas) yang merepresentasikan 
+pengguna dengan hak akses dan peran berbeda, dan kelas entitas (Request, 
+Laporan, Checkup, ActivityLog) yang merepresentasikan objek data yang 
+diciptakan, dimodifikasi, dan dikelola sepanjang siklus hidup layanan.  
+Penjabaran peran diawali dari kelas aktor. Kelas Peternak berperan sebagai 
+pengguna eksternal yang menginisiasi alur kerja utama. Kelas ini memiliki relasi 
+one to many  (1-ke-0..*) dengan kelas Request, yang secara logis berarti satu 
+peternak dapat mengajukan banyak permintaan IB dari waktu ke waktu, namun 
+satu permintaan spesifik hanya dapat dimiliki oleh satu peternak. Di sisi 
+manajerial, kelas Admin berperan sebagai s upervisor sistem. Relasinya yang 
+juga one to many  (1-ke-0..*) dengan kelas Request menunjukkan bahwa satu 
+admin bertanggung jawab untuk memverifikasi dan mengelola banyak 
+
+
+--- PAGE 31 ---
+19 
+permintaan yang masuk, memastikan tidak ada permintaan yang terlewat dan 
+setiap permintaan ditangani dengan semestinya. Melengkapi aktor, kelas Petugas 
+berperan sebagai eksekutor di lapangan. Relasinya dengan Checkup 
+didefinisikan sebagai many t o man y (0..*-ke-0..*). Desain ini memberikan 
+fleksibilitas operasional yang tinggi, di mana satu petugas dapat menangani 
+banyak tugas pemeriksaan, dan satu tugas pemeriksaan (jika kompleks) bisa saja 
+ditangani oleh tim, atau dialihkan ke petugas lain jika terjadi  halangan.  
+Beralih ke kelas entitas, alur data dimulai dari Request, yang merupakan 
+entitas transaksional pertama. Diajukan oleh Peternak dan divalidasi oleh 
+Admin, kelas ini memiliki relasi one to one  (1-ke-1) yang ketat dengan kelas 
+Laporan. Ini adalah keputusan desain yang fundamental untuk memastikan 
+bahwa setiap permintaan yang valid akan menghasilkan satu dan hanya satu 
+laporan kemajuan yang koheren. Relasi ini menciptakan tautan data yang tidak 
+terputus ( unbreakable link ); Request adalah 'pintu masuk ' dan Laporan adalah 
+'buku catatan hidup' dari layanan tersebut. Seluruh progres, dari validasi hingga 
+selesai, akan tercatat dalam satu entitas Laporan yang terkait.  
+Kelas Laporan sendiri merupakan entitas inti yang mencatat seluruh 
+progres layanan dari satu Request dan akan terus diperbarui statusnya. Ia 
+memiliki relasi one to man y (1-ke-0..*) dengan kelas Checkup. Struktur one to 
+many  ini sangat penting untuk pemantauan jangka panjang, memungkinkan 
+sistem untuk melampirkan rekaman historis tanpa batas pada satu laporan induk. 
+Sebagai contoh, catatan "Pemeriksaan USG 1", "Konfirmasi Bunting", dan 
+"Catatan Kelahiran" semua terkelompok ra pi sebagai entitas Checkup di bawah 
+satu Laporan yang sama. Entitas Checkup sendiri berfungsi untuk mencatat hasil 
+dari satu kali pemeriksaan spesifik di lapangan yang dilakukan oleh Petugas.  
+Signifikansi dari kelas ActivityLog tidak dapat diremehkan. Kelas ini 
+berfungsi sebagai pencatat jejak audit (audit trail) universal. Ia memiliki relasi 
+many  to one ke setiap kelas aktor (Admin, Peternak, Petugas). Desain ini 
+menyediakan mekanisme perekaman histori yang komprehensif, merekam 'siapa 
+melakukan apa dan kapan' untuk setiap tindakan penting dalam sistem. Hal ini 
+fundamental untuk akuntabilitas, resolusi p erselisihan, dan pemeliharaan 
+integritas data. Dengan menghubungkannya ke semua kelas aktor, sistem 
+memastikan bahwa setiap klik dan perubahan data yang krusial  mulai dari 
+pembuatan Request oleh Peternak, validasi oleh Admin, hingga input Checkup 
+oleh Petugas  dapat dilacak kembali ke sumbernya.  
+Dengan demikian, rancangan diagram kelas ini membentuk arsitektur dan 
+fondasi data yang kokoh, terintegrasi, dan konsisten. Multiplisitas yang 
+didefinisikan secara jelas, seperti satu ke satu  antara Request dan Laporan serta 
+satu ke n antara Laporan dan Checkup, tidak hanya mendukung alur kerja 
+dinamis yang digambarkan pada diagram aktivitas, tetapi juga memastikan 
+bahwa data tetap terstruktur, dapat diandalkan, dan siap untuk diaudit secara 
+menyeluruh. Rancangan diagram kelas iterasi pertama secara lengkap dapat 
+dilihat pada Gambar 8 . 
+
+
+--- PAGE 32 ---
+20 
+ 
+ 
+Gambar 8  Class diagram  iterasi pertama  
+Kemudian dilakukan p erancangan antarmuka pengguna (user interface)  
+dilakukan menggunakan Figma untuk menghasilkan high fidelity prototype . 
+Prototipe ini memberikan gambaran visual yang detail mengenai tata letak, 
+komponen, dan alur interaksi pengguna pada setiap halaman, baik untuk Admin 
+maupun Petugas. Perancangan ini menjadi panduan utama bagi pengembang 
+front  end dalam membangun aplikasi yang intuitif dan sesuai dengan kebutuhan 
+fungsional. Berdasarkan hasil perancangan antarmuka yang telah dilakukan, 
+sistem ini terdiri ata s beberapa halaman utama yang dirancang sesuai dengan 
+peran pengguna. Pada Gambar 9 ditampilkan tampilan halaman dashboard  
+admin . Halaman ini berfungsi sebagai pusat kendali bagi admin dalam 
+
+
+--- PAGE 33 ---
+21 
+mengelola seluruh aktivitas sistem. Melalui dashboard  ini, admin dapat melihat 
+notifikasi terkait permintaan baru maupun permintaan pemeriksaan ( check -up), 
+serta mengakses tabel yang menampilkan seluruh daftar permintaan yang 
+diajukan oleh peternak. Fitur ini dirancang untuk memudahkan admin dalam 
+memantau status dan perkembangan setiap permintaan secara menyeluruh.  
+ 
+Gambar 9  Tampilan hi-fi dashboard admin  iterasi pertama  
+Selanjutnya, pada Gambar 10 diperlihatkan halaman detail permintaan 
+yang menjadi bagian penting dalam proses penugasan dan verifikasi. Halaman 
+ini memungkinkan admin untuk meninjau rincian permintaan yang diajukan oleh 
+peternak serta menugaskan petugas lap angan yang sesuai. Selain itu, halaman ini 
+juga dapat diakses oleh petugas yang telah menerima penugasan dari admin. 
+Bagi petugas, halaman ini berfungsi untuk melakukan konfirmasi tugas dan 
+mengisi laporan pelaksanaan sesuai instruksi yang diberikan. Denga n demikian,  
+halaman detail permintaan berperan sebagai penghubung utama antara admin, 
+petugas, dan data pelaksanaan di lapangan.  
+ 
+Gambar 10  Tampilan hi-fi detail permintaan iterasi pertama  
+
+
+--- PAGE 34 ---
+22 
+ 
+Kemudian, pada Gambar 11 ditampilkan halaman dashboard  petugas, 
+yang dirancang khusus untuk memudahkan petugas dalam memantau seluruh 
+tugas yang diterima. Tampilan pada halaman ini secara umum memiliki 
+kesamaan dengan dashboard  admin, di mana terdapat kartu notifikasi 
+(notification card ) yang menampilkan status tugas terbaru serta tabel daftar tugas 
+secara keseluruhan. Melalui tampilan ini, petugas dapat mengakses informasi 
+dengan cepat, memastikan setiap penugasan dapat diselesaikan tepat waktu, serta 
+melakukan pembaruan status laporan sesuai perkembangan di lapangan . 
+ 
+Gambar 11  Tampilan hi-fi dashboard  petugas iterasi pertama  
+4.1.3 Pengembangan Prototipe   
+Sistem informasi ini dikembangkan menggunakan arsitektur client -server  
+yang memisahkan antara antarmuka pengguna ( client -side) dengan logika bisnis 
+dan basis data ( server -side). Kedua sisi ini berkomunikasi melalui Application 
+Programming Interface (API) dengan protokol REST ( Representational State 
+Transfer ). Arsitektur ini memungkinkan pengembangan yang modular, di mana 
+sisi front  end dan back  end dapat dikembangkan, diuji, dan diperbarui secara 
+independen, serta mendukung skalabilitas dan pemeliharaan sis tem dalam 
+jangka panjang.  
+Pada sisi frontend , aplikasi bertindak sebagai klien yang bertanggung 
+jawab untuk menampilkan data dan menangkap interaksi pengguna (Admin dan 
+Petugas). Antarmuka pengguna dikembangkan menggunakan React dan Vite. 
+React dipilih karena merupakan pustaka JavaScript yang popule r dan efisien 
+untuk membangun antarmuka pengguna yang interaktif dan berbasis komponen, 
+serta memiliki ekosistem yang luas. Sementara itu, Vite digunakan sebagai build 
+tool karena kemampuannya dalam menyediakan proses pengembangan yang 
+cepat dan waktu kompilasi yang minimal, sehingga sangat mendukung 
+produktivitas developer.  
+Di sisi backend , server mengelola logika bisnis, memproses permintaan 
+dari client, berinteraksi dengan basis data, dan mengirimkan data dalam format 
+JSON. Untuk membangun REST API, digunakan Node.js, sebuah runtime  
+JavaScript yang ringan dan efisien, terutama cocok untuk aplikasi berbasis I/O 
+
+
+--- PAGE 35 ---
+23 
+yang intensif seperti layanan web. Node.js juga memiliki ekosistem modul yang 
+luas, sehingga mempercepat pengembangan.  
+Untuk basis data, digunakan PostgreSQL, sebuah sistem manajemen basis 
+data relasional open  source  yang kuat dan andal. PostgreSQL dipilih karena 
+kemampuannya dalam menangani query  kompleks, serta skalabilitas dan 
+kestabilan dalam pengelolaan data berskala besar.  
+Alur kerja sistem, sebagaimana diilustrasikan pada Gambar 12, dimulai 
+dari pengguna yang berinteraksi dengan aplikasi web. Setiap aksi pengguna 
+menghasilkan permintaan ( request ) yang dikirim ke REST API. REST API 
+kemudian memproses logika bisnis dan berinteraksi dengan PostgreSQL untuk 
+mengambil atau menyimpan data, lalu mengembalikan respon  ke aplikasi web 
+untuk ditampilkan kepada pengguna.  
+ 
+Gambar 12  Desain arsitektur aplikasi  
+Kemudian dilakukan p engembangan sisi back  end berfokus pada 
+pembangunan server aplikasi, logika bisnis, dan konektivitas database 
+menggunakan Node.js dengan kerangka kerja Express.js. Struktur backend  
+diorganisir ke dalam direktori controllers, routes, config,  dan middleware  yang 
+dapat dilihat pada Lampiran  2. Operasi atau metode yang tercantum pada setiap 
+kelas merepresentasikan fungsionalitas utama yang diekspos melalui REST API, 
+yang menjadi jembatan antara frontend  dan backend . Setiap operasi 
+diasosiasikan dengan metode HTTP (POST, GET, PUT) yang sesuai dengan 
+fungsinya dalam melakukan operasi Create, Read, dan Update pada data. 
+Pemetaan ini bertujuan untuk memberikan gambaran yang jelas tentang 
+bagaimana antarmuka pengguna akan berinteraksi dengan logika bisnis di 
+backend  melalui API. Untuk memperjelas  setiap metode yang digunakan dalam 
+perancangan operasi API, Tabel 4 menyajikan acuan dan keterangannya.  
+Tabel 4  Acuan penggunaan metode dalam perancangan API  
+Metode  Keterangan  
+POST  Digunakan untuk membuat sumber daya baru atau mengirim data untuk 
+diproses. Dalam sistem ini, POST digunakan untuk registrasi pengguna, 
+membuat permintaan baru, dan mengirim setiap jenis laporan (IB, 
+kebuntingan, dll.).  
+GET  Digunakan untuk membaca atau mengambil satu atau beberapa sumber daya 
+tanpa mengubahnya. Dalam sistem ini, GET digunakan untuk mengambil 
+daftar permintaan, detail permintaan, daftar tugas, dan data pendukung 
+seperti daftar petugas  
+PUT  Digunakan untuk memperbarui sumber daya yang sudah ada secara 
+keseluruhan atau mengubah status. Dalam sistem ini, PUT digunakan untuk 
+aksi manajerial seperti validasi permintaan oleh Admin atau konfirmasi 
+tugas oleh Petugas.  
+
+
+--- PAGE 36 ---
+24 
+ 
+ 
+Beberapa endpoint  REST API yang menjadi tulang punggung 
+fungsionalitas sistem untuk Admin dan Petugas disajikan pada Tabel 5. Daftar 
+ini merupakan hasil breakdown  dari kebutuhan fungsional yang diidentifikasi 
+melalui diagram aktivitas dan use case  pada iterasi pertama. Proses breakdown 
+dilakukan dengan menurunkan setiap aktivitas utama yang dilakukan oleh 
+Admin dan Petugas menjadi representasi endpoint  pada sisi backend . Dengan 
+demikian, setiap endpoint  pada tabel ini menggambarkan hubungan langsung 
+antara rancangan proses bisnis dan implementasi teknis API yang digunakan 
+dalam sistem.  
+Tabel 5  Daftar endpoint  utama untuk Admin dan Petugas iterasi pertama  
+Aktor  Method  URL  Keterangan  
+Admin  GET  /api/requests / Mengambil seluruh permintaan 
+yang dikirimkan peternak  
+Admin  PUT  /api/requests/:id/verify  Memverifikasi permintaan dan 
+menugaskan petugas IB awal.  
+Admin  POST  /api/checkups/assign  Menugaskan petugas untuk 
+melakukan check -up 
+(kebuntingan/kelahiran).  
+Admin  POST  /api/requests/:id/reminder  Mengirim pengingat kepada 
+peternak yang terlambat memberi 
+laporan.  
+Petugas  GET  /api//petugas/list  Mengambil semua list tugas yang 
+di tugaskan oleh admin.  
+Petugas  PUT  /api/requests/petugas/:id/laporan  Mengirim laporan setelah 
+menyelesaikan proses IB awal.  
+Petugas  PUT  /api/checkups/:id/confirm  Mengonfirmasi akan melaksanakan 
+tugas check -up. 
+Petugas  PUT  /api/checkups/:id/submit  Mengirim laporan hasil check -up 
+kebuntingan atau kelahiran.  
+Selain endpoint  untuk Admin dan Petugas, disiapkan juga beberapa 
+endpoint khusus untuk aktor Peternak. Dalam lingkup penelitian ini, interaksi 
+dari Peternak disimulasikan melalui pengujian menggunakan Postman. Sama 
+halnya dengan endpoint  sebelumnya, daftar endpoint  pada Tabel 6 juga 
+merupakan hasil breakdown  dari alur aktivitas dan kebutuhan fungsional yang 
+telah dirancang pada tahap analisis sistem. Endpoint  tersebut mencakup 
+fungsionalitas inti dari sisi Peternak, seperti pembuatan permintaan baru, 
+pelaporan hasil insem inasi buatan (IB), serta pengajuan laporan kejadian seperti 
+keguguran dan kelahiran . 
+ 
+
+
+--- PAGE 37 ---
+25 
+Tabel 6  Daftar endpoint  aktor Peternak (Simulasi Postman) iterasi pertama  
+Aktor  Method  URL  Keterangan  
+Peternak   POST  /api/requests  Buat Permintaan Baru 
+(Postman)  
+  POST  /api/requests/:id/laporan -ib Peternak lapor hasil IB (gagal 
+/ berhasil)  
+  POST  /api/requests/:id/checkup/kelahiran  Peternak minta checkup 
+kelahiran  
+  PUT  /api/requests/:id/keguguran  Peternak lapor keguguran  
+  POST  /api/requests/laporan -kematian/ :id Peternak lapor kematian anak 
+sapi 
+Logika bisnis utama pada controller dirancang untuk mengelola siklus 
+permintaan IB secara aman dan terstruktur. Fungsionalitas autentikasi, misalnya, 
+mengamankan akses pengguna melalui verifikasi kredensial dan penggunaan token 
+sesi untuk menjaga keamanan,  di mana rincian teknis implementasinya dapat dilihat 
+pada Lampiran 4.  Logika paling krusial berpusat pada pengelolaan alur kerja 
+permintaan yang terdapat pada requestController  dan checkupController . Sebagai 
+contoh, saat admin melakukan verifikasi, sistem secara otomatis mengubah status 
+permintaan dan mencatat riwayatnya. Logika spesifik untuk proses verifikasi ini 
+disajikan pada Lampiran 5. Demikian pula, untuk menjaga integritas data pada 
+proses kritis seperti saat menerima laporan hasil IB dari peternak, sistem 
+mengimplementasikan mekanisme transaksi basis data. Mekanisme  ini memastikan 
+semua pembaruan data yang terkait  seperti perubahan status dan pembuatan jadwal 
+checkup  baru, sebagaimana dirinci kan pada Lampiran 6 . 
+Kemudian dilakukan penyesuaian logika backend  dengan sisi frontend  yang 
+bertujuan untuk membangun antarmuka pengguna yang interaktif dan intuitif bagi 
+Admin dan Petugas, dibangun sebagai Single Page Application (SPA) 
+menggunakan library  React.js dan build tool  Vite. Struktur direktori frontend  
+diorganisir secara modular untuk memisahkan setiap  pages  untuk komponen 
+halaman utama, components  untuk elemen UI yang dapat digunakan kembali 
+seperti navbar , services  untuk mengelola panggilan API menggunakan Axios, 
+styles  untuk file CSS, assets  untuk menyimpan gambar, dan data untuk data statis , 
+struktur file dan folder  frontend  dapat dilihat pada Lampiran  3. Fungsionalitas 
+utama diimplementasikan pada empat halaman utama yang saling terhubung.  
+Halaman dashboard  admin (Gambar 13) berfungsi sebagai pusat kendali 
+utama. Halaman ini dilengkapi fitur notifikasi untuk permintaan prioritas, seperti 
+mengingatkan peternak yang terlambat mengirim laporan IB (>3 bulan) atau 
+laporan kelahiran (>9 bulan), serta notifikasi untuk permintaan ya ng membutuhkan 
+penugasan check -up. Di bawahnya, terdapat tabel yang menampilkan seluruh 
+permintaan IB dengan berbagai status.  
+
+
+--- PAGE 38 ---
+26 
+ 
+  
+Gambar 13  Tampilan antarmuka dashboard  Admin  iterasi pertama  
+Dari dashboard , admin dapat mengakses halaman Detail Permintaan Sisi 
+Admin (Gambar 14) untuk melakukan manajemen spesifik. Fitur utamanya adalah 
+verifikasi permintaan IB awal, di mana admin dapat menugaskan petugas atau 
+menolak permintaan. Selain itu, admin dapat menugaskan petugas (yang sama atau 
+berbeda) untuk melakukan checkup  kebuntingan dan kelahiran. Halaman ini 
+menampilkan data komprehensif, mulai dari data peternak, detail permintaan, 
+riwayat laporan, hingga log aktivitas.  
+ 
+Gambar 14  Tampilan antarmuka detail permintaan sisi Admin  iterasi pertama  
+Untuk petugas, halaman dashboard  petugas (Gambar 1 5) dirancang agar 
+lebih fokus dan efisien dalam menampilkan tugas yang relevan. Fitur utamanya 
+meliputi notifikasi tugas baru seperti proses IB atau pemeriksaan kebuntingan, serta 
+pengingat otomatis jika laporan belum diisi dalam batas waktu yang ditentukan . 
+Selain itu, tabel permintaan yang ditampilkan bersifat personal, hanya 
+menampilkan daftar tugas yang memang ditugaskan kepada petugas yang sedang 
+login. Desain ini membantu meningkatkan keteraturan kerja, meminimalkan 
+
+
+--- PAGE 39 ---
+27 
+kesalahan, dan memastikan setiap petugas dapat memantau progres tugasnya secara  
+langsung didalam halaman detail tugas sesuai penugasan yang ajukan oleh admin . 
+  
+Gambar 15  Tampilan antarmuka dashboard  Petugas  iterasi pertama  
+Halaman detail permintaan sisi Petugas (Gambar 1 6) adalah ruang kerja 
+utama bagi petugas untuk mengeksekusi setiap tugas yang diberikan. Fitur 
+utamanya memungkinkan petugas untuk menandai "Mulai Proses IB", melakukan 
+konfirmasi tugas pemeriksaan ( checkup ), serta mengisi dan mengirim laporan untuk 
+setiap jenis kegiatan seperti inseminasi, kebuntingan, atau kelahiran. Selain itu, 
+halaman ini juga menampilkan riwayat aktivitas dan status terbaru dari setiap 
+permintaan. Data yang ditampilkan sepenuhnya sinkro n dengan tampilan di sisi 
+admin untuk memastikan transparansi, akurasi, dan akuntabilitas proses pelaporan 
+lapangan . 
+  
+Gambar 16  Tampilan antarmuka detail permintaan sisi Petugas  iterasi pertama  
+
+
+--- PAGE 40 ---
+28 
+ 
+4.1.4 Pengujian dan Umpan Balik  
+Pada tahap ini, dilakukan pengujian fungsional  secara end to end terhadap  
+sistem untuk memastikan bahwa seluruh fungsionalitas berjalan sesuai dengan 
+kebutuhan yang telah dirumuskan pada tahap komunikasi. Pengujian dilakukan 
+menggunakan metode black  box testing , yang berfokus pada evaluasi keluaran 
+sistem berdasarkan input yang diberikan, tanpa memperhatikan struktur atau 
+logika internal kode. Pengujian dilakukan secara langsung melalui antarmuka 
+web yang telah dikonfigurasi dan diintegrasikan antara back  end dan front  end, 
+sehingga menggambarkan kondisi operasional sistem secara nyata. Skenario 
+pengujian disusun berdasarkan user story  (Tabel 3) untuk masing -masing peran, 
+yaitu Admin, Petugas, serta simulasi Peternak melalui aplikasi Postman . 
+Pengujian Skenario Positif bertujuan untuk memastikan bahwa seluruh alur 
+kerja utama sistem  (Alur kerja normal ) berjalan sesuai dengan hasil yang 
+diharapkan ketika pengguna memberikan input yang valid. Pengujian ini 
+dilakukan untuk memverifikasi bahwa sistem dapat menjalankan fungsi -fungsi 
+intinya secara benar dan konsisten. Rincian skenario dan hasil pengujian po sitif 
+disajikan pada Tabel 7, sedangkan dokumentasi dari proses pengujian dapat 
+dilihat pada Lampiran 7. 
+Tabel 7  Skenario pengujian positif alur kerja normal iterasi pertama  
+Aktor  Fitur  Skenario  Hasil yang Diharapkan  Status  
+Peternak 
+(via 
+Postman)  Pengajuan 
+Permintaan 
+IB Mengirim request POST ke 
+/api/requests dengan data 
+peternak dan ternak yang valid.  Permintaan baru tercatat di 
+database  dengan status 
+"Menunggu Verifikasi" dan 
+muncul di dashboard 
+Admin.  Berhasil  
+Admin  Verifikasi & 
+Penugasan 
+Awal  Admin membuka detail 
+permintaan, memilih petugas 
+dari modal, dan menekan tombol 
+verifikasi.  Status permintaan berubah 
+menjadi "Diproses", nama 
+petugas tercatat, dan tugas 
+baru muncul di dashboard  
+Petugas.  Berhasil  
+Petugas  Pelaporan 
+Proses IB 
+Awal  Petugas membuka detail tugas, 
+menekan "Mulai Proses IB", lalu 
+mengisi dan mengirim form 
+laporan IB.  Laporan tersimpan, status 
+permintaan berubah menjadi 
+"Menunggu Laporan 
+Peternak", dan log aktivitas 
+diperbarui.  Berhasil  
+Peternak 
+(via 
+Postman)  Pelaporan 
+Hasil IB 
+(Bunting)  Mengirim request POST ke 
+/api/requests/:id/laporan -ib 
+dengan status "Berhasil".  Status permintaan berubah 
+menjadi "Berhasil". 
+Notifikasi "Permintaan 
+Checkup Menunggu 
+Penugasan" muncul di 
+dashboard  Admin.  Berhasil  
+Admin  Penugasan 
+Check -up 
+Kebuntingan  Admin membuka detail 
+permintaan berstatus "Berhasil", 
+lalu menugaskan petugas untuk 
+check -up kebuntingan.  Tugas check -up baru dibuat 
+dan muncul di dashboard  
+Petugas yang ditugaskan 
+dengan status "Belum 
+Dikonfirmasi".  Berhasil  
+Petugas  Konfirmasi 
+& Laporan 
+Check -up Petugas membuka tugas check -
+up, menekan "Konfirmasi", lalu 
+mengisi dan mengirim laporan 
+hasil check -up. Laporan check -up tersimpan. 
+Status tugas check -up 
+berubah menjadi "Selesai".  Berhasil  
+
+
+--- PAGE 41 ---
+29 
+Tabel 7  Skenario pengujian positif alur kerja normal  iterasi pertama  (lanjutan ) 
+Aktor  Fitur  Skenario  Hasil yang Diharapkan  Status  
+Peternak 
+(via 
+Postman)  Pelaporan 
+Kelahiran  Mengirim request POST ke 
+/api/requests/:id/checkup/kelahiran 
+untuk melaporkan kelahiran.  Notifikasi untuk check -up 
+kelahiran muncul di 
+dashboard Admin.  Apabila 
+petugas sudah Konfirmasi 
+dan mengisi laporan check -
+up status permintaan berubah 
+menjadi "Selesai".  Berhasil  
+Admin  Reminder 
+Laporan 
+Terlambat  Sistem mendeteksi permintaan 
+yang melewati batas waktu (3 atau 
+9 bulan) tanpa laporan dari 
+peternak  Notifikasi ôpermintaan 
+prioritasö muncul di 
+dashboard Admin, menyorot 
+permintaan yang terlambat  Berhasil  
+Keberhasilan alur kerja verifikasi dan penugasan otomatis ini merupakan 
+salah satu kontribusi utama sistem dalam mengatasi inefisiensi administrasi manual. 
+Proses ini secara langsung menggantikan alur kerja berbasis komunikasi verbal atau 
+pencatatan manual  yang, sebagaimana diungkapkan oleh Ahmad dan Elidar (2017), 
+menjadi sumber utama keterlambatan respons terhadap masa birahi optimal ternak. 
+Dengan mengubah status permintaan secara terpusat dan mengirimkan notifikasi 
+tugas secara instan, sistem memangkas waktu tunggu dan memastikan informasi 
+penugasan terdokumentasi secara akurat.  
+Pengujian Skenario Negatif dilakukan untuk menguji ketahanan sistem 
+dalam menangani berbagai kondisi tidak normal, seperti input yang tidak valid, alur 
+kerja alternatif, atau kejadian tak terduga seperti penolakan permintaan dan 
+pelaporan kegagalan. Penguj ian ini penting untuk memastikan sistem tetap stabil 
+dan mampu memberikan respons yang tepat dalam situasi yang tidak ideal. Rincian 
+skenario dan hasil pengujian negatif disajikan pada Tabel 8, sementara dokumentasi 
+visual pengujiannya disajikan pada Lampi ran 8. 
+Tabel 8  Skenario pengujian negatif alur kerja alternatif iterasi pertama  
+Aktor  Fitur  Skenario  Hasil yang Diharapkan  Status  
+Peternak 
+(via 
+Postman)  Pengajuan 
+Permintaan 
+(Input Tidak 
+Lengkap)  Mengirim request POST ke 
+/api/requests dengan salah satu 
+data wajib (misal: jenis_ib) 
+dikosongkan.  Sistem menolak permintaan 
+dan mengembalikan pesan 
+error (misal: HTTP 400 Bad 
+Request). Data tidak 
+tersimpan.  Berhasil  
+Admin  Penolakan 
+Permintaan  Admin membuka detail 
+permintaan, menekan tombol 
+"Tolak", dan mengisi alasan 
+penolakan pada modal.  Status permintaan berubah 
+menjadi "Ditolak". Catatan 
+penolakan tersimpan. Tugas 
+tidak muncul di dashboard  
+petugas manapun.  Berhasil  
+Peternak 
+(via 
+Postman)  Pelaporan 
+Hasil IB 
+(Gagal)  Mengirim request POST ke 
+/api/requests/:id/laporan -ib 
+dengan status "Gagal".  Status permintaan berubah 
+menjadi "Gagal" dan siklus 
+untuk permintaan tersebut 
+berhenti. Tidak ada alur 
+check -up yang dibuat.  Berhasil  
+
+
+--- PAGE 42 ---
+30 
+ 
+Tabel 8  S kenario pengujian negatif a lur kerja alternatif  iterasi pertama 
+(lanjutan ) 
+Aktor  Fitur  Skenario  Hasil yang Diharapkan  Status  
+Peternak 
+(via 
+Postman)  Pelaporan 
+Keguguran  Mengirim request PUT ke 
+/api/requests/:id/kegugura
+n pada permintaan yang 
+sebelumnya telah melalui 
+proses IB dan checkup 
+kebuntingan (fase 2).  Status permintaan berubah 
+menjadi "Gagal", laporan 
+keguguran tersimpan, dan 
+alur checkup kelahiran 
+dihentikan. Informasi 
+ditampilkan di log aktivitas.  Berhasil  
+Peternak 
+(via 
+Postman)  Laporan 
+Kematian 
+Anak Sapi  Mengirim request POST 
+ke /api/requests/laporan -
+kematian/:id pada 
+permintaan yang 
+sebelumnya berstatus 
+Selesai.  Status permintaan berubah 
+menjadi "Gagal", catatan 
+kematian anak sapi tersimpan, 
+dan siklus permintaan 
+berakhir. Ditampilkan di log 
+aktivitas.  Berhasil  
+Validasi fungsional ini lebih dari sekadar pembuktian teknis  mekanisme 
+inti yang memastikan integritas dan keandalan sistem. Salah satu kelemahan 
+utama dari sistem manual yang digantikan adalah tidak adanya kontrol terhadap 
+kelengkapan dan akurasi data yang dikirim oleh pengguna, yang sering kali 
+berujung pada data tidak valid dan menghambat proses analisis serta 
+pengambilan keputusan. Melalui penerapan validasi server side , sistem secara 
+otomatis menolak input yang tidak lengkap atau tidak sesuai dengan format yang 
+telah ditentukan. Pendekatan ini tidak hanya mening katkan kualitas data, tetapi 
+juga memastikan bahwa seluruh proses pelaporan, terutama yang berkaitan 
+dengan kegiatan inseminasi buatan (IB), memiliki dasar informasi yang akurat 
+dan dapat dipertanggungjawabkan.  
+Penanganan langsung terhadap validitas data IB ini menjadi bagian 
+penting dalam menjamin efektivitas sistem sebagai alat evaluasi program. 
+Dengan data yang bersih dan terverifikasi, pengelola dapat melakukan analisis 
+performa program IB secara lebih akurat  dan mengambil keputusan strategis 
+berbasis data yang valid. Pendekatan ini sejalan dengan pandangan Diskin 
+(2018) yang menekankan pentingnya keberadaan sistem informasi terintegrasi 
+untuk mendukung pengelolaan program peternakan secara berkelanjutan dan 
+efisien.  
+Berdasarkan hasil pengujian yang dilakukan pada tahap ini, seluruh 
+skenario baik skenario normal (positif) maupun skenario alternatif  (negatif) 
+menunjukkan status ôBerhasilö. Hasil ini menegaskan bahwa sistem telah 
+berfungsi secara konsisten sesuai dengan rancangan dan kebutuhan yang telah 
+didefinisikan pada tahap perancangan awal. Capaian tersebut menjadi umpan 
+balik teknis yang sangat positif da n menandai berakhirnya iterasi pertama 
+dengan hasil yang stabil. Dengan demikian, sistem dinyatakan siap untuk 
+melangkah ke tahap berikutnya, yaitu evaluasi oleh pengguna akhir  dan 
+penyempurnaan logika bisnis pada iterasi kedua pengembangan . 
+
+
+--- PAGE 43 ---
+31 
+4.2 Iterasi 2  
+4.2.1 Komunikasi  
+Setelah pengembangan prototipe awal pada iterasi pertama, dilakukan sesi 
+evaluasi dan komunikasi mendalam bersama dosen pembimbing untuk meninjau 
+fungsionalitas dan arsitektur sistem yang telah dibangun. Meskipun prototipe 
+awal secara fungsional mampu menj alankan alur dasar permintaan IB, evaluasi 
+menunjukkan adanya potensi kerumitan dalam pengelolaan status proses yang 
+tersebar di beberapa entitas database  (penggunaan flag individual  pada setiap 
+tabel laporan turunan). Mekanisme ini, meskipun logis pada ta hap perancangan 
+awal, dinilai dapat menyulitkan implementasi logika backend  yang lebih 
+kompleks, terutama dalam hal pelacakan state  yang sedang aktif secara efisien 
+dan pengelolaan notifikasi berdasarkan tenggat waktu dinamis.  Masukan utama 
+dari sesi ini adalah perlunya penyesuaian desain database  untuk 
+mensentralisasikan mekanisme pelacakan status ( state tracking mechanism ) ke 
+dalam satu entitas utama, sehingga menciptakan state machine  yang lebih solid, 
+efisien, dan mudah dikelola oleh sistem backend . Dis kusi ini juga menyoroti 
+pentingnya konsistensi antara proses bisnis aktual di lapangan dan representasi 
+digitalnya pada sistem, agar setiap perubahan status memiliki jejak data yang 
+jelas dan mudah ditelusuri.  
+Selain itu, aspek antarmuka dan pengalaman pengguna turut menjadi 
+perhatian. Dosen pembimbing memberikan masukan agar sistem tidak hanya 
+berfungsi dengan baik secara teknis, tetapi juga mampu memberikan umpan 
+balik yang informatif kepada pengguna, seperti status permintaan yang lebih 
+deskriptif dan indikator visual untuk setiap tahapan proses. Umpan balik ini 
+kemudian menjadi dasar untuk perbaikan pada sisi tampilan serta logika 
+notifikasi yang lebih adaptif terhadap berbagai kondisi . 
+Berdasarkan hasil komunikasi tersebut, alur proses bisnis sistem 
+dirancang ulang untuk mengakomodasi model pelacakan status yang terpusat. 
+Desain baru ini memungkinkan setiap perubahan pada tabel Laporan utama 
+secara otomatis memicu penyesuaian di tabel tu runan, sekaligus memperkuat 
+integrasi antara modul permintaan, laporan, dan penugasan. Alur proses bisnis 
+yang diperbarui dan menjadi dasar pengembangan iterasi kedua  divisualisasikan 
+pada Gambar 17. Proses dimulai ketika peternak mengajukan permintaan IB,  
+sistem mencatat permintaan ini, dan admin menerima serta memverifikasi 
+permintaan IB. Jika data dianggap tidak valid berdasarkan pemeriksaan admin, 
+maka admin dapat m enolak permintaan tersebut disertai alasan penolakan, dan 
+proses untuk permintaan tersebut berakhir. Namun, jika valid, Admin Membuat 
+Penugasan kepada petugas inseminator yang dipilih, yang menjadi titik awal 
+sistem secara formal memulai siklus tindak lanjut terha dap permintaan tersebut . 
+ 
+ 
+
+
+--- PAGE 44 ---
+32 
+ 
+ 
+Gambar 17  Alur proses bisnis iterasi kedua  
+
+
+--- PAGE 45 ---
+33 
+Selanjutnya, petugas melihat daftar tugas yang ditugaskan kepadanya. 
+Sebelum berangkat  untuk melakukan tugas dilapangan , petugas melakukan 
+konfirmasi tugas. Setelah tiba di lokasi dan melaksanakan IB di lapangan, petugas  
+melakukan  pengisian  laporan proses IB. Di sini, alur bercabang berdasarkan hasil , 
+jika dilaporkan tidak berhasil, sistem akan mencatat kegagalan ini dan 
+menyelesaikan permintaan dengan status gagal  IB. Jika dilaporkan berhasil, sistem 
+akan mencatat keberhasilan IB awal dan memulai siklus pe mantauan berikutnya, 
+yaitu menunggu informasi mengenai kebuntingan dalam rentang waktu yang 
+ditentukan (0  sampai 3 bulan).  
+Pada fase pemantauan kebuntingan, sistem secara berkala memeriksa 
+apakah batas waktu untuk laporan indikasi kebuntingan telah terlewati. Jika ya 
+(Terlambat), sistem akan mengirimkan notifikasi keterlambatan kepada admin. Jika 
+tidak, sistem menunggu peternak mengirim laporan hasil IB (indikasi bunting atau 
+tidak). Laporan dari peternak ini akan diterima oleh sistem. Jika hasilnya tidak 
+positif ( misalkan sapi birahi kembali), sistem akan memperbarui status menjadi 
+gagal dan menyelesaikan permintaan. Jika hasi lnya positif, sistem akan mengirim 
+notifikasi ke admin. Berdasarkan notifikasi ini, admin dapat menugaskan  petugas 
+untuk melakukan pemeriksaan kebuntingan.  Setelah p etugas melakukan 
+pengecekan di lapangan dan mengisi laporan cek kebuntingan. Jika hasilnya tidak 
+bunting, sistem menyelesaikan permintaan dengan status gagal. Jika bunting, sistem 
+mencatat hasil ini dan memulai siklus pemantauan kelahiran (3  sampai 9 bulan).  
+Fase terakhir adalah pemantauan kelahiran. Sistem kembali memeriksa  
+tenggat waktu . Jika terlambat, notifikasi dikirim ke admin  dan menugaskan petugas 
+untuk melakukan cek kelahiran . Jika peternak mengirim laporan kelahiran, sistem 
+menerima notifikasi dan menampilkan notifikasi tersebut pada dashboard admin 
+untuk penugasan cek kelahiran . Jika laporan tersebut adalah keguguran (interupsi), 
+sistem akan mengirimkan notifikasi dan menampilkan pada dashboard  admin agar 
+admin dapat menugaskan petugas untuk cek kegu guran . Jika laporan adalah 
+kelahiran, sistem mengirim notifikasi ke admin. Admin kemudian m embuat 
+penugasan cek kelahiran  dan petugas melakukan pengecekan serta  mengisi laporan 
+kelahiran. Berdasarkan hasil laporan petugas (lahir normal atau anak mati), sistem 
+akan menyelesaikan permintaan dengan status akhir yang sesuai, dan proses 
+berakhir. Revisi alur proses bisnis ini memastikan bahwa setiap tahapan, termasuk 
+notifikasi dan penugasan, dikelola secara terpusat dan terstruktur.  
+Berdasarkan alur proses bisnis yang telah disempurnakan tersebut, fitur -
+fitur fungsional dan user story untuk iterasi kedua  kemudian dirumuskan secara 
+lebih rinci. Tabel 9 memetakan setiap langkah kunci dalam alur proses baru ke 
+dalam fitur spesifik yang dapat diakses oleh pengguna, baik admin maupun petugas. 
+Fokus utama dalam perumusan user story  ini adalah memastikan implementasi 
+mekanisme pelacakan status terpusat melalui entitas laporan dan mengakomodasi 
+alur penugasan lanjutan oleh admin serta langkah konfirmasi tugas oleh petugas. 
+Fitur -fitur seperti "Validasi Permintaan & Inisiasi State Machine " oleh admin, 
+"Konfirmasi Tugas" oleh petugas, serta serangkaian fitur "Pela poran Hasil" (IB, 
+Kebuntingan, Kelahiran/Keguguran) secara langsung mencerminkan perubahan 
+logika yang bertujuan untuk meningkatkan efisiensi, akurasi data, dan kejelasan 
+alur kerja dibandingkan dengan prototipe awal.  
+
+
+--- PAGE 46 ---
+34 
+ 
+Tabel 9  Daftar fitur dan user story  iterasi kedua  
+Aktor  Fitur  User Story  Task  
+Admin  Validasi 
+Permintaan & 
+Inisiasi State 
+Machine  Sebagai admin, saya ingin 
+menyetujui permintaan dan 
+menugaskan petugas agar 
+siklus pelacakan status 
+permintaan secara otomatis 
+dimulai.  Mengakses detail permintaan 
+baru, memilih petugas, 
+menekan tombol "Setujui & 
+Tugaskan".  
+Petugas  Konfirmasi Tugas  Sebagai petugas, saya ingin 
+mengonfirmasi penerimaan 
+tugas (IB atau checkup ) agar 
+sistem tahu saya akan 
+mengerjakannya dan mengatur 
+dateline . Mengakses detail tugas baru, 
+menekan tombol "Konfirmasi 
+Tugas".  
+Petugas  Pelaporan Hasil IB  Sebagai petugas, saya ingin 
+melaporkan hasil pelaksanaan 
+IB (berhasil/gagal) agar status 
+permintaan diperbarui di 
+sistem.  Mengakses detail tugas IB 
+yang sudah dikonfirmasi, 
+membuka modal laporan, 
+mengisi hasil dan catatan, lalu 
+menekan "Kirim Laporan".  
+Admin  Pemantauan 
+Laporan Terlambat  Sebagai admin, saya ingin 
+melihat notifikasi jika ada 
+laporan (IB, kebuntingan, 
+kelahiran) yang melewati 
+tenggat waktu agar bisa 
+ditindaklanjuti.  Mengakses dashboard  admin 
+dan melihat kartu notifikasi 
+"Laporan Terlambat".  
+Admin  Penugasan Tugas 
+Lanjutan  Sebagai admin, saya ingin 
+menugaskan petugas untuk 
+checkup  
+(kebuntingan/kelahiran/kegugu
+ran) berdasarkan laporan 
+peternak atau keterlambatan.  Mengakses detail permintaan 
+yang membutuhkan tindak 
+lanjut, menekan tombol 
+"Tugaskan Cek Kebuntingan" 
+(atau jenis lainnya), memilih 
+petugas, lalu konfirmasi.  
+Petugas  Pelaporan Hasil 
+Kebuntingan  Sebagai petugas, saya ingin 
+melaporkan hasil cek 
+kebuntingan (bunting/tidak) 
+agar status permintaan 
+diperbarui.  Mengakses detail tugas cek 
+kebuntingan yang sudah 
+dikonfirmasi, membuka 
+modal laporan, mengisi hasil 
+dan catatan, lalu menekan 
+"Kirim Laporan".  
+Petugas  Pelaporan Hasil 
+Kelahiran/Kegugur
+an Sebagai petugas, saya ingin 
+melaporkan hasil akhir 
+(kelahiran normal/anak 
+mati/keguguran) agar siklus 
+permintaan selesai.  Mengakses detail tugas cek 
+kelahiran/keguguran yang 
+sudah dikonfirmasi, membuka 
+modal laporan, mengisi detail 
+hasil, lalu menekan "Kirim 
+Laporan".  
+4.2.2 Perencanaan dan Pemodelan Cepat  
+Diagram use case  pada Gambar 18 memvisualisasikan fungsionalitas 
+utama yang disempurnakan atau ditambahkan pada iterasi kedua , dengan fokus 
+pada alur kerja yang melibatkan state machine  terpusat dan penugasan lanjutan. 
+Terdapat dua aktor utama yang berinteraksi dengan sistem, yaitu admin dan 
+petugas. Admin memiliki tiga use case  utama  yaitu, validasi permintaan dan 
+inisiasi state machine , yang mencakup proses persetujuan permintaan awal dan 
+
+
+--- PAGE 47 ---
+35 
+memulai siklus pelacakan . pantau laporan terlambat, yang merepresentasikan 
+kemampuan admin untuk memonitor tugas yang melewati tenggat waktu . 
+kemudian  tugaskan petugas untuk tugas lanjutan, yang memungkinkan admin 
+mendelegasikan tugas pemeriksaan kebuntingan, kelahiran, atau verifikasi 
+keguguran. Di sisi lain, Petugas memiliki empat use case  utama yang bersifat 
+eksekusi dan pelaporan  yaitu, konfirmasi tugas, yang menandakan penerimaan 
+tugas . Laporkan hasil IB, untuk menyampaikan hasil inseminasi awal . Lapor kan 
+hasil cek kebuntingan, untuk melaporkan status kebuntingan dan laporkan hasil 
+kelahiran atau keguguran, untuk menyelesaikan siklus permintaan. Diagram ini 
+secara ringkas menggambarkan pembagian tanggung jawab dan interaksi kunci 
+antara pengguna dan sistem dalam alur kerja yang telah direvisi pada iterasi 
+kedua . 
+ 
+Gambar 18  Use case  diagram iterasi kedua  
+Untuk memperjelas interaksi dan alur kerja spesifik yang terjadi pada setiap 
+fungsionalitas yang digambarkan dalam use case  diagram iterasi kedua, disusunlah 
+use case description  secara rinci sebagai dokumen pendukung analisis dan 
+implementasi sistem. Setiap deskripsi menguraikan secara sistematis tujuan utama, 
+aktor yang terlibat, kondisi prasyarat ( pre-condition ), kondisi pasca eksekusi ( post-
+condition ), serta skenario alur dasar untuk masing -masing use case . Pembuatan 
+deskripsi ini bertujuan untuk member ikan panduan yang lebih terstruktur bagi 
+pengembang dalam mengimplementasikan logika backend  dan merancang interaksi 
+frontend  agar selaras dengan alur proses bisnis yang telah direvisi. Selain itu, 
+dokumen ini juga berfungsi sebagai jembatan komunikasi antara pengembang 
+sistem dan pembimbing dalam memastikan bahwa setiap komponen sistem yang 
+dikembangkan tetap konsisten dengan kebutuhan fungsional dan konteks 
+operasional di lapangan . 
+Use case  pertama dalam alur ini adalah Validasi Permintaan & Inisiasi  State 
+Machine . Fungsionalitas ini merupakan gerbang awal setelah permintaan diajukan 
+oleh peternak. Admin sebagai aktor utama bertanggung jawab untuk memeriksa 
+kelayakan permintaan. Jika disetujui, use case  ini juga mencakup langkah krusial 
+yaitu memulai mekanisme pelacakan status ( state machine ) secara otomatis dan 
+
+
+--- PAGE 48 ---
+36 
+ 
+menugaskan petugas untuk tindakan IB awal. Rincian alur kerja untuk use case  ini 
+disajikan pada Tabel 10. 
+Tabel 10  Use case description  validasi permintaan dan inisiasi state machine  
+Use Case  Description  
+Aktor  Admin.  
+Deskripsi  Admin memverifikasi permintaan IB yang masuk. Jika disetujui, admin 
+menugaskan petugas IB awal dan sistem menginisialisasi state machine 
+pelacakan.  
+Pre-condition  Permintaan IB dengan status 'Menunggu' sudah ada di sistem.  
+Post-condition  Permintaan berstatus 'Disetujui', petugas IB awal ditugaskan, state machine 
+di tabel laporan akan menandakan status menunggu laporan IB.  
+Skenario  1. Admin membuka detail permintaan baru.  
+2. Admin menekan tombol "Setujui & Tugaskan Petugas".  
+3. Admin memilih petugas dari daftar.  
+4. Admin mengonfirmasi penugasan.  
+5. Sistem mengubah status permintaan, membuat record Laporan baru, dan 
+membuat record Laporan  IB dengan petugas yang ditugaskan.  
+Setelah siklus permintaan dimulai, Admin perlu memantau kelancaran 
+proses, terutama terkait ketepatan waktu pelaporan. Use case  pantau laporan 
+terlambat dirancang untuk mendukung fungsi pengawasan ini. Sistem secara 
+proaktif mengidentifikasi permintaan yang laporannya telah melewati tenggat 
+waktu yang ditentukan, lalu menyajikannya kepada admin melalui notifikasi atau 
+daftar khusus. Detail interaksi untuk fungsi pemantauan ini dijelaskan pada Tabel  
+11. 
+Tabel 11  Use case description  pantau laporan terlambat  
+Use Case  Description  
+Aktor  Admin.  
+Deskripsi  Admin melihat daftar atau notifikasi permintaan yang laporannya sudah 
+melewati  tenggat waktu  
+Pre-condition  Terdapat permintaan aktif yang tanggal tenggat  waktu -nya sudah lewat.  
+Post-condition  Admin mengetahui permintaan mana saja yang membutuhkan tindak lanjut 
+karena keterlambatan.  
+Skenario  1. Admin membuka dashboard .  
+2. Sistem menampilkan jumlah laporan terlambat di kartu notifikasi.  
+3. (Opsional) Admin memfilter tabel untuk melihat detail permintaan yang 
+terlambat.  
+Seiring berjalannya siklus permintaan (setelah IB awal), seringkali 
+diperlukan tindakan lanjutan seperti pemeriksaan kebuntingan atau kelahiran, yang 
+dipicu oleh laporan dari peternak atau deteksi keterlambatan oleh sistem. Use case  
+tugaskan petugas untuk tugas lanjutan mendefinisikan bagaimana Admin 
+mendelegasikan tugas -tugas pemeriksaan lanjutan ini kepada petugas lapangan. 
+Fungsionalitas ini memastikan bahwa setiap tahap kritis dalam siklus reproduksi 
+ditangani oleh petugas yang tepat. Rincian proses pen ugasan lanjutan ini terdapat 
+pada Tabel 12. 
+
+
+--- PAGE 49 ---
+37 
+Tabel 12  Use case description  tugaskan petugas untuk tugas lanjutan  
+Use Case  Description  
+Aktor  Admin.  
+Deskripsi  Berdasarkan notifikasi dari peternak atau status keterlambatan, admin 
+menugaskan petugas untuk melakukan cek kebuntingan, cek kelahiran, atau 
+verifikasi keguguran.  
+Pre-condition  Permintaan sedang dalam status aktif dan membutuhkan tindak lanjut (misal 
+status  permintaan berisi 'Menunggu Verifikasi Kebuntingan').  
+Post-condition  Petugas baru ditugaskan, placeholder  dibuat di tabel laporan yang sesuai 
+(misal: Laporan  Kebuntingan), dan status  permintaan diperbarui. Jika 
+tugasnya verifikasi keguguran, state machine  di Laporan juga disesuaikan.  
+Skenario  1. Admin membuka detail permintaan yang membutuhkan tindak lanjut.  
+2. Admin menekan tombol "Tugaskan Cek Kebuntingan" (atau jenis 
+lainnya).  
+3. Admin memilih petugas dari daftar.  
+4. Admin mengonfirmasi penugasan.  
+5. Sistem membuat record laporan turunan dan memperbarui status 
+permintaan.  
+Dari sisi Petugas, setelah menerima tugas (baik IB awal maupun tugas 
+lanjutan), langkah pertama yang harus dilakukan adalah memberikan konfirmasi. 
+Use case  konfirmasi tugas bertujuan untuk mencatat penerimaan tugas oleh Petugas 
+dan memberikan indikasi kepada sistem  bahwa tugas tersebut akan segera diproses. 
+Konfirmasi ini juga memicu penyesuaian tenggat waktu pelaporan menjadi lebih 
+singkat (misalnya 24 jam). Alur kerja konfirmasi tugas ini dijelaskan pada Tabel 
+13. 
+Tabel 13  Use case description  konfirmasi tugas 
+Use Case  Description  
+Aktor  Petugas . 
+Deskripsi  Petugas menandakan bahwa tugas yang diberikan (baik IB awal maupun 
+tugas lanjutan) telah diterima dan akan dikerjakan.  
+Pre-condition  Petugas telah ditugaskan untuk sebuah tugas (ada record  untuk  Laporan  IB 
+atau Laporan lainnya).  
+Post-condition  Status  permintaan diperbarui (misal: 'Petugas Menuju Lokasi') dan tenggat  
+waktu  di reset  menjadi 24 jam.  
+Skenario  1. Petugas membuka detail tugas pada  dashboard .  
+2. Petugas menekan tombol "Konfirmasi Tugas".  
+3. Sistem memperbarui status permintaan dan tenggat waktu laporan.  
+Setelah tugas IB awal dikonfirmasi dan dilaksanakan, Petugas wajib 
+melaporkan hasilnya. Use case  laporkan hasil IB mendeskripsikan proses pengisian 
+dan pengiriman laporan pelaksanaan IB awal oleh petugas. Hasil laporan ini 
+(Berhasil atau Gagal) akan menentukan kelanjutan alur proses permintaan secara 
+keseluruhan. Detail pelaporan IB awal disajikan pada Tabel 14. 
+
+
+--- PAGE 50 ---
+38 
+ 
+Tabel 14  Use case description  laporkan hasil IB  
+Use Case  Description  
+Aktor  Petugas . 
+Deskripsi  Setelah melakukan IB, petugas mengisi dan mengirim laporan hasil 
+(Berhasil/Gagal) beserta detailnya.  
+Pre-condition  Petugas telah mengonfirmasi tugas IB (status  permintaan = 'Petugas Menuju 
+Lokasi IB').  
+Post-condition  Detail laporan tersimpan. State machine  di Laporan diperbarui  jika berhasil, 
+maju ke status menunggu laporan kebuntingan.  Jika gagal, status  menjadi 
+Hasil IB gagal . Status  permintaan dan status hasil  akhir di Permintaan juga 
+diperbarui.  
+Skenario  1. Petugas membuka detail tugas IB.  
+2. Petugas menekan tombol "Isi Laporan IB".  
+3. Petugas mengisi form di modal (hasil, catatan, kode straw).  
+4. Petugas menekan "Kirim Laporan".  
+5. Sistem menyimpan laporan dan memperbarui status.  
+Jika hasil IB awal berhasil, langkah selanjutnya dalam siklus adalah 
+pemeriksaan status kebuntingan ternak. Use case  laporkan hasil cek kebuntingan 
+merinci bagaimana Petugas, setelah melakukan pemeriksaan lapangan, melaporkan 
+hasilnya (Bunting atau Tidak Bunting) ke dalam sistem. Laporan ini kembali 
+menjadi penentu kelanjutan siklus permintaan. Rincian alur pelaporan kebuntingan 
+terdapat pa da Tabel 15. 
+Tabel 15  Use case description  laporkan hasil cek kebuntingan  
+Use Case  Description  
+Aktor  Petugas . 
+Deskripsi  Setelah melakukan cek kebuntingan, petugas mengisi dan mengirim laporan 
+hasil (Bunting/Tidak Bunting).  
+Pre-condition  Petugas telah mengonfirmasi tugas Cek Kebuntingan (status  permintaan = 
+'Petugas Menuju Lokasi Cek Kebuntingan').  
+Post-condition  Detail laporan tersimpan di Laporan  Kebuntingan. State machine  di Laporan 
+diperbarui  menjadi  jika bunting, maju ke menunggu laporan kelahiran,  jika 
+tidak bunting, status menjadi Tidak Bunting . Status  permintaan dan hasil  
+akhir di Permintaan juga diperbarui.  
+Skenario  1. Petugas membuka detail tugas Cek Kebuntingan.  
+2. Petugas menekan tombol "Isi Laporan Kebuntingan".  
+3. Petugas mengisi form di modal (hasil, catatan).  
+4. Petugas menekan "Kirim Laporan".  
+5. Sistem menyimpan laporan dan memperbarui status.  
+Tahap akhir dari siklus permintaan melibatkan pelaporan hasil kelahiran 
+atau kejadian interupsi seperti keguguran. Use case  laporkan hasil kelahiran atau 
+keguguran mendeskripsikan bagaimana petugas melaporkan hasil akhir dari proses 
+reproduksi setelah melakukan verifikasi di lapangan. Laporan ini akan secara 
+definitif menyelesaikan siklus permintaan dalam sistem, baik dengan status sukses 
+maupun gagal. Alur kerja untuk pelaporan akhir ini dije laskan pada Tabel 16. 
+
+

@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+fulltext_G6401211060_4d1e4e14c5ba472e8af8bfd09229a21f.pdf
+
+# Figma data dumps (large + may contain S3 signed URLs)
+figma_data.json
+figma_data_utf8.json
