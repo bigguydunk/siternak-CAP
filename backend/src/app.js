@@ -3,6 +3,9 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+const cors = require('cors');
+
+app.use(cors({ origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], credentials: true }));
 
 // ─── Body Parsing ────────────────────────────────────────────────────────────
 app.use(express.json());
@@ -25,6 +28,8 @@ app.use('/api/v1/permintaan', require('./routes/permintaan.routes'));
 app.use('/api/v1/laporan',    require('./routes/laporan.routes'));
 app.use('/api/v1/semen',      require('./routes/semen.routes'));
 app.use('/api/v1/petugas',    require('./routes/petugas.routes'));
+app.use('/api/v1/notifications', require('./routes/notifications.routes'));
+app.use('/api/v1/tugas',      require('./routes/tugas.routes'));
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
 app.use((req, res) => {

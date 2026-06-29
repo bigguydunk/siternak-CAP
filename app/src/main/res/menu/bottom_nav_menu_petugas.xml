@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/icon_loc_outline"
+        android:title="Beranda" />
+
+    <item
+        android:id="@+id/navigation_post"
+        android:icon="@drawable/icon_post"
+        android:title="Tugas Saya" />
+
+    <item
+        android:id="@+id/navigation_cari_tugas"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Cari Tugas" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/icon_user"
+        android:title="Profil" />
+
+</menu>

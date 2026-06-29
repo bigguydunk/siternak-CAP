@@ -114,4 +114,37 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { login, registerPeternak, registerPetugas, getMe };
+/**
+ * POST /api/v1/auth/register/admin
+ * Body: { admin_nama, admin_email, admin_password, admin_kontak? }
+ */
+const registerAdmin = async (req, res) => {
+  try {
+    const { admin_nama, admin_email, admin_password, admin_kontak } = req.body;
+    if (!admin_nama || !admin_email || !admin_password) {
+      return res.status(400).json({ success: false, message: 'Nama, email, dan password wajib diisi.' });
+    }
+    const exists = await db('admin').where({ admin_email }).first();
+    if (exists) {
+      return res.status(409).json({ success: false, message: 'Email sudah terdaftar.' });
+    }
+    
+    // Protect this route if admins already exist
+    const adminCount = await db('admin').count('* as count').first();
+    if (parseInt(adminCount.count) > 0) {
+      return res.status(403).json({ success: false, message: 'Admin sudah ada. Registrasi admin ditutup.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(admin_password, 10);
+    const [newAdmin] = await db('admin').insert({
+      admin_nama, admin_email, admin_password: hashedPassword, admin_kontak,
+    }).returning(['admin_id', 'admin_nama', 'admin_email', 'admin_kontak']);
+
+    return res.status(201).json({ success: true, message: 'Akun admin berhasil dibuat.', user: newAdmin });
+  } catch (err) {
+    console.error('registerAdmin error:', err);
+    return res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
+module.exports = { login, registerPeternak, registerPetugas, registerAdmin, getMe };

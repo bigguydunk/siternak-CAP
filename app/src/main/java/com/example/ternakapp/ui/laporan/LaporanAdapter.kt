@@ -26,7 +26,18 @@ class LaporanAdapter(private val list: List<LaporanData>) : RecyclerView.Adapter
         if (data.isKeguguran) jenis = "Laporan Keguguran"
 
         holder.binding.tvJenisLaporan.text = jenis
-        holder.binding.tvStatus.text = "Selesai"
+        if (data.flagMenungguLaporan) {
+            if (data.petugasId == null) {
+                holder.binding.tvStatus.text = "Menunggu Petugas"
+                holder.binding.tvStatus.setTextColor(android.graphics.Color.parseColor("#E65100"))
+            } else {
+                holder.binding.tvStatus.text = "Menunggu Laporan"
+                holder.binding.tvStatus.setTextColor(android.graphics.Color.parseColor("#1565C0")) // Different color for Menunggu Laporan (blue) to distinguish
+            }
+        } else {
+            holder.binding.tvStatus.text = "Selesai"
+            holder.binding.tvStatus.setTextColor(android.graphics.Color.parseColor("#2E7D32"))
+        }
     }
 
     override fun getItemCount(): Int = list.size

@@ -23,7 +23,7 @@ class ViewModelFactory private constructor(
             return AuthViewModel(authRepository) as T
         }
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(sapiRepository) as T
+            return HomeViewModel(sapiRepository, laporanRepository) as T
         }
         if (modelClass.isAssignableFrom(SapiViewModel::class.java)) {
             return SapiViewModel(sapiRepository) as T

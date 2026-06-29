@@ -9,12 +9,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ternakapp.databinding.FragmentHomeBinding
 import com.example.ternakapp.ui.auth.ViewModelFactory
 import com.example.ternakapp.ui.sapi.RegistrasiSapiActivity
 import com.example.ternakapp.utils.ResultState
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import com.example.ternakapp.ui.auth.AuthViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.ternakapp.R
 
 class HomeFragment : Fragment() {
 
@@ -22,6 +25,10 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
+
+    private val authViewModel: AuthViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -36,7 +43,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
         setupAction()
     }
 
@@ -45,17 +51,38 @@ class HomeFragment : Fragment() {
         fetchData()
     }
 
-    private fun setupRecyclerView() {
-        binding.rvSapi.layoutManager = LinearLayoutManager(requireContext())
-    }
-
     private fun setupAction() {
-        binding.btnTambahSapi.setOnClickListener {
-            startActivity(Intent(requireContext(), RegistrasiSapiActivity::class.java))
-        }
-        
-        binding.btnLaporBirahi.setOnClickListener {
-            Toast.makeText(requireContext(), "Silakan klik 'Detail Reproduksi' pada salah satu sapi Anda di bawah untuk melapor.", Toast.LENGTH_LONG).show()
+        lifecycleScope.launch {
+            val role = authViewModel.getRole().first()
+            if (role == "petugas") {
+                binding.btnTambahSapi.visibility = View.GONE
+                
+                binding.tvGreetingTitle.text = "SELAMAT BEKERJA,"
+                binding.tvActionTitle.text = "Pantau Tugas Anda"
+                binding.tvActionSubtitle.text = "Lihat daftar permintaan IB dan konfirmasi laporan peternak."
+                
+                binding.btnLaporBirahi.text = "Lihat Daftar Tugas"
+                binding.btnLaporBirahi.setOnClickListener {
+                    // Navigate to Laporan tab by selecting it in BottomNavigationView
+                    activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.selectedItemId = R.id.navigation_post
+                }
+                
+                binding.tvStatsTitle.text = "Total Tugas"
+                binding.tvStatsSubtitle.text = "Tugas"
+                
+                binding.tvStatusTitle.text = "Tugas Selesai"
+                binding.tvStatusSubtitle.text = "Riwayat"
+                binding.tvStatus.text = "0" // Placeholder for now
+            } else {
+                binding.btnTambahSapi.setOnClickListener {
+                    startActivity(Intent(requireContext(), RegistrasiSapiActivity::class.java))
+                }
+                
+                binding.btnLaporBirahi.setOnClickListener {
+                    // Navigate to Sapi tab
+                    activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.selectedItemId = R.id.navigation_sapi
+                }
+            }
         }
     }
 
@@ -63,26 +90,42 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.getMe().collect { result ->
                 if (result is ResultState.Success) {
-                    val name = result.data.user?.peternakNama ?: result.data.user?.petugasNama ?: "Peternak"
+                    val name = result.data.user?.peternakNama ?: result.data.user?.petugasNama ?: "Pengguna"
                     binding.tvUserName.text = "Pak $name!"
                 }
             }
         }
 
         lifecycleScope.launch {
-            viewModel.getMySapi().collect { result ->
-                when (result) {
-                    is ResultState.Loading -> {
-                        // show loading
+            val role = authViewModel.getRole().first()
+            
+            if (role == "petugas") {
+                viewModel.getMyTugas().collect { result ->
+                    when (result) {
+                        is ResultState.Loading -> { }
+                        is ResultState.Success -> {
+                            val dataList = result.data.data
+                            binding.tvTotalSapi.text = dataList.size.toString()
+                            
+                            val finishedTasks = dataList.count { it.statusPermintaan.equals("selesai", ignoreCase = true) }
+                            binding.tvStatus.text = finishedTasks.toString()
+                        }
+                        is ResultState.Error -> {
+                            Toast.makeText(requireContext(), "Gagal memuat tugas: ${result.error}", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                    is ResultState.Success -> {
-                        val dataList = result.data.data
-                        binding.tvTotalSapi.text = dataList.size.toString()
-                        val adapter = SapiAdapter(dataList)
-                        binding.rvSapi.adapter = adapter
-                    }
-                    is ResultState.Error -> {
-                        Toast.makeText(requireContext(), "Gagal memuat sapi: \${result.error}", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                viewModel.getMySapi().collect { result ->
+                    when (result) {
+                        is ResultState.Loading -> { }
+                        is ResultState.Success -> {
+                            val dataList = result.data.data
+                            binding.tvTotalSapi.text = dataList.size.toString()
+                        }
+                        is ResultState.Error -> {
+                            Toast.makeText(requireContext(), "Gagal memuat sapi: ${result.error}", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }

@@ -203,41 +203,65 @@
                 app:strokeColor="@color/primary_red"
                 app:cornerRadius="12dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Action Buttons for Petugas -->
+            <LinearLayout
+                android:id="@+id/layoutAksiPetugas"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
-                android:text="[TEST MODE] Aksi Petugas"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="16dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnTestLaporIB"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="Test: Lapor IB"
-                app:backgroundTint="#FF9800"
-                app:cornerRadius="8dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnKonfirmasiTugas"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Konfirmasi / Terima Tugas"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/primary_red"
+                    app:cornerRadius="12dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnTestLaporBunting"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="Test: Lapor Bunting"
-                app:backgroundTint="#4CAF50"
-                android:layout_marginTop="8dp"
-                app:cornerRadius="8dp" />
+                <LinearLayout
+                    android:id="@+id/layoutSubmitLaporan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnTestLaporLahir"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="Test: Lapor Lahir/Keguguran"
-                app:backgroundTint="#2196F3"
-                android:layout_marginTop="8dp"
-                app:cornerRadius="8dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLaporIB"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Isi Laporan IB"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLaporBunting"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Isi Cek Kebuntingan"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLaporLahir"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Isi Laporan Kelahiran"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLaporKeguguran"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Isi Laporan Keguguran"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

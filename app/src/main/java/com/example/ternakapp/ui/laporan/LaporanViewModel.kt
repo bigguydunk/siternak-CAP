@@ -7,8 +7,11 @@ import com.example.ternakapp.data.response.*
 class LaporanViewModel(private val laporanRepository: LaporanRepository) : ViewModel() {
     fun createPermintaan(request: PermintaanRequest) = laporanRepository.createPermintaan(request)
     fun getMyPermintaan() = laporanRepository.getMyPermintaan()
+    fun getMyTugas() = laporanRepository.getMyTugas()
     fun getLaporanTimeline(idPermintaan: Int) = laporanRepository.getLaporanTimeline(idPermintaan)
-    fun createLaporanIB(request: LaporanIBRequest) = laporanRepository.createLaporanIB(request)
-    fun createLaporanKebuntingan(request: LaporanKebuntinganRequest) = laporanRepository.createLaporanKebuntingan(request)
-    fun createLaporanKelahiran(request: LaporanKelahiranRequest) = laporanRepository.createLaporanKelahiran(request)
+    fun createLaporanIB(laporanId: Int, request: LaporanIBRequest) = laporanRepository.createLaporanIB(laporanId, request)
+    fun createLaporanKebuntingan(laporanId: Int, request: LaporanKebuntinganRequest) = laporanRepository.createLaporanKebuntingan(laporanId, request)
+    fun createLaporanKelahiran(laporanId: Int, request: LaporanKelahiranRequest) = laporanRepository.createLaporanKelahiran(laporanId, request)
+    fun createLaporanKeguguran(laporanId: Int, request: LaporanKeguguranRequest) = laporanRepository.createLaporanKeguguran(laporanId, request)
+    fun konfirmasiTugas(laporanId: Int) = laporanRepository.konfirmasiTugas(laporanId)
 }

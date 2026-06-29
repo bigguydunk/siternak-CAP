@@ -63,6 +63,7 @@
 
                 <!-- Greeting -->
                 <TextView
+                    android:id="@+id/tvGreetingTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SELAMAT PAGI,"
@@ -96,6 +97,7 @@
                         android:padding="20dp">
 
                         <TextView
+                            android:id="@+id/tvActionTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pantau Reproduksi Ternak"
@@ -104,6 +106,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvActionSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -122,7 +125,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:text="Laporkan Estrus (Birahi)"
+                                android:text="Lihat Daftar Sapi"
                                 android:textColor="@color/primary_red"
                                 android:textSize="12sp"
                                 app:backgroundTint="@color/white"
@@ -167,6 +170,7 @@
                             android:orientation="vertical"
                             android:padding="16dp">
                             <TextView
+                                android:id="@+id/tvStatsTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Total Populasi"
@@ -187,6 +191,7 @@
                                     android:textSize="24sp"
                                     android:textStyle="bold" />
                                 <TextView
+                                    android:id="@+id/tvStatsSubtitle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="4dp"
@@ -213,6 +218,7 @@
                             android:orientation="vertical"
                             android:padding="16dp">
                             <TextView
+                                android:id="@+id/tvStatusTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Status Reproduksi"
@@ -233,6 +239,7 @@
                                     android:textSize="24sp"
                                     android:textStyle="bold" />
                                 <TextView
+                                    android:id="@+id/tvStatusSubtitle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="4dp"
@@ -244,40 +251,6 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
-
-                <!-- Ternak Anda Header -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="16dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ternak Anda"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_centerVertical="true"/>
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnLihatSemua"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lihat Semua"
-                        android:textColor="@color/primary_red"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
-                </RelativeLayout>
-
-                <!-- Cattle List (RecyclerView in real implementation, sample item here) -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvSapi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_sapi"
-                    tools:itemCount="1" />
 
             </LinearLayout>
         </LinearLayout>

@@ -25,9 +25,28 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
+    fun getRole(): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[ROLE_KEY]
+        }
+    }
+
+    suspend fun saveRole(role: String) {
+        dataStore.edit { preferences ->
+            preferences[ROLE_KEY] = role
+        }
+    }
+
+    suspend fun clearRole() {
+        dataStore.edit { preferences ->
+            preferences.remove(ROLE_KEY)
+        }
+    }
+
     suspend fun clearToken() {
         dataStore.edit { preferences ->
             preferences.remove(TOKEN_KEY)
+            preferences.remove(ROLE_KEY)
         }
     }
 
@@ -35,6 +54,7 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         @Volatile
         private var INSTANCE: UserPreferences? = null
         private val TOKEN_KEY = stringPreferencesKey("token")
+        private val ROLE_KEY = stringPreferencesKey("role")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreferences {
             return INSTANCE ?: synchronized(this) {

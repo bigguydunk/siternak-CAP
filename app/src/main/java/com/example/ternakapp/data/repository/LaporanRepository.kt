@@ -37,6 +37,19 @@ class LaporanRepository private constructor(
         }
     }
 
+    fun getMyTugas(): Flow<ResultState<ListPermintaanResponse>> = flow {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getMyTugas()
+            if (response.success) emit(ResultState.Success(response))
+            else emit(ResultState.Error(response.message ?: "Error"))
+        } catch (e: HttpException) {
+            emit(ResultState.Error(e.response()?.errorBody()?.string() ?: e.message()))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.message.toString()))
+        }
+    }
+
     fun getLaporanTimeline(idPermintaan: Int): Flow<ResultState<ListLaporanResponse>> = flow {
         emit(ResultState.Loading)
         try {
@@ -50,10 +63,10 @@ class LaporanRepository private constructor(
         }
     }
 
-    fun createLaporanIB(request: LaporanIBRequest): Flow<ResultState<LaporanResponse>> = flow {
+    fun createLaporanIB(laporanId: Int, request: LaporanIBRequest): Flow<ResultState<LaporanResponse>> = flow {
         emit(ResultState.Loading)
         try {
-            val response = apiService.createLaporanIB(request)
+            val response = apiService.createLaporanIB(laporanId, request)
             if (response.success) emit(ResultState.Success(response))
             else emit(ResultState.Error(response.message ?: "Error"))
         } catch (e: HttpException) {
@@ -63,10 +76,10 @@ class LaporanRepository private constructor(
         }
     }
 
-    fun createLaporanKebuntingan(request: LaporanKebuntinganRequest): Flow<ResultState<LaporanResponse>> = flow {
+    fun createLaporanKebuntingan(laporanId: Int, request: LaporanKebuntinganRequest): Flow<ResultState<LaporanResponse>> = flow {
         emit(ResultState.Loading)
         try {
-            val response = apiService.createLaporanKebuntingan(request)
+            val response = apiService.createLaporanKebuntingan(laporanId, request)
             if (response.success) emit(ResultState.Success(response))
             else emit(ResultState.Error(response.message ?: "Error"))
         } catch (e: HttpException) {
@@ -76,10 +89,36 @@ class LaporanRepository private constructor(
         }
     }
 
-    fun createLaporanKelahiran(request: LaporanKelahiranRequest): Flow<ResultState<LaporanResponse>> = flow {
+    fun createLaporanKelahiran(laporanId: Int, request: LaporanKelahiranRequest): Flow<ResultState<LaporanResponse>> = flow {
         emit(ResultState.Loading)
         try {
-            val response = apiService.createLaporanKelahiran(request)
+            val response = apiService.createLaporanKelahiran(laporanId, request)
+            if (response.success) emit(ResultState.Success(response))
+            else emit(ResultState.Error(response.message ?: "Error"))
+        } catch (e: HttpException) {
+            emit(ResultState.Error(e.response()?.errorBody()?.string() ?: e.message()))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.message.toString()))
+        }
+    }
+
+    fun createLaporanKeguguran(laporanId: Int, request: LaporanKeguguranRequest): Flow<ResultState<LaporanResponse>> = flow {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.createLaporanKeguguran(laporanId, request)
+            if (response.success) emit(ResultState.Success(response))
+            else emit(ResultState.Error(response.message ?: "Error"))
+        } catch (e: HttpException) {
+            emit(ResultState.Error(e.response()?.errorBody()?.string() ?: e.message()))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.message.toString()))
+        }
+    }
+
+    fun konfirmasiTugas(laporanId: Int): Flow<ResultState<ApiResponse<Any>>> = flow {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.konfirmasiTugas(laporanId)
             if (response.success) emit(ResultState.Success(response))
             else emit(ResultState.Error(response.message ?: "Error"))
         } catch (e: HttpException) {

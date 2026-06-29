@@ -1,157 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:fillViewport="true"
     android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="24dp">
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/homeAsUpIndicator"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginEnd="16dp"
-            app:tint="@color/text_primary" />
-
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Form Laporan"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
-    </LinearLayout>
-
-    <!-- Common Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtIsiLaporan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Catatan / Isi Laporan" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Specific to IB -->
-    <LinearLayout
-        android:id="@+id/layoutIB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtKodeStraw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Kode Straw (Kosongkan jika tidak tahu)" />
-        </com.google.android.material.textfield.TextInputLayout>
+        android:padding="24dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Apakah Inseminasi Berhasil / Diterima?"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
-
-        <RadioGroup
-            android:id="@+id/rgStatusIB"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="?attr/homeAsUpIndicator"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="16dp"
+                app:tint="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Form Laporan"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <!-- Date Time Input Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Waktu Kejadian"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPickDateTime"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:text="Pilih Tanggal &amp; Waktu"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:textColor="@color/text_primary"
+            app:strokeColor="@color/text_secondary"
+            app:cornerRadius="12dp"/>
+
+        <!-- Common Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtIsiLaporan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Catatan / Isi Laporan" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Specific to IB -->
+        <LinearLayout
+            android:id="@+id/layoutIB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtKodeStraw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Kode Straw (Kosongkan jika tidak tahu)" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apakah Inseminasi Berhasil / Diterima?"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgStatusIB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+                <RadioButton
+                    android:id="@+id/rbBerhasil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Berhasil"
+                    android:checked="true"
+                    android:layout_marginEnd="16dp"/>
+                <RadioButton
+                    android:id="@+id/rbGagal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gagal" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Specific to Kebuntingan -->
+        <LinearLayout
+            android:id="@+id/layoutKebuntingan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hasil Pemeriksaan Kebuntingan"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgHasilKebuntingan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+                <RadioButton
+                    android:id="@+id/rbHamil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bunting"
+                    android:checked="true"
+                    android:layout_marginEnd="16dp"/>
+                <RadioButton
+                    android:id="@+id/rbTidakHamil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tidak Bunting" />
+            </RadioGroup>
+
+            <!-- HPL Section (Only visible if pregnant) -->
+            <LinearLayout
+                android:id="@+id/layoutHpl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estimasi Hari Perkiraan Lahir (HPL)"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPickHpl"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Pilih Tanggal HPL"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="16dp"
+                    android:textColor="@color/text_primary"
+                    app:strokeColor="@color/text_secondary"
+                    app:cornerRadius="12dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Specific to Kelahiran -->
+        <LinearLayout
+            android:id="@+id/layoutKelahiran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kondisi Anak Sapi"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgKondisiAnak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+                <RadioButton
+                    android:id="@+id/rbSelamat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selamat"
+                    android:checked="true"
+                    android:layout_marginEnd="16dp"/>
+                <RadioButton
+                    android:id="@+id/rbMatiLahir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mati Lahir" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jenis Kelamin Anak Sapi"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgJenisKelaminAnak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+                <RadioButton
+                    android:id="@+id/rbJantan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jantan"
+                    android:checked="true"
+                    android:layout_marginEnd="16dp"/>
+                <RadioButton
+                    android:id="@+id/rbBetina"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Betina" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Specific to Keguguran -->
+        <LinearLayout
+            android:id="@+id/layoutKeguguran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
             android:layout_marginBottom="16dp">
-            <RadioButton
-                android:id="@+id/rbBerhasil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Berhasil"
-                android:checked="true"
-                android:layout_marginEnd="16dp"/>
-            <RadioButton
-                android:id="@+id/rbGagal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gagal" />
-        </RadioGroup>
-    </LinearLayout>
 
-    <!-- Specific to Kebuntingan -->
-    <LinearLayout
-        android:id="@+id/layoutKebuntingan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtHasilPemeriksaan"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hasil (hamil / tidak)" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+                android:text="Laporan Kejadian Keguguran"
+                android:textColor="@color/primary_red"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp" />
 
-    <!-- Specific to Kelahiran -->
-    <LinearLayout
-        android:id="@+id/layoutKelahiran"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtKondisiAnak"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Kondisi Anak (sehat / cacat / mati)" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtJenisKelaminAnak"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Jenis Kelamin Anak (jantan / betina)" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+                android:text="Silakan isi catatan di atas dan tentukan waktu keguguran untuk merekam kejadian ini. Siklus reproduksi akan diakhiri setelah mengirim laporan ini."
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginBottom="16dp" />
+        </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Kirim Laporan"
-        android:layout_marginTop="24dp"
-        app:cornerRadius="12dp"/>
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Kirim Laporan"
+            android:layout_marginTop="24dp"
+            app:cornerRadius="12dp"/>
+    </LinearLayout>
+</ScrollView>

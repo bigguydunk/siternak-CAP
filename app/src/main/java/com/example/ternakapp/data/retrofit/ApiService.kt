@@ -38,6 +38,9 @@ interface ApiService {
     @GET("api/v1/permintaan/mine")
     suspend fun getMyPermintaan(): com.example.ternakapp.data.response.ListPermintaanResponse
 
+    @GET("api/v1/petugas/tugas")
+    suspend fun getMyTugas(): com.example.ternakapp.data.response.ListPermintaanResponse
+
     @POST("api/v1/permintaan")
     suspend fun createPermintaan(
         @Body request: com.example.ternakapp.data.response.PermintaanRequest
@@ -48,18 +51,32 @@ interface ApiService {
         @retrofit2.http.Path("id_permintaan") id: Int
     ): com.example.ternakapp.data.response.ListLaporanResponse
 
-    @POST("api/v1/laporan/ib")
+    @POST("api/v1/laporan/ib/{laporan_id}")
     suspend fun createLaporanIB(
+        @retrofit2.http.Path("laporan_id") laporanId: Int,
         @Body request: com.example.ternakapp.data.response.LaporanIBRequest
     ): com.example.ternakapp.data.response.LaporanResponse
 
-    @POST("api/v1/laporan/kebuntingan")
+    @POST("api/v1/laporan/kebuntingan/{laporan_id}")
     suspend fun createLaporanKebuntingan(
+        @retrofit2.http.Path("laporan_id") laporanId: Int,
         @Body request: com.example.ternakapp.data.response.LaporanKebuntinganRequest
     ): com.example.ternakapp.data.response.LaporanResponse
 
-    @POST("api/v1/laporan/kelahiran")
+    @POST("api/v1/laporan/kelahiran/{laporan_id}")
     suspend fun createLaporanKelahiran(
+        @retrofit2.http.Path("laporan_id") laporanId: Int,
         @Body request: com.example.ternakapp.data.response.LaporanKelahiranRequest
     ): com.example.ternakapp.data.response.LaporanResponse
+
+    @POST("api/v1/laporan/keguguran/{laporan_id}")
+    suspend fun createLaporanKeguguran(
+        @retrofit2.http.Path("laporan_id") laporanId: Int,
+        @Body request: com.example.ternakapp.data.response.LaporanKeguguranRequest
+    ): com.example.ternakapp.data.response.LaporanResponse
+
+    @retrofit2.http.PUT("api/v1/tugas/{laporan_id}/konfirmasi")
+    suspend fun konfirmasiTugas(
+        @retrofit2.http.Path("laporan_id") id: Int
+    ): com.example.ternakapp.data.response.ApiResponse<Any>
 }

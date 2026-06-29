@@ -38,6 +38,16 @@ class MainActivity : AppCompatActivity() {
                 val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
                 val navController = navHostFragment.navController
                 val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+                val role = authViewModel.getRole().first()
+                if (role == "petugas") {
+                    navView.menu.clear()
+                    navView.inflateMenu(R.menu.bottom_nav_menu_petugas)
+                } else {
+                    navView.menu.clear()
+                    navView.inflateMenu(R.menu.bottom_nav_menu)
+                }
+
                 navView.setupWithNavController(navController)
             }
         }

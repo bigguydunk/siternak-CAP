@@ -31,9 +31,16 @@ const createSapi = async (req, res) => {
 /** GET /api/v1/sapi — Admin: all sapi */
 const getAllSapi = async (req, res) => {
   try {
-    const data = await db('sapi')
+    const { peternak_id } = req.query;
+    let query = db('sapi')
       .join('peternak', 'sapi.peternak_id', 'peternak.peternak_id')
       .select('sapi.*', 'peternak.peternak_nama', 'peternak.peternak_kontak');
+      
+    if (peternak_id) {
+      query = query.where('sapi.peternak_id', peternak_id);
+    }
+    
+    const data = await query;
     return res.status(200).json({ success: true, data });
   } catch (err) {
     console.error(err);

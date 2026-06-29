@@ -7,6 +7,11 @@
         android:title="Beranda" />
 
     <item
+        android:id="@+id/navigation_sapi"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Sapi" />
+
+    <item
         android:id="@+id/navigation_post"
         android:icon="@drawable/icon_post"
         android:title="Laporan" />

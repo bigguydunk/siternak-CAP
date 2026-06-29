@@ -1,61 +1,66 @@
 const db = require('../db');
 
-// ─── Helper: create laporan supertype row ───────────────────────────────────
-const createLaporanBase = async (id_permintaan, flagUpdate = {}) => {
-  const flags = {
-    flag_menunggu_laporan: false,
-    flag_laporan_ib: false,
-    flag_laporan_kebuntingan: false,
-    flag_laporan_keguguran: false,
-    flag_laporan_kelahiran: false,
-    ...flagUpdate,
-  };
-  const [laporan] = await db('laporan').insert({
-    id_permintaan,
-    ...flags,
-    tanggal_waktu: new Date(),
-  }).returning('*');
-  return laporan;
-};
-
-// ─── POST /api/v1/laporan/ib ────────────────────────────────────────────────
+// ─── POST /api/v1/laporan/ib/:laporan_id ─────────────────────────────────────
 const createLaporanIB = async (req, res) => {
   try {
+    let { laporan_id } = req.params;
     const { id_permintaan, kode_straw, isi_laporan_ib, waktu_proses_ib, is_success, komentar } = req.body;
-    if (!id_permintaan) return res.status(400).json({ success: false, message: 'id_permintaan wajib diisi.' });
 
-    const permintaan = await db('permintaan').where({ id_permintaan }).first();
-    if (!permintaan) return res.status(404).json({ success: false, message: 'Permintaan tidak ditemukan.' });
-
-    let resolvedPetugasId = req.user.id;
-    if (req.user.role === 'peternak') {
-      const dummyPetugas = await db('petugas').first();
-      resolvedPetugasId = dummyPetugas ? dummyPetugas.petugas_id : null;
+    if (!laporan_id && id_permintaan) {
+      const activeLaporan = await db('laporan')
+        .where({ id_permintaan, flag_menunggu_laporan: true, flag_laporan_ib: true })
+        .first();
+      if (activeLaporan) {
+        laporan_id = activeLaporan.id_laporan;
+      }
     }
 
-    const result = await db.transaction(async (trx) => {
-      const flags = { flag_menunggu_laporan: false, flag_laporan_ib: true };
-      const [laporan] = await trx('laporan').insert({
-        id_permintaan,
-        ...flags,
-        tanggal_waktu: new Date(),
-      }).returning('*');
+    const laporan = await db('laporan').where({ id_laporan: laporan_id }).first();
+    if (!laporan) return res.status(404).json({ success: false, message: 'Laporan tidak ditemukan.' });
 
+    const resolvedPetugasId = req.user.id;
+
+    const result = await db.transaction(async (trx) => {
       const [laporanIB] = await trx('laporan_ib').insert({
-        laporan_id: laporan.id_laporan,
+        laporan_id,
         petugas_id: resolvedPetugasId,
         kode_straw: kode_straw || null,
         isi_laporan_ib, waktu_proses_ib, is_success, komentar,
       }).returning('*');
 
-      // If IB failed, set Permintaan status to Gagal
-      if (is_success === false || is_success === 'false') {
-        await trx('permintaan')
-          .where({ id_permintaan })
-          .update({ status_permintaan: 'Gagal' });
+      const isSuccessBool = is_success === true || is_success === 'true';
+
+      if (isSuccessBool) {
+        await trx('laporan').where({ id_laporan: laporan_id }).update({
+          flag_laporan_ib: false,
+          flag_menunggu_laporan: false
+        });
+        // Auto-transition to Kebuntingan
+        const deadline = new Date();
+        deadline.setMonth(deadline.getMonth() + 3);
+        await trx('laporan').insert({
+          id_permintaan: laporan.id_permintaan,
+          flag_menunggu_laporan: true,
+          flag_laporan_ib: false,
+          flag_laporan_kebuntingan: true,
+          flag_laporan_keguguran: false,
+          flag_laporan_kelahiran: false,
+          tanggal_waktu: new Date(),
+          tenggat_waktu: deadline
+        });
+      } else {
+        await trx('laporan').where({ id_laporan: laporan_id }).update({
+          flag_menunggu_laporan: false,
+          flag_laporan_ib: false,
+          tenggat_waktu: null
+        });
+        await trx('permintaan').where({ id_permintaan: laporan.id_permintaan }).update({
+          status_permintaan: 'IB Gagal',
+          hasil_akhir: 'IB Gagal'
+        });
       }
       
-      return { ...laporan, ...laporanIB };
+      return laporanIB;
     });
 
     return res.status(201).json({ success: true, message: 'Laporan IB berhasil dibuat.', data: result });
@@ -65,69 +70,142 @@ const createLaporanIB = async (req, res) => {
   }
 };
 
-// ─── POST /api/v1/laporan/kebuntingan ──────────────────────────────────────
+// ─── POST /api/v1/laporan/kebuntingan/:laporan_id ───────────────────────────
 const createLaporanKebuntingan = async (req, res) => {
   try {
+    let { laporan_id } = req.params;
     const { id_permintaan, isi_laporan_kebuntingan, waktu_kebuntingan, hasil_pemeriksaan, tanggal_hpl } = req.body;
-    if (!id_permintaan || !hasil_pemeriksaan) {
-      return res.status(400).json({ success: false, message: 'id_permintaan dan hasil_pemeriksaan wajib diisi.' });
+    if (!hasil_pemeriksaan) {
+      return res.status(400).json({ success: false, message: 'hasil_pemeriksaan wajib diisi.' });
     }
-    const laporan = await createLaporanBase(id_permintaan, { flag_laporan_kebuntingan: true });
+
+    if (!laporan_id && id_permintaan) {
+      const activeLaporan = await db('laporan')
+        .where({ id_permintaan, flag_menunggu_laporan: true, flag_laporan_kebuntingan: true })
+        .first();
+      if (activeLaporan) {
+        laporan_id = activeLaporan.id_laporan;
+      }
+    }
+
+    const laporan = await db('laporan').where({ id_laporan: laporan_id }).first();
+    if (!laporan) return res.status(404).json({ success: false, message: 'Laporan tidak ditemukan.' });
     
-    let resolvedPetugasId = req.user.id;
-    if (req.user.role === 'peternak') {
-      const dummyPetugas = await db('petugas').first();
-      resolvedPetugasId = dummyPetugas ? dummyPetugas.petugas_id : null;
-    }
+    const resolvedPetugasId = req.user.id;
 
-    const [laporanKebuntingan] = await db('laporan_kebuntingan').insert({
-      laporan_id: laporan.id_laporan,
-      petugas_id: resolvedPetugasId,
-      isi_laporan_kebuntingan, waktu_kebuntingan, hasil_pemeriksaan,
-      tanggal_hpl: hasil_pemeriksaan === 'hamil' ? tanggal_hpl : null,
-    }).returning('*');
+    const result = await db.transaction(async (trx) => {
+      const [laporanKebuntingan] = await trx('laporan_kebuntingan').insert({
+        laporan_id,
+        petugas_id: resolvedPetugasId,
+        isi_laporan_kebuntingan, waktu_kebuntingan, hasil_pemeriksaan,
+        tanggal_hpl: hasil_pemeriksaan === 'hamil' || hasil_pemeriksaan === 'Bunting' ? tanggal_hpl : null,
+      }).returning('*');
 
-    return res.status(201).json({ success: true, message: 'Laporan kebuntingan berhasil dibuat.', data: { ...laporan, ...laporanKebuntingan } });
+      const isBunting = hasil_pemeriksaan === 'hamil' || hasil_pemeriksaan === 'Bunting';
+
+      if (isBunting) {
+        await trx('laporan').where({ id_laporan: laporan_id }).update({
+          flag_laporan_kebuntingan: false,
+          flag_menunggu_laporan: false
+        });
+
+        // Find waktu_proses_ib
+        const ibReport = await trx('laporan_ib')
+          .join('laporan', 'laporan_ib.laporan_id', 'laporan.id_laporan')
+          .where('laporan.id_permintaan', laporan.id_permintaan)
+          .first();
+        const ibTime = ibReport && ibReport.waktu_proses_ib ? new Date(ibReport.waktu_proses_ib) : new Date();
+        const deadline = new Date(ibTime);
+        deadline.setMonth(deadline.getMonth() + 7);
+
+        // Auto-transition to Kelahiran / Keguguran
+        await trx('laporan').insert({
+          id_permintaan: laporan.id_permintaan,
+          flag_menunggu_laporan: true,
+          flag_laporan_ib: false,
+          flag_laporan_kebuntingan: false,
+          flag_laporan_keguguran: true,
+          flag_laporan_kelahiran: true,
+          tanggal_waktu: new Date(),
+          tenggat_waktu: deadline
+        });
+      } else {
+        await trx('laporan').where({ id_laporan: laporan_id }).update({
+          flag_menunggu_laporan: false,
+          flag_laporan_kebuntingan: false,
+          tenggat_waktu: null
+        });
+        await trx('permintaan').where({ id_permintaan: laporan.id_permintaan }).update({
+          status_permintaan: 'Selesai',
+          hasil_akhir: 'Tidak Bunting'
+        });
+      }
+      return laporanKebuntingan;
+    });
+
+    return res.status(201).json({ success: true, message: 'Laporan kebuntingan berhasil dibuat.', data: result });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: err.message || 'Server error.' });
   }
 };
 
-// ─── POST /api/v1/laporan/keguguran ────────────────────────────────────────
+// ─── POST /api/v1/laporan/keguguran/:laporan_id ─────────────────────────────
 const createLaporanKeguguran = async (req, res) => {
   try {
-    const { id_permintaan, isi_laporan_keguguran, waktu_keguguran } = req.body;
-    if (!id_permintaan) return res.status(400).json({ success: false, message: 'id_permintaan wajib diisi.' });
-
-    const laporan = await createLaporanBase(id_permintaan, { flag_laporan_keguguran: true });
+    const { laporan_id } = req.params;
+    const { isi_laporan_keguguran, waktu_keguguran } = req.body;
     
-    let resolvedPetugasId = req.user.id;
-    if (req.user.role === 'peternak') {
-      const dummyPetugas = await db('petugas').first();
-      resolvedPetugasId = dummyPetugas ? dummyPetugas.petugas_id : null;
-    }
+    const laporan = await db('laporan').where({ id_laporan: laporan_id }).first();
+    if (!laporan) return res.status(404).json({ success: false, message: 'Laporan tidak ditemukan.' });
 
-    const [laporanKeguguran] = await db('laporan_keguguran').insert({
-      laporan_id: laporan.id_laporan,
-      petugas_id: resolvedPetugasId,
-      isi_laporan_keguguran, waktu_keguguran,
-    }).returning('*');
+    const resolvedPetugasId = req.user.id;
 
-    return res.status(201).json({ success: true, message: 'Laporan keguguran berhasil dibuat.', data: { ...laporan, ...laporanKeguguran } });
+    const result = await db.transaction(async (trx) => {
+      const [laporanKeguguran] = await trx('laporan_keguguran').insert({
+        laporan_id,
+        petugas_id: resolvedPetugasId,
+        isi_laporan_keguguran, waktu_keguguran,
+      }).returning('*');
+
+      await trx('laporan').where({ id_laporan: laporan_id }).update({
+        flag_menunggu_laporan: false,
+        flag_laporan_keguguran: false,
+        tenggat_waktu: null
+      });
+
+      await trx('permintaan').where({ id_permintaan: laporan.id_permintaan }).update({
+        status_permintaan: 'Selesai',
+        hasil_akhir: 'Keguguran'
+      });
+
+      return laporanKeguguran;
+    });
+
+    return res.status(201).json({ success: true, message: 'Laporan keguguran berhasil dibuat.', data: result });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: err.message || 'Server error.' });
   }
 };
 
-// ─── POST /api/v1/laporan/kelahiran ────────────────────────────────────────
+// ─── POST /api/v1/laporan/kelahiran/:laporan_id ─────────────────────────────
 const createLaporanKelahiran = async (req, res) => {
   try {
+    let { laporan_id } = req.params;
     const { id_permintaan, isi_laporan_kelahiran, kondisi_anak_sapi, jenis_kelamin_anak_sapi, waktu_kelahiran } = req.body;
-    if (!id_permintaan) return res.status(400).json({ success: false, message: 'id_permintaan wajib diisi.' });
 
-    const laporan = await createLaporanBase(id_permintaan, { flag_laporan_kelahiran: true });
+    if (!laporan_id && id_permintaan) {
+      const activeLaporan = await db('laporan')
+        .where({ id_permintaan, flag_menunggu_laporan: true, flag_laporan_kelahiran: true })
+        .first();
+      if (activeLaporan) {
+        laporan_id = activeLaporan.id_laporan;
+      }
+    }
+
+    const laporan = await db('laporan').where({ id_laporan: laporan_id }).first();
+    if (!laporan) return res.status(404).json({ success: false, message: 'Laporan tidak ditemukan.' });
     
     let resolvedPetugasId = req.user.id;
     if (req.user.role === 'peternak') {
@@ -135,13 +213,28 @@ const createLaporanKelahiran = async (req, res) => {
       resolvedPetugasId = dummyPetugas ? dummyPetugas.petugas_id : null;
     }
 
-    const [laporanKelahiran] = await db('laporan_kelahiran').insert({
-      laporan_id: laporan.id_laporan,
-      petugas_id: resolvedPetugasId,
-      isi_laporan_kelahiran, kondisi_anak_sapi, jenis_kelamin_anak_sapi, waktu_kelahiran,
-    }).returning('*');
+    const result = await db.transaction(async (trx) => {
+      const [laporanKelahiran] = await trx('laporan_kelahiran').insert({
+        laporan_id,
+        petugas_id: resolvedPetugasId,
+        isi_laporan_kelahiran, kondisi_anak_sapi, jenis_kelamin_anak_sapi, waktu_kelahiran,
+      }).returning('*');
 
-    return res.status(201).json({ success: true, message: 'Laporan kelahiran berhasil dibuat.', data: { ...laporan, ...laporanKelahiran } });
+      await trx('laporan').where({ id_laporan: laporan_id }).update({
+        flag_menunggu_laporan: false,
+        flag_laporan_kelahiran: false,
+        tenggat_waktu: null
+      });
+
+      await trx('permintaan').where({ id_permintaan: laporan.id_permintaan }).update({
+        status_permintaan: 'Selesai',
+        hasil_akhir: `Kelahiran ${kondisi_anak_sapi || ''} ${jenis_kelamin_anak_sapi || ''}`.trim()
+      });
+
+      return laporanKelahiran;
+    });
+
+    return res.status(201).json({ success: true, message: 'Laporan kelahiran berhasil dibuat.', data: result });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: err.message || 'Server error.' });
@@ -152,7 +245,11 @@ const createLaporanKelahiran = async (req, res) => {
 const getLaporanByPermintaan = async (req, res) => {
   try {
     const { id } = req.params;
-    const laporanList = await db('laporan').where({ id_permintaan: id }).orderBy('tanggal_waktu', 'asc');
+    const laporanList = await db('laporan')
+      .leftJoin('permintaan', 'laporan.id_permintaan', 'permintaan.id_permintaan')
+      .where('laporan.id_permintaan', id)
+      .select('laporan.*', 'permintaan.petugas_id')
+      .orderBy('laporan.tanggal_waktu', 'asc');
 
     // For each laporan, attach its subtype data
     const enriched = await Promise.all(laporanList.map(async (l) => {
@@ -212,7 +309,73 @@ const updateLaporanIB = async (req, res) => {
   }
 };
 
+// ─── GET /api/v1/laporan ──────────────────────────────────────────────────
+const getAllLaporan = async (req, res) => {
+  try {
+    const data = await db('laporan')
+      .leftJoin('permintaan', 'laporan.id_permintaan', 'permintaan.id_permintaan')
+      .leftJoin('sapi', 'permintaan.sapi_id', 'sapi.sapi_id')
+      .leftJoin('peternak', 'permintaan.peternak_id', 'peternak.peternak_id')
+      .select(
+        'laporan.*',
+        'permintaan.status_permintaan',
+        'permintaan.lokasi_ternak',
+        'permintaan.petugas_id',
+        'sapi.sapi_eartag',
+        'peternak.peternak_nama'
+      )
+      .orderBy('laporan.tanggal_waktu', 'desc');
+    return res.status(200).json({ success: true, data });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
+// ─── GET /api/v1/laporan/mine ──────────────────────────────────────────────
+const getMyLaporan = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const ibIds = await db('laporan_ib').where({ petugas_id: id }).pluck('laporan_id');
+    const kebIds = await db('laporan_kebuntingan').where({ petugas_id: id }).pluck('laporan_id');
+    const kegIds = await db('laporan_keguguran').where({ petugas_id: id }).pluck('laporan_id');
+    const kelIds = await db('laporan_kelahiran').where({ petugas_id: id }).pluck('laporan_id');
+    
+    const allIds = [...new Set([...ibIds, ...kebIds, ...kegIds, ...kelIds])];
+    
+    let data = [];
+    if (allIds.length > 0) {
+      data = await db('laporan')
+        .whereIn('id_laporan', allIds)
+        .orderBy('tanggal_waktu', 'desc');
+    }
+      
+    return res.status(200).json({ success: true, data });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
+const deleteLaporan = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const laporan = await db('laporan').where({ id_laporan: id }).first();
+    if (!laporan) {
+      return res.status(404).json({ success: false, message: 'Laporan tidak ditemukan.' });
+    }
+    
+    // Delete the entire permintaan cycle (this will cascade delete all laporan under it)
+    await db('permintaan').where({ id_permintaan: laporan.id_permintaan }).del();
+    
+    return res.status(200).json({ success: true, message: 'Siklus laporan berhasil dihapus.' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
 module.exports = {
   createLaporanIB, createLaporanKebuntingan, createLaporanKeguguran, createLaporanKelahiran,
-  getLaporanByPermintaan, getLaporanById, updateLaporanIB,
+  getLaporanByPermintaan, getLaporanById, updateLaporanIB, getAllLaporan, getMyLaporan, deleteLaporan
 };

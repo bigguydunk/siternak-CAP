@@ -23,11 +23,14 @@ data class PermintaanData(
     @SerializedName("id_permintaan") val idPermintaan: Int,
     @SerializedName("sapi_id") val sapiId: Int,
     @SerializedName("peternak_id") val peternakId: Int,
+    @SerializedName("petugas_id") val petugasId: Int? = null,
     @SerializedName("lokasi_ternak") val lokasiTernak: String,
     @SerializedName("status_validitas") val statusValiditas: String,
     @SerializedName("status_permintaan") val statusPermintaan: String,
     @SerializedName("persetujuan_permintaan") val persetujuanPermintaan: String?,
-    @SerializedName("tanggal_pengajuan") val tanggalPengajuan: String
+    @SerializedName("tanggal_pengajuan") val tanggalPengajuan: String,
+    @SerializedName("hasil_akhir") val hasilAkhir: String? = null,
+    @SerializedName("tahap_aktif") val tahapAktif: String? = null
 )
 
 data class LaporanResponse(
@@ -46,11 +49,13 @@ data class LaporanData(
     @SerializedName("id_laporan") val idLaporan: Int,
     @SerializedName("id_permintaan") val idPermintaan: Int,
     @SerializedName("tanggal_waktu") val tanggalWaktu: String,
+    @SerializedName("tenggat_waktu") val tenggatWaktu: String? = null,
+    @SerializedName("flag_menunggu_laporan") val flagMenungguLaporan: Boolean,
     @SerializedName("flag_laporan_ib") val isIB: Boolean,
     @SerializedName("flag_laporan_kebuntingan") val isKebuntingan: Boolean,
     @SerializedName("flag_laporan_kelahiran") val isKelahiran: Boolean,
     @SerializedName("flag_laporan_keguguran") val isKeguguran: Boolean,
-    // Note: Detail data parsing could be added here if needed
+    @SerializedName("petugas_id") val petugasId: Int? = null,
 )
 
 // Request Models for Laporan
@@ -77,3 +82,10 @@ data class LaporanKelahiranRequest(
     @SerializedName("jenis_kelamin_anak_sapi") val jenisKelaminAnak: String,
     @SerializedName("waktu_kelahiran") val waktuKelahiran: String
 )
+
+data class LaporanKeguguranRequest(
+    @SerializedName("id_permintaan") val idPermintaan: Int,
+    @SerializedName("isi_laporan_keguguran") val isiLaporan: String,
+    @SerializedName("waktu_keguguran") val waktuKeguguran: String
+)
+

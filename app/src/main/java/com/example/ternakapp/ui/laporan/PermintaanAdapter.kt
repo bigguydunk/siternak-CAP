@@ -12,7 +12,10 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
-class PermintaanAdapter(private val listPermintaan: List<PermintaanData>) : RecyclerView.Adapter<PermintaanAdapter.ViewHolder>() {
+class PermintaanAdapter(
+    private val listPermintaan: List<PermintaanData>,
+    private val userRole: String
+) : RecyclerView.Adapter<PermintaanAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemPermintaanBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -23,16 +26,34 @@ class PermintaanAdapter(private val listPermintaan: List<PermintaanData>) : Recy
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = listPermintaan[position]
-        holder.binding.tvIdPermintaan.text = "Laporan Birahi #${data.idPermintaan}"
+        
+        val title = data.tahapAktif ?: "Siklus Reproduksi"
+        holder.binding.tvIdPermintaan.text = "$title #${data.idPermintaan}"
+        
         holder.binding.tvSapiId.text = "Sapi ID: ${data.sapiId}"
         holder.binding.tvLokasi.text = "Lokasi: ${data.lokasiTernak}"
         
-        holder.binding.chipStatus.text = data.statusPermintaan
-        
-        if (data.statusPermintaan.equals("selesai", ignoreCase = true)) {
-            holder.binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_dark)
+        val hasHasilAkhir = !data.hasilAkhir.isNullOrEmpty()
+
+        if (hasHasilAkhir) {
+            holder.binding.chipStatus.text = data.hasilAkhir
+            if (data.hasilAkhir!!.contains("Gagal", ignoreCase = true) || 
+                data.hasilAkhir.contains("Tidak", ignoreCase = true) || 
+                data.hasilAkhir.contains("Keguguran", ignoreCase = true)) {
+                holder.binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_red_dark)
+            } else {
+                holder.binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_dark)
+            }
+        } else if (data.petugasId == null) {
+            holder.binding.chipStatus.text = if (userRole == "petugas") "Tugas Baru" else "Menunggu Petugas"
+            holder.binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_orange_dark)
         } else {
-            // Default color from XML is primary_red which is good for "diproses" or "menunggu"
+            holder.binding.chipStatus.text = data.statusPermintaan
+            if (data.statusPermintaan.equals("selesai", ignoreCase = true)) {
+                holder.binding.chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_dark)
+            } else {
+                holder.binding.chipStatus.setChipBackgroundColorResource(com.example.ternakapp.R.color.primary_red)
+            }
         }
 
         try {

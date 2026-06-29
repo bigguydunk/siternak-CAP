@@ -21,9 +21,10 @@ class AuthRepository private constructor(
             val response = apiService.login(request)
             if (response.success && response.token != null) {
                 userPreferences.saveToken(response.token)
+                userPreferences.saveRole(response.role ?: request.role)
                 emit(ResultState.Success(response))
             } else {
-                emit(ResultState.Error(response.message))
+                emit(ResultState.Error(response.message ?: "Login gagal"))
             }
         } catch (e: HttpException) {
             emit(ResultState.Error(e.response()?.errorBody()?.string() ?: e.message()))
@@ -39,7 +40,7 @@ class AuthRepository private constructor(
             if (response.success) {
                 emit(ResultState.Success(response))
             } else {
-                emit(ResultState.Error(response.message))
+                emit(ResultState.Error(response.message ?: "Registrasi gagal"))
             }
         } catch (e: HttpException) {
             emit(ResultState.Error(e.response()?.errorBody()?.string() ?: e.message()))
@@ -49,6 +50,7 @@ class AuthRepository private constructor(
     }
 
     fun getToken(): Flow<String?> = userPreferences.getToken()
+    fun getRole(): Flow<String?> = userPreferences.getRole()
     
     suspend fun logout() {
         userPreferences.clearToken()

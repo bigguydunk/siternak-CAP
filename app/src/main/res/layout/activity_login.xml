@@ -259,7 +259,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:text="Belum memiliki akun? Daftar Sekarang"
-        android:textColor="@color/text_secondary"
+        android:textColor="@color/primary_red"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/mainCard"
         app:layout_constraintBottom_toBottomOf="parent"

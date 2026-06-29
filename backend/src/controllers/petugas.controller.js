@@ -82,4 +82,28 @@ const getLaporanByPetugas = async (req, res) => {
   }
 };
 
-module.exports = { getAllPetugas, getPetugasById, updatePetugas, getLaporanByPetugas };
+/** GET /api/v1/petugas/tugas — Petugas sees own assigned permintaan */
+const getMyTugas = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const data = await db('permintaan')
+      .where('permintaan.status_permintaan', 'Diproses')
+      .where((builder) => {
+        builder.where('permintaan.petugas_id', id).orWhereNull('permintaan.petugas_id');
+      })
+      .leftJoin('sapi', 'permintaan.sapi_id', 'sapi.sapi_id')
+      .leftJoin('peternak', 'permintaan.peternak_id', 'peternak.peternak_id')
+      .select(
+        'permintaan.*',
+        'sapi.sapi_eartag', 'sapi.sapi_jenis_kelamin',
+        'peternak.peternak_nama', 'peternak.peternak_kontak'
+      )
+      .orderBy('permintaan.tanggal_pengajuan', 'desc');
+    return res.status(200).json({ success: true, data });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
+module.exports = { getAllPetugas, getPetugasById, updatePetugas, getLaporanByPetugas, getMyTugas };

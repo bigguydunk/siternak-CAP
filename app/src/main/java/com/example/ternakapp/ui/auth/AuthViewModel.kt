@@ -15,6 +15,7 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
     fun registerPeternak(request: RegisterPeternakRequest) = authRepository.registerPeternak(request)
     
     fun getToken() = authRepository.getToken()
+    fun getRole() = authRepository.getRole()
     
     suspend fun logout() {
         authRepository.logout()
