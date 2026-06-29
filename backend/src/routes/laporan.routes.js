@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   createLaporanIB, createLaporanKebuntingan, createLaporanKeguguran, createLaporanKelahiran,
-  getLaporanByPermintaan, getLaporanById, updateLaporanIB, getAllLaporan, getMyLaporan, deleteLaporan
+  getLaporanByPermintaan, getLaporanBySapi, getLaporanById, updateLaporanIB, getAllLaporan, getMyLaporan, deleteLaporan
 } = require('../controllers/laporan.controller');
 const { authenticate, requireRole } = require('../middleware/auth');
 const { z } = require('zod');
@@ -25,6 +25,7 @@ router.post('/keguguran/:laporan_id', requireRole('petugas'), createLaporanKegug
 router.post('/kelahiran/:laporan_id', requireRole('petugas', 'peternak'), createLaporanKelahiran);
 router.post('/kelahiran', requireRole('petugas', 'peternak'), createLaporanKelahiran);
 router.get('/permintaan/:id', requireRole('admin', 'petugas', 'peternak'), getLaporanByPermintaan);
+router.get('/sapi/:sapi_id', requireRole('admin', 'petugas', 'peternak'), getLaporanBySapi);
 router.get('/mine', requireRole('petugas'), getMyLaporan);
 router.delete('/:id', requireRole('admin'), deleteLaporan);
 router.get('/:id', requireRole('admin', 'petugas', 'peternak'), getLaporanById);

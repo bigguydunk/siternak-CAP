@@ -32,7 +32,6 @@ const createLaporanIB = async (req, res) => {
 
       if (isSuccessBool) {
         await trx('laporan').where({ id_laporan: laporan_id }).update({
-          flag_laporan_ib: false,
           flag_menunggu_laporan: false
         });
         // Auto-transition to Kebuntingan
@@ -51,11 +50,10 @@ const createLaporanIB = async (req, res) => {
       } else {
         await trx('laporan').where({ id_laporan: laporan_id }).update({
           flag_menunggu_laporan: false,
-          flag_laporan_ib: false,
           tenggat_waktu: null
         });
         await trx('permintaan').where({ id_permintaan: laporan.id_permintaan }).update({
-          status_permintaan: 'IB Gagal',
+          status_permintaan: 'Gagal',
           hasil_akhir: 'IB Gagal'
         });
       }
@@ -105,7 +103,6 @@ const createLaporanKebuntingan = async (req, res) => {
 
       if (isBunting) {
         await trx('laporan').where({ id_laporan: laporan_id }).update({
-          flag_laporan_kebuntingan: false,
           flag_menunggu_laporan: false
         });
 
@@ -132,7 +129,6 @@ const createLaporanKebuntingan = async (req, res) => {
       } else {
         await trx('laporan').where({ id_laporan: laporan_id }).update({
           flag_menunggu_laporan: false,
-          flag_laporan_kebuntingan: false,
           tenggat_waktu: null
         });
         await trx('permintaan').where({ id_permintaan: laporan.id_permintaan }).update({
@@ -170,7 +166,6 @@ const createLaporanKeguguran = async (req, res) => {
 
       await trx('laporan').where({ id_laporan: laporan_id }).update({
         flag_menunggu_laporan: false,
-        flag_laporan_keguguran: false,
         tenggat_waktu: null
       });
 
@@ -222,7 +217,6 @@ const createLaporanKelahiran = async (req, res) => {
 
       await trx('laporan').where({ id_laporan: laporan_id }).update({
         flag_menunggu_laporan: false,
-        flag_laporan_kelahiran: false,
         tenggat_waktu: null
       });
 
@@ -249,7 +243,7 @@ const getLaporanByPermintaan = async (req, res) => {
       .leftJoin('permintaan', 'laporan.id_permintaan', 'permintaan.id_permintaan')
       .where('laporan.id_permintaan', id)
       .select('laporan.*', 'permintaan.petugas_id')
-      .orderBy('laporan.tanggal_waktu', 'asc');
+      .orderBy('laporan.tanggal_waktu', 'desc');
 
     // For each laporan, attach its subtype data
     const enriched = await Promise.all(laporanList.map(async (l) => {
@@ -272,6 +266,38 @@ const getLaporanByPermintaan = async (req, res) => {
     return res.status(500).json({ success: false, message: err.message || 'Server error.' });
   }
 };
+// ─── GET /api/v1/laporan/sapi/:sapi_id ───────────────────────────────────────
+const getLaporanBySapi = async (req, res) => {
+  try {
+    const { sapi_id } = req.params;
+    const laporanList = await db('laporan')
+      .leftJoin('permintaan', 'laporan.id_permintaan', 'permintaan.id_permintaan')
+      .where('permintaan.sapi_id', sapi_id)
+      .select('laporan.*', 'permintaan.petugas_id', 'permintaan.sapi_id')
+      .orderBy('laporan.tanggal_waktu', 'desc');
+
+    // For each laporan, attach its subtype data
+    const enriched = await Promise.all(laporanList.map(async (l) => {
+      let subtype = null;
+      if (l.flag_laporan_ib) {
+        subtype = await db('laporan_ib').where({ laporan_id: l.id_laporan }).first();
+      } else if (l.flag_laporan_kebuntingan) {
+        subtype = await db('laporan_kebuntingan').where({ laporan_id: l.id_laporan }).first();
+      } else if (l.flag_laporan_keguguran) {
+        subtype = await db('laporan_keguguran').where({ laporan_id: l.id_laporan }).first();
+      } else if (l.flag_laporan_kelahiran) {
+        subtype = await db('laporan_kelahiran').where({ laporan_id: l.id_laporan }).first();
+      }
+      return { ...l, detail: subtype };
+    }));
+
+    return res.status(200).json({ success: true, data: enriched });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: err.message || 'Server error.' });
+  }
+};
+
 
 // ─── GET /api/v1/laporan/:id — single laporan with subtype ──────────────────
 const getLaporanById = async (req, res) => {
@@ -377,5 +403,5 @@ const deleteLaporan = async (req, res) => {
 
 module.exports = {
   createLaporanIB, createLaporanKebuntingan, createLaporanKeguguran, createLaporanKelahiran,
-  getLaporanByPermintaan, getLaporanById, updateLaporanIB, getAllLaporan, getMyLaporan, deleteLaporan
+  getLaporanByPermintaan, getLaporanBySapi, getLaporanById, updateLaporanIB, getAllLaporan, getMyLaporan, deleteLaporan
 };

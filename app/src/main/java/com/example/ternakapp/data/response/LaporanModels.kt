@@ -56,6 +56,21 @@ data class LaporanData(
     @SerializedName("flag_laporan_kelahiran") val isKelahiran: Boolean,
     @SerializedName("flag_laporan_keguguran") val isKeguguran: Boolean,
     @SerializedName("petugas_id") val petugasId: Int? = null,
+    @SerializedName("detail") val detail: LaporanDetail? = null
+)
+
+data class LaporanDetail(
+    @SerializedName("isi_laporan_ib") val isiLaporanIb: String?,
+    @SerializedName("kode_straw") val kodeStraw: String?,
+    @SerializedName("is_success") val isSuccess: Boolean?,
+    @SerializedName("komentar") val komentar: String?,
+    @SerializedName("isi_laporan_kebuntingan") val isiLaporanKebuntingan: String?,
+    @SerializedName("hasil_pemeriksaan") val hasilPemeriksaan: String?,
+    @SerializedName("tanggal_hpl") val tanggalHpl: String?,
+    @SerializedName("isi_laporan_kelahiran") val isiLaporanKelahiran: String?,
+    @SerializedName("kondisi_anak_sapi") val kondisiAnakSapi: String?,
+    @SerializedName("jenis_kelamin_anak_sapi") val jenisKelaminAnakSapi: String?,
+    @SerializedName("isi_laporan_keguguran") val isiLaporanKeguguran: String?
 )
 
 // Request Models for Laporan

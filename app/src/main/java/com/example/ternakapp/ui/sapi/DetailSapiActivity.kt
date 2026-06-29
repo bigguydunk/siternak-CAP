@@ -68,8 +68,8 @@ class DetailSapiActivity : AppCompatActivity() {
                 binding.layoutAksiPetugas.visibility = View.GONE
             }
 
-            if (currentPermintaanId != -1) {
-                fetchTimeline(currentPermintaanId)
+            if (currentSapiId != -1) {
+                fetchTimelineBySapi(currentSapiId)
             }
         }
     }
@@ -91,7 +91,7 @@ class DetailSapiActivity : AppCompatActivity() {
                             binding.btnLaporkanBirahiLagi.isEnabled = true
                             Toast.makeText(this@DetailSapiActivity, "Permintaan IB berhasil diajukan!", Toast.LENGTH_SHORT).show()
                             currentPermintaanId = result.data.data?.idPermintaan ?: -1
-                            fetchTimeline(currentPermintaanId)
+                            fetchTimelineBySapi(currentSapiId)
                         }
                         is ResultState.Error -> {
                             binding.btnLaporkanBirahiLagi.isEnabled = true
@@ -101,16 +101,20 @@ class DetailSapiActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun setupPetugasButtons(latestLaporan: LaporanData) {
+        if (!latestLaporan.flagMenungguLaporan) {
+            binding.btnKonfirmasiTugas.visibility = View.GONE
+            binding.layoutSubmitLaporan.visibility = View.GONE
+            return
+        }
+
         val isConfirmed = !latestLaporan.tenggatWaktu.isNullOrEmpty()
 
         binding.btnLaporIB.setOnClickListener { openForm("IB", latestLaporan.idLaporan) }
         binding.btnLaporBunting.setOnClickListener { openForm("Bunting", latestLaporan.idLaporan) }
-        binding.btnLaporLahir.setOnClickListener { openForm("Lahir", latestLaporan.idLaporan) }
-        binding.btnLaporKeguguran.setOnClickListener { openForm("Keguguran", latestLaporan.idLaporan) }
+        binding.btnLaporLahirKeguguran.setOnClickListener { openForm("LahirKeguguran", latestLaporan.idLaporan) }
 
         if (!isConfirmed) {
             binding.btnKonfirmasiTugas.visibility = View.VISIBLE
@@ -124,7 +128,7 @@ class DetailSapiActivity : AppCompatActivity() {
                             is ResultState.Success -> {
                                 binding.btnKonfirmasiTugas.isEnabled = true
                                 Toast.makeText(this@DetailSapiActivity, "Tugas berhasil dikonfirmasi!", Toast.LENGTH_SHORT).show()
-                                fetchTimeline(currentPermintaanId)
+                                fetchTimelineBySapi(currentSapiId)
                             }
                             is ResultState.Error -> {
                                 binding.btnKonfirmasiTugas.isEnabled = true
@@ -141,8 +145,7 @@ class DetailSapiActivity : AppCompatActivity() {
             // Show appropriate button based on state flags
             binding.btnLaporIB.visibility = if (latestLaporan.isIB) View.VISIBLE else View.GONE
             binding.btnLaporBunting.visibility = if (latestLaporan.isKebuntingan) View.VISIBLE else View.GONE
-            binding.btnLaporLahir.visibility = if (latestLaporan.isKelahiran) View.VISIBLE else View.GONE
-            binding.btnLaporKeguguran.visibility = if (latestLaporan.isKeguguran) View.VISIBLE else View.GONE
+            binding.btnLaporLahirKeguguran.visibility = if (latestLaporan.isKelahiran && latestLaporan.isKeguguran) View.VISIBLE else View.GONE
         }
     }
 
@@ -174,16 +177,18 @@ class DetailSapiActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchTimeline(idPermintaan: Int) {
+    private fun fetchTimelineBySapi(idSapi: Int) {
         lifecycleScope.launch {
-            laporanViewModel.getLaporanTimeline(idPermintaan).collect { result ->
+            laporanViewModel.getLaporanTimelineBySapi(idSapi).collect { result ->
                 if (result is ResultState.Success) {
                     val list = result.data.data
                     if (list.isNotEmpty()) {
                         binding.rvTimelineLaporan.adapter = LaporanAdapter(list)
                         if (userRole == "petugas") {
-                            setupPetugasButtons(list.last())
+                            setupPetugasButtons(list.first())
                         }
+                        // Update currentPermintaanId so that creating new form works correctly with latest cycle
+                        currentPermintaanId = list.first().idPermintaan
                     }
                 }
             }

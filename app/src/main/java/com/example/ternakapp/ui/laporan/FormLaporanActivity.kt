@@ -80,11 +80,10 @@ class FormLaporanActivity : AppCompatActivity() {
                 selectedHplString = sdfHplApi.format(calendarHpl.time)
                 binding.btnPickHpl.text = sdfHplDisplay.format(calendarHpl.time)
             }
-            "Lahir" -> {
+            "LahirKeguguran" -> {
+                binding.layoutLahirGugurToggle.visibility = View.VISIBLE
                 binding.layoutKelahiran.visibility = View.VISIBLE
-            }
-            "Keguguran" -> {
-                binding.layoutKeguguran.visibility = View.VISIBLE
+                binding.tvTitle.text = "Laporan Kelahiran / Keguguran"
             }
         }
     }
@@ -113,6 +112,17 @@ class FormLaporanActivity : AppCompatActivity() {
             }
         }
 
+        // Lahir/Gugur radio group toggle
+        binding.rgHasilLahirGugur.setOnCheckedChangeListener { _, checkedId ->
+            if (checkedId == binding.rbLahir.id) {
+                binding.layoutKelahiran.visibility = View.VISIBLE
+                binding.layoutKeguguran.visibility = View.GONE
+            } else {
+                binding.layoutKelahiran.visibility = View.GONE
+                binding.layoutKeguguran.visibility = View.VISIBLE
+            }
+        }
+
         binding.btnSubmit.setOnClickListener {
             val isiLaporan = binding.edtIsiLaporan.text.toString().trim()
             if (isiLaporan.isEmpty()) {
@@ -137,15 +147,16 @@ class FormLaporanActivity : AppCompatActivity() {
                     val request = LaporanKebuntinganRequest(idPermintaan, isiLaporan, selectedDateTimeString, hasil, selectedHplString)
                     submitKebuntingan(request)
                 }
-                "Lahir" -> {
-                    val kondisi = if (binding.rbSelamat.isChecked) "selamat" else "mati lahir"
-                    val jk = if (binding.rbJantan.isChecked) "jantan" else "betina"
-                    val request = LaporanKelahiranRequest(idPermintaan, isiLaporan, kondisi, jk, selectedDateTimeString)
-                    submitKelahiran(request)
-                }
-                "Keguguran" -> {
-                    val request = LaporanKeguguranRequest(idPermintaan, isiLaporan, selectedDateTimeString)
-                    submitKeguguran(request)
+                "LahirKeguguran" -> {
+                    if (binding.rbLahir.isChecked) {
+                        val kondisi = if (binding.rbSelamat.isChecked) "selamat" else "mati lahir"
+                        val jk = if (binding.rbJantan.isChecked) "jantan" else "betina"
+                        val request = LaporanKelahiranRequest(idPermintaan, isiLaporan, kondisi, jk, selectedDateTimeString)
+                        submitKelahiran(request)
+                    } else {
+                        val request = LaporanKeguguranRequest(idPermintaan, isiLaporan, selectedDateTimeString)
+                        submitKeguguran(request)
+                    }
                 }
             }
         }

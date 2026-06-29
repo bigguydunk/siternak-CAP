@@ -46,9 +46,14 @@ interface ApiService {
         @Body request: com.example.ternakapp.data.response.PermintaanRequest
     ): com.example.ternakapp.data.response.PermintaanResponse
 
-    @GET("api/v1/laporan/permintaan/{id_permintaan}")
+    @GET("api/v1/laporan/permintaan/{id}")
     suspend fun getLaporanTimeline(
-        @retrofit2.http.Path("id_permintaan") id: Int
+        @retrofit2.http.Path("id") idPermintaan: Int
+    ): com.example.ternakapp.data.response.ListLaporanResponse
+
+    @GET("api/v1/laporan/sapi/{sapi_id}")
+    suspend fun getLaporanTimelineBySapi(
+        @retrofit2.http.Path("sapi_id") idSapi: Int
     ): com.example.ternakapp.data.response.ListLaporanResponse
 
     @POST("api/v1/laporan/ib/{laporan_id}")

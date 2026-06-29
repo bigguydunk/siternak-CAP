@@ -51,7 +51,7 @@ const DetailPermintaanAdmin = () => {
 
   if (!permintaan) return <div>Loading...</div>;
 
-  const activeLaporan = laporanList[laporanList.length - 1]; // get the latest phase
+  const activeLaporan = laporanList[0]; // get the latest phase (now first due to desc order)
   const statusInfo = getStatusDisplay(permintaan, activeLaporan);
 
   let activeIndex = 0;
@@ -162,7 +162,7 @@ const DetailPermintaanAdmin = () => {
                     <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{tipe}</td>
                     <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{new Date(l.tanggal_waktu).toLocaleString()}</td>
                     <td style={{ padding: '8px', borderBottom: '1px solid #ddd', color: l.flag_menunggu_laporan ? (l.petugas_id ? 'orange' : 'blue') : 'green' }}>
-                      {l.flag_menunggu_laporan ? (l.petugas_id ? 'Menunggu Laporan' : 'Menunggu Petugas') : 'Selesai'}
+                      {l.flag_menunggu_laporan ? (l.petugas_id ? `Menunggu ${tipe}` : 'Menunggu Petugas') : 'Selesai'}
                     </td>
                     <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
                       <button 

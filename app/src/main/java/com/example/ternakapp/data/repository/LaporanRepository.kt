@@ -63,6 +63,19 @@ class LaporanRepository private constructor(
         }
     }
 
+    fun getLaporanTimelineBySapi(idSapi: Int): Flow<ResultState<ListLaporanResponse>> = flow {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getLaporanTimelineBySapi(idSapi)
+            if (response.success) emit(ResultState.Success(response))
+            else emit(ResultState.Error(response.message ?: "Error"))
+        } catch (e: HttpException) {
+            emit(ResultState.Error(e.response()?.errorBody()?.string() ?: e.message()))
+        } catch (e: Exception) {
+            emit(ResultState.Error(e.message.toString()))
+        }
+    }
+
     fun createLaporanIB(laporanId: Int, request: LaporanIBRequest): Flow<ResultState<LaporanResponse>> = flow {
         emit(ResultState.Loading)
         try {

@@ -123,7 +123,7 @@ const DashboardAdmin = () => {
                 <td style={{ border: '1px solid #ccc', padding: '8px' }}>{tipe}</td>
                 <td style={{ border: '1px solid #ccc', padding: '8px' }}>{new Date(l.tanggal_waktu).toLocaleString()}</td>
                 <td style={{ border: '1px solid #ccc', padding: '8px', color: l.flag_menunggu_laporan ? (l.petugas_id ? 'orange' : 'blue') : 'green' }}>
-                  {l.flag_menunggu_laporan ? (l.petugas_id ? 'Menunggu Laporan' : 'Menunggu Petugas') : 'Selesai'}
+                  {l.flag_menunggu_laporan ? (l.petugas_id ? `Menunggu ${tipe}` : 'Menunggu Petugas') : 'Selesai'}
                 </td>
                 <td style={{ border: '1px solid #ccc', padding: '8px' }}>
                   <button 

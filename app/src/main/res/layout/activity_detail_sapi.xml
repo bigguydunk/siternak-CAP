@@ -173,24 +173,6 @@
                 </GridLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Laporan Timeline (Permintaan List) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"
-                android:text="Laporan &amp; Progress Reproduksi"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvTimelineLaporan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_sapi" />
-
             <!-- Action Buttons for Peternak -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLaporkanBirahiLagi"
@@ -245,23 +227,32 @@
                         app:cornerRadius="12dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnLaporLahir"
+                        android:id="@+id/btnLaporLahirKeguguran"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Isi Laporan Kelahiran"
-                        app:cornerRadius="12dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnLaporKeguguran"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:text="Isi Laporan Keguguran"
+                        android:text="Isi Laporan Kelahiran / Keguguran"
                         app:cornerRadius="12dp" />
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Laporan Timeline (Permintaan List) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:text="Laporan &amp; Progress Reproduksi"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTimelineLaporan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_sapi" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

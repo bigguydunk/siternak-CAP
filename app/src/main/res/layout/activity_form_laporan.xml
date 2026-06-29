@@ -190,6 +190,41 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Specific to Lahir/Keguguran Toggle -->
+        <LinearLayout
+            android:id="@+id/layoutLahirGugurToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hasil Akhir Kandungan"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+            <RadioGroup
+                android:id="@+id/rgHasilLahirGugur"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+                <RadioButton
+                    android:id="@+id/rbLahir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lahir"
+                    android:checked="true"
+                    android:layout_marginEnd="16dp"/>
+                <RadioButton
+                    android:id="@+id/rbGugur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gugur" />
+            </RadioGroup>
+        </LinearLayout>
+
         <!-- Specific to Kelahiran -->
         <LinearLayout
             android:id="@+id/layoutKelahiran"

@@ -34,4 +34,36 @@
         android:textColor="@color/text_primary"
         android:layout_marginTop="4dp" />
 
+    <TextView
+        android:id="@+id/tvCountdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:textSize="12sp"
+        android:textColor="@color/primary_red"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/tvIsiLaporan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Catatan: -"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Detail: -"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="4dp"
+        android:visibility="gone" />
+
 </LinearLayout>
